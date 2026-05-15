@@ -66,8 +66,7 @@ links:[{icon:'mail',name:'Gmail',url:'https://mail.google.com'},
 {icon:'code',name:'GitHub',url:'https://github.com'},
 {icon:'play',name:'YouTube',url:'https://youtube.com'},
 {icon:'web',name:'Bilibili',url:'https://bilibili.com'},
-{icon:'chat',name:'ChatGPT',url:'https://chat.openai.com'},
-{icon:'x',name:'X',url:'https://x.com'}],
+{icon:'chat',name:'ChatGPT',url:'https://chat.openai.com'}],
 todos:[]};
 
 var SEARCH_ENGINES=[{id:'google',name:'Google',domain:'google.com',url:'https://www.google.com/search?q='},
