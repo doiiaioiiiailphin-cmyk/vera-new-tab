@@ -589,7 +589,7 @@ weatherFailed:'获取天气失败',locationUnavailable:'位置不可用',
 windSpeed:'风速',currentWeather:'当前',
 presetIce:'冰晶蓝',presetAurora:'极光紫',presetOcean:'深海蓝',presetForest:'森林绿',presetSunset:'日落橙',
 noTasks:'暂无任务',confirmReset:'确认恢复默认设置？所有自定义将丢失。',
-faviconText:'从网站获取',faviconTitle:'自动获取网站图标',faviconFail:'获取失败'},
+faviconText:'从网站获取',faviconTitle:'自动获取网站图标',faviconFail:'获取失败',tapRetry:'点击重试'},
 en:{theme:'Theme',language:'Language',settings:'Settings',searchPlaceholder:'Search the web... (Ctrl+K to focus)',
 weather:'Weather',quote:'Daily Quote',todo:'To-Do',todoPlaceholder:'Add a new task...',
 settingsTitle:'Customization',tabAppearance:'Appearance',tabWidgets:'Widgets',tabLinks:'Links',tabAbout:'About',
@@ -607,7 +607,7 @@ weatherFailed:'Weather fetch failed',locationUnavailable:'Location unavailable',
 windSpeed:'Wind Speed',currentWeather:'Currently',
 presetIce:'Ice Blue',presetAurora:'Aurora',presetOcean:'Ocean',presetForest:'Forest',presetSunset:'Sunset',
 noTasks:'No tasks',confirmReset:'Reset all settings? This cannot be undone.',
-faviconText:'From Website',faviconTitle:'Auto-detect favicon',faviconFail:'Failed'},
+faviconText:'From Website',faviconTitle:'Auto-detect favicon',faviconFail:'Failed',tapRetry:'Tap to retry'},
 ja:{theme:'テーマ',language:'言語',settings:'設定',searchPlaceholder:'ウェブ検索... (Ctrl+K)',
 weather:'天気',quote:'今日の名言',todo:'ToDo',todoPlaceholder:'新しいタスクを追加...',
 settingsTitle:'カスタマイズ',tabAppearance:'外観',tabWidgets:'ウィジェット',tabLinks:'リンク',tabAbout:'情報',
@@ -625,7 +625,7 @@ weatherFailed:'天気の取得に失敗',locationUnavailable:'位置情報が利
 windSpeed:'風速',currentWeather:'現在',
 presetIce:'アイスブルー',presetAurora:'オーロラ',presetOcean:'オーシャン',presetForest:'フォレスト',presetSunset:'サンセット',
 noTasks:'タスクなし',confirmReset:'すべての設定をリセットしますか？',
-faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',faviconFail:'失敗'}
+faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',faviconFail:'失敗',tapRetry:'タップして再試行'}
 };
 
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
@@ -991,13 +991,13 @@ e.stopPropagation();settings.todos.splice(parseInt(btn.dataset.del),1);saveSetti
 function addTodo(){var input=document.getElementById('todoInput');var text=input.value.trim();if(!text)return;
 settings.todos.unshift({text:text,done:false});saveSettings();renderTodoList();input.value='';}
 
-var weatherPending=false;
+var weatherPending=false,weatherLoaded=false;
 function fetchWeather(){if(!settings.showWeather||weatherPending)return;
 weatherPending=true;
 var wc=document.getElementById('weatherContent');
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg('w-cloudy')+'</div><div>'+
 '<div class="weather-temp">--&deg;</div><div class="weather-details">'+t('loadingWeather')+'</div></div></div>';
-if(!navigator.geolocation){wc.innerHTML='<div class="weather-details">'+t('locationUnavailable')+'</div>';return;}
+if(!navigator.geolocation){wc.innerHTML='<div class="weather-details">'+t('locationUnavailable')+'</div>';weatherPending=false;return;}
 navigator.geolocation.getCurrentPosition(function(pos){
 fetch('https://api.open-meteo.com/v1/forecast?latitude='+pos.coords.latitude.toFixed(2)+'&longitude='+pos.coords.longitude.toFixed(2)+'&current_weather=true')
 .then(function(r){return r.json();}).then(function(data){
@@ -1011,7 +1011,10 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 '<div class="weather-loc">'+t('windSpeed')+': '+w.windspeed+' km/h</div></div></div>';
 weatherLoaded=true;weatherPending=false;
 }).catch(function(){wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+'</div>';weatherPending=false;});
-},function(){wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'</div>';weatherPending=false;},{timeout:5000});}
+},function(err){
+if(err.code===1){wc.innerHTML='<div class="weather-details" style="cursor:pointer;text-decoration:underline" onclick="fetchWeather()">'+t('locationDenied')+' — '+t('tapRetry')+'</div>';}
+else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+err.message+')</div>';}
+weatherPending=false;},{timeout:15000,maximumAge:600000,enableHighAccuracy:false});}
 
 function wIconSvg(name){
 return'<svg viewBox="0 0 24 24"><use href="#i-'+name+'"/></svg>';}
@@ -1119,11 +1122,12 @@ document.addEventListener('keydown',function(e){
 if(e.key==='Escape')closeSettings();
 if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();document.getElementById('searchInput').focus();}});
 window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(settings.theme==='auto')applyAll();});
-fetchWeather();
+fetchWeather();window.fetchWeather=fetchWeather;
 if(navigator.permissions&&navigator.permissions.query){
 navigator.permissions.query({name:'geolocation'}).then(function(status){
+if(status.state==='granted'&&!weatherLoaded)fetchWeather();
 status.onchange=function(){if(this.state==='granted'&&!weatherLoaded)fetchWeather();};
-});
+}).catch(function(){});
 }
 }
 function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');document.getElementById('settingsPanel').classList.remove('open');}
