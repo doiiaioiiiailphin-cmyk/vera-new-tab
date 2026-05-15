@@ -1014,7 +1014,7 @@ weatherLoaded=true;weatherPending=false;
 },function(err){
 if(err.code===1){wc.innerHTML='<div class="weather-details" style="cursor:pointer;text-decoration:underline" onclick="fetchWeather()">'+t('locationDenied')+' — '+t('tapRetry')+'</div>';}
 else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+err.message+')</div>';}
-weatherPending=false;},{timeout:15000,maximumAge:600000,enableHighAccuracy:false});}
+weatherPending=false;},{maximumAge:600000,enableHighAccuracy:false});}
 
 function wIconSvg(name){
 return'<svg viewBox="0 0 24 24"><use href="#i-'+name+'"/></svg>';}
