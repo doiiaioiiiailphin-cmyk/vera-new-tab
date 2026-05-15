@@ -149,12 +149,12 @@ pointer-events:none;white-space:nowrap;}
 background:linear-gradient(135deg,var(--glass-highlight) 0%,transparent 55%);border-radius:inherit;pointer-events:none;}
 .engine-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);pointer-events:auto;}
 
-.suggest-dropdown{position:absolute;top:calc(100% - 4px);left:0;right:0;
+.suggest-dropdown{position:fixed;top:0;left:0;
 background:color-mix(in srgb,var(--bg-overlay) 94%,transparent);
 backdrop-filter:blur(36px) saturate(200%);
 -webkit-backdrop-filter:blur(36px) saturate(200%);
 border:1px solid var(--glass-border);border-radius:0 0 var(--radius-sm) var(--radius-sm);
-box-shadow:var(--shadow-lg);z-index:100;overflow:hidden;
+box-shadow:var(--shadow-lg);z-index:99998;overflow:hidden;
 opacity:0;visibility:hidden;transform:translateY(-6px);
 transition:opacity var(--transition-fast),visibility var(--transition-fast),transform var(--transition-fast);
 pointer-events:none;}
@@ -497,10 +497,11 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 <span class="arrow"><svg viewBox="0 0 24 24"><use href="#i-chevron-down"/></svg></span>
 </div>
     </div>
-    <div class="suggest-dropdown" id="suggestDropdown"></div>
   </div>
+</div>
 
 <div class="engine-dropdown" id="engineDropdown"></div>
+<div class="suggest-dropdown" id="suggestDropdown"></div>
 
 <div class="links-section fade-in fade-in-3" id="linksContainer"></div>
 
@@ -1095,6 +1096,11 @@ document.head.appendChild(s);setTimeout(function(){s.remove();},5000);
 fetch('https://duckduckgo.com/ac/?q='+encodeURIComponent(q)+'&type=list').then(function(r){return r.json();}).then(function(d){renderSuggest((d||[]).map(function(i){return i.phrase||i;}));}).catch(function(){suggestDropdown.classList.remove('open');});
 }else{renderSuggest([]);}}
 function renderSuggest(list){if(!list||!list.length){suggestDropdown.classList.remove('open');return;}
+var sb=document.getElementById('searchBox');
+var sr=sb.getBoundingClientRect();
+suggestDropdown.style.top=sr.bottom+'px';
+suggestDropdown.style.left=sr.left+'px';
+suggestDropdown.style.width=sr.width+'px';
 suggestDropdown.innerHTML=list.slice(0,6).map(function(item,n){
 return'<div class="suggest-item" data-query="'+escapeAttr(item)+'"><span class="suggest-icon">'+iconSvg('search',14)+'</span>'+escapeHtml(item)+'</div>';}).join('');
 suggestDropdown.classList.add('open');
