@@ -7,7 +7,7 @@
 <p align="center">Liquid Glass New Tab — 冰晶液态玻璃风格 Chrome 新标签页</p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/manifest-v2-blue" alt="Manifest V2">
+  <img src="https://img.shields.io/badge/manifest-v3-blue" alt="Manifest V3">
   <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License">
 </p>
 
@@ -15,7 +15,41 @@
 
 ## 预览
 
-深色/浅色双模式，毛玻璃 + 动态流体背景，圆角现代设计。
+<p align="center">
+  <a href="screenshots/dark.png" target="_blank">
+    <img src="screenshots/dark.png" alt="Dark Mode" width="380" style="
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s;
+      margin: 8px;
+    " onmouseover="this.style.transform='translateY(-4px) scale(1.02)';this.style.boxShadow='0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12)'" onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)'">
+  </a>
+  <a href="screenshots/light.png" target="_blank">
+    <img src="screenshots/light.png" alt="Light Mode" width="380" style="
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s;
+      margin: 8px;
+    " onmouseover="this.style.transform='translateY(-4px) scale(1.02)';this.style.boxShadow='0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12)'" onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)'">
+  </a>
+  <a href="screenshots/settings.png" target="_blank">
+    <img src="screenshots/settings.png" alt="Settings Panel" width="380" style="
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s;
+      margin: 8px;
+    " onmouseover="this.style.transform='translateY(-4px) scale(1.02)';this.style.boxShadow='0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12)'" onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)'">
+  </a>
+</p>
+
+<p align="center" style="color: #8a9db5; font-size: 13px; margin-top: 4px;">
+  深色模式 &nbsp;·&nbsp; 浅色模式 &nbsp;·&nbsp; 设置面板
+</p>
+
+---
 
 ## 功能
 
@@ -48,12 +82,16 @@
 
 ```
 vera-new-tab/
-├── manifest.json        # Chrome 扩展清单
-├── index.html           # 新标签页（全功能单文件）
+├── manifest.json        # Chrome 扩展清单 (Manifest V3)
+├── index.html           # 新标签页主文件
+├── script.js            # 交互逻辑 (搜索、天气、待办、设置)
+├── style.css            # UI 样式 (毛玻璃、主题变量、动画)
+├── preload.js           # 防闪烁主题初始化
 ├── icons/               # 扩展图标
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
+├── screenshots/         # 预览截图
 └── .gitignore
 ```
 
@@ -63,7 +101,7 @@ vera-new-tab/
 
 - CSS `backdrop-filter` 毛玻璃效果
 - CSS 自定义属性全主题化
-- SVG Sprite 图标系统（34 个矢量符号）
+- SVG Sprite 图标系统（34+ 矢量符号）
 - `localStorage` 持久化所有设置
 - Open-Meteo 免费天气 API
 - Permissions API 监听地理位置授权
