@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Vera - Liquid Glass New Tab",
   "short_name": "Vera",
   "version": "1.0.0",
@@ -13,5 +13,17 @@
     "128": "icons/icon128.png"
   },
   "permissions": [],
-  "content_security_policy": "script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src https://api.open-meteo.com"
+  "host_permissions": [
+    "https://api.open-meteo.com/*",
+    "https://suggestqueries.google.com/*",
+    "https://api.bing.com/*",
+    "https://suggestion.baidu.com/*",
+    "https://duckduckgo.com/*",
+    "https://www.google.com/*",
+    "https://fonts.googleapis.com/*",
+    "https://fonts.gstatic.com/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.open-meteo.com https://suggestqueries.google.com https://api.bing.com https://suggestion.baidu.com https://duckduckgo.com https://www.google.com https://fonts.googleapis.com https://fonts.gstatic.com"
+  }
 }
