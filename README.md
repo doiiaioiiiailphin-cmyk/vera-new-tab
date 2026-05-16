@@ -34,19 +34,10 @@
       margin: 8px;
     " onmouseover="this.style.transform='translateY(-4px) scale(1.02)';this.style.boxShadow='0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12)'" onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)'">
   </a>
-  <a href="screenshots/settings.png" target="_blank">
-    <img src="screenshots/settings.png" alt="Settings Panel" width="380" style="
-      border-radius: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.06);
-      transition: transform 0.3s cubic-bezier(0.4,0,0.2,1), box-shadow 0.3s;
-      margin: 8px;
-    " onmouseover="this.style.transform='translateY(-4px) scale(1.02)';this.style.boxShadow='0 16px 48px rgba(0,0,0,0.5), 0 4px 12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.12)'" onmouseout="this.style.transform='translateY(0) scale(1)';this.style.boxShadow='0 8px 32px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.08)'">
-  </a>
 </p>
 
 <p align="center" style="color: #8a9db5; font-size: 13px; margin-top: 4px;">
-  深色模式 &nbsp;·&nbsp; 浅色模式 &nbsp;·&nbsp; 设置面板
+  深色模式 &nbsp;·&nbsp; 浅色模式
 </p>
 
 ---
