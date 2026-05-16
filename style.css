@@ -415,3 +415,6 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 .fade-in-2{animation-delay:0.12s}
 .fade-in-3{animation-delay:0.2s}
 .fade-in-4{animation-delay:0.28s}
+
+.about-github-link{display:inline-flex;align-items:center;gap:6px;color:var(--text-dim);font-size:13px;text-decoration:none;transition:color var(--transition-fast)}
+.about-github-link:hover{color:var(--accent)}
