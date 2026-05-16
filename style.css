@@ -42,7 +42,10 @@ min-height:100vh;overflow-x:hidden;
 display:flex;align-items:center;justify-content:center;
 -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
 transition:background var(--transition-slow),color var(--transition-slow);
-}
+scrollbar-width:none;-ms-overflow-style:none;}
+body::-webkit-scrollbar{display:none}
+html{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar{display:none}
 .icon-svg{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:1em;height:1em;vertical-align:middle;}
 .icon-svg svg{width:100%;height:100%;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
 
