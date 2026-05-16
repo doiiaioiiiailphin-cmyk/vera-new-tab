@@ -141,8 +141,10 @@ var settings={},linkEditIdx=null;
 
 function iconSvg(name,size){size=size||18;
 return'<span class="icon-svg" style="font-size:'+size+'px"><svg viewBox="0 0 24 24"><use href="#i-'+name+'"/></svg></span>';}
+
 function extractDomain(url){if(!/^https?:\/\//i.test(url))url='https://'+url;
 try{return new URL(url).hostname;}catch(e){return null;}}
+
 var KNOWN_FAVICONS={'mail.google.com':'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png',
 'github.com':'https://github.githubassets.com/favicons/favicon-dark.svg',
 'youtube.com':'https://www.youtube.com/s/desktop/12d6b690/img/favicon_32x32.png',
@@ -155,14 +157,31 @@ var KNOWN_FAVICONS={'mail.google.com':'https://ssl.gstatic.com/ui/v1/icons/mail/
 'duckduckgo.com':'https://duckduckgo.com/favicon.ico',
 'baidu.com':'https://www.baidu.com/favicon.ico',
 'google.com':'https://www.google.com/favicon.ico'};
-function linkFaviconHtml(link){var useFav=link.useFavicon!==false;if(!useFav)return'';
-var domain=extractDomain(link.url);if(!domain)return'';
-var favurl=KNOWN_FAVICONS[domain]||('https://www.google.com/s2/favicons?domain='+domain+'&sz=64');
-return'<img class="link-favicon" src="'+favurl+'" onload="var s=this.nextElementSibling;if(s)s.style.display=\'none\'" onerror="this.remove()" alt="">';}
 
 function getFaviconUrl(url){var domain=extractDomain(url);if(!domain)return'';
 if(domain==='localhost'||/^\d+\.\d+\.\d+\.\d+$/.test(domain))return'';
 return KNOWN_FAVICONS[domain]||('https://www.google.com/s2/favicons?domain='+domain+'&sz=64');}
+
+function linkFaviconHtml(link){var useFav=link.useFavicon!==false;if(!useFav)return'';
+var domain=extractDomain(link.url);if(!domain)return'';
+var favurl=KNOWN_FAVICONS[domain]||('https://www.google.com/s2/favicons?domain='+domain+'&sz=64');
+return'<img class="link-favicon" src="'+escapeAttr(favurl)+'" alt="">';}
+
+function attachFaviconListeners(container){
+container.querySelectorAll('img.link-favicon:not([data-fav-setup])').forEach(function(img){
+img.dataset.favSetup='1';
+img.addEventListener('load',function(){var s=img.nextElementSibling;if(s&&s.classList.contains('icon-svg'))s.style.display='none';});
+img.addEventListener('error',function(){img.remove();});
+});
+var pickerImgs=container.querySelectorAll('.icon-picker img:not([data-fav-setup])');
+pickerImgs.forEach(function(img){img.dataset.favSetup='1';img.addEventListener('error',function(){var b=img.parentElement;if(b){b.innerHTML='<span style="font-size:9px;color:var(--text-subtle);opacity:0.45;line-height:1.1;text-align:center">'+t('faviconFail')+'</span>';b.classList.add('fav-failed');b.style.pointerEvents='none';}});img.addEventListener('load',function(){var b=img.parentElement;if(b){b.classList.remove('fav-failed');b.style.pointerEvents='';}});});
+}
+
+function createFaviconImgElement(src,size){
+size=size||18;var img=document.createElement('img');
+img.src=src;img.style.cssText='width:'+size+'px;height:'+size+'px;border-radius:3px;display:block;flex-shrink:0';
+img.addEventListener('error',function(){var span=document.createElement('span');span.className='icon-svg';span.style.fontSize=size+'px';span.innerHTML='<svg viewBox="0 0 24 24"><use href="#i-web"/></svg>';img.replaceWith(span);});
+return img;}
 
 function t(key){var lang=settings.language||'zh';return (I18N[lang]&&I18N[lang][key])||(I18N.zh[key])||key;}
 
@@ -270,8 +289,9 @@ n.getDate()+(settings.language==='ja'?'日':settings.language==='en'?' ':'日 ')
 function updateEngineDisplay(){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
 var favurl=KNOWN_FAVICONS[eng.domain]||('https://www.google.com/s2/favicons?domain='+eng.domain+'&sz=64');
-document.getElementById('engineIconSvg').innerHTML='<img src="'+favurl+'" style="width:18px;height:18px;border-radius:3px;display:block" '+
-'onerror="var s=document.createElement(\'span\');s.className=\'icon-svg\';s.style.fontSize=\'18px\';s.innerHTML=\'<svg viewBox=&quot;0 0 24 24&quot;><use href=&quot;#i-web&quot;/></svg>\';this.replaceWith(s);" alt="">';
+var engIcon=document.getElementById('engineIconSvg');
+engIcon.innerHTML='';
+engIcon.appendChild(createFaviconImgElement(favurl,18));
 document.getElementById('engineName').textContent=eng.name;
 renderEngineDropdown();
 }
@@ -279,15 +299,20 @@ renderEngineDropdown();
 function renderEngineDropdown(){
 var dd=document.getElementById('engineDropdown');
 dd.innerHTML=SEARCH_ENGINES.map(function(e){var active=e.id===settings.searchEngine?' active':'';
-var favurl=KNOWN_FAVICONS[e.domain]||('https://www.google.com/s2/favicons?domain='+e.domain+'&sz=64');
-return'<div class="engine-option'+active+'" data-engine="'+e.id+'">'+
-'<img src="'+favurl+'" style="width:16px;height:16px;border-radius:3px" '+
-'onerror="var s=document.createElement(\'span\');s.className=\'icon-svg\';s.style.fontSize=\'15px\';s.innerHTML=\'<svg viewBox=&quot;0 0 24 24&quot;><use href=&quot;#i-web&quot;/></svg>\';this.replaceWith(s);" alt=""> '+
-e.name+'</div>';}).join('');
-dd.querySelectorAll('.engine-option').forEach(function(el){el.addEventListener('click',function(e){
+return'<div class="engine-option'+active+'" data-engine="'+e.id+'"><span class="eng-favicon-box"></span> '+e.name+'</div>';}).join('');
+dd.querySelectorAll('.engine-option').forEach(function(el){
+var eng=SEARCH_ENGINES.find(function(e){return e.id===el.dataset.engine});
+if(eng){
+var favurl=KNOWN_FAVICONS[eng.domain]||('https://www.google.com/s2/favicons?domain='+eng.domain+'&sz=64');
+var box=el.querySelector('.eng-favicon-box');
+if(box)box.appendChild(createFaviconImgElement(favurl,16));
+}
+el.addEventListener('click',function(e){
 e.stopPropagation();settings.searchEngine=el.dataset.engine;saveSettings();updateEngineDisplay();dd.classList.remove('open');
 document.getElementById('searchEngineBtn').classList.remove('open');
-});});}
+});
+});
+}
 
 function doSearch(){var q=document.getElementById('searchInput').value.trim();if(!q)return;
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
@@ -320,6 +345,7 @@ html+='<div class="link-card" draggable="true" data-idx="'+idx+'" data-url="'+es
 });
 html+='<div class="add-link-card" id="addLinkCard"><span class="plus">+</span><span class="add-label">'+t('add')+'</span></div>';
 container.innerHTML=html;
+attachFaviconListeners(container);
 container.querySelectorAll('.link-delete').forEach(function(btn){btn.addEventListener('click',function(e){
 e.stopPropagation();e.preventDefault();
 settings.links.splice(parseInt(btn.dataset.del),1);saveSettings();renderQuickLinks();renderLinkEditList();
@@ -346,10 +372,18 @@ draggedIdx=null;wasDragged=true;});
 function renderLinkEditList(){
 var list=document.getElementById('linkEditList');if(!list)return;
 list.innerHTML=settings.links.map(function(link,idx){
-return'<div class="link-edit-item"><div class="link-edit-icon">'+(link.useFavicon===false?iconSvg(link.icon||'web',20):(getFaviconUrl(link.url)?('<img src="'+getFaviconUrl(link.url)+'" style="width:20px;height:20px;border-radius:4px" onerror="this.outerHTML=\''+iconSvg('web',20).replace(/'/g,'&#39;')+'\'" alt="">'):iconSvg('web',20)))+'</div>'+
+var icoHtml=link.useFavicon===false?iconSvg(link.icon||'web',20):('<span class="le-favicon-box"></span>');
+return'<div class="link-edit-item"><div class="link-edit-icon">'+icoHtml+'</div>'+
 '<div class="info"><div class="name">'+escapeHtml(link.name)+'</div><div class="url">'+escapeHtml(link.url)+'</div></div>'+
 '<div class="actions"><button class="btn sm" data-edit="'+idx+'">'+t('editLink')+'</button>'+
 '<button class="btn sm danger" data-del="'+idx+'">'+t('cancel')+'</button></div></div>';}).join('');
+list.querySelectorAll('.link-edit-item').forEach(function(el,idx){
+var link=settings.links[idx];
+if(link&&link.useFavicon!==false){
+var fvbox=el.querySelector('.le-favicon-box');
+if(fvbox){var fvurl=getFaviconUrl(link.url);if(fvurl)fvbox.appendChild(createFaviconImgElement(fvurl,20));}
+}
+});
 list.querySelectorAll('[data-edit]').forEach(function(btn){btn.addEventListener('click',function(){openLinkModal(parseInt(btn.dataset.edit));});});
 list.querySelectorAll('[data-del]').forEach(function(btn){btn.addEventListener('click',function(){
 settings.links.splice(parseInt(btn.dataset.del),1);saveSettings();renderQuickLinks();renderLinkEditList();});});
@@ -373,6 +407,7 @@ html+=PICKER_ICONS.map(function(name){
 var sel=curUseFav!=='favicon'&&name===curUseFav?'selected':'';
 return'<button class="'+sel+'" data-icon="'+name+'">'+iconSvg(name,20)+'</button>';}).join('');
 picker.innerHTML=html;
+attachFaviconListeners(picker);
 picker.querySelectorAll('button').forEach(function(btn){btn.addEventListener('click',function(){
 if(btn.classList.contains('fav-failed'))return;
 picker.querySelectorAll('button').forEach(function(b){b.classList.remove('selected');});
@@ -381,15 +416,14 @@ btn.classList.add('selected');});});}
 function buildFavBtnInner(url){if(!url)return'<span style="font-size:9px;color:var(--text-subtle);line-height:1.1;text-align:center">'+t('faviconText')+'</span>';
 var domain=extractDomain(url);if(!domain)return'<span style="font-size:9px;color:var(--text-subtle);line-height:1.1;text-align:center">'+t('faviconText')+'</span>';
 var favurl='https://www.google.com/s2/favicons?domain='+domain+'&sz=64';
-return'<img src="'+favurl+'" style="width:20px;height:20px;border-radius:3px" '+ 
-'onerror="var b=this.parentElement;b.innerHTML=\'<span style=font-size:9px;color:var(--text-subtle);opacity:0.45;line-height:1.1;text-align:center>\'+t(\'faviconFail\')+\'</span>\';b.classList.add(\'fav-failed\');b.style.pointerEvents=\'none\'" '+ 
-'onload="var b=this.parentElement;b.classList.remove(\'fav-failed\');b.style.pointerEvents=\'\'" alt="">';}
+return'<img src="'+escapeAttr(favurl)+'" style="width:20px;height:20px;border-radius:3px" alt="">';}
 
 function updateFaviconBtn(url){var picker=document.getElementById('linkIconPicker');if(!picker)return;
 var favBtn=picker.querySelector('[data-icon="favicon"]');if(!favBtn)return;
 var isSel=favBtn.classList.contains('selected');
 favBtn.innerHTML=buildFavBtnInner(url);
 if(isSel)favBtn.classList.add('selected');
+attachFaviconListeners(picker);
 picker.querySelectorAll('button').forEach(function(btn){btn.addEventListener('click',function(){
 if(btn.classList.contains('fav-failed'))return;
 picker.querySelectorAll('button').forEach(function(b){b.classList.remove('selected');});
@@ -440,7 +474,7 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 weatherLoaded=true;weatherPending=false;
 }).catch(function(){wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+'</div>';weatherPending=false;});
 },function(err){
-if(err.code===1){wc.innerHTML='<div class="weather-details" style="cursor:pointer;text-decoration:underline" onclick="fetchWeather()">'+t('locationDenied')+' — '+t('tapRetry')+'</div>';}
+if(err.code===1){wc.innerHTML='<div class="weather-details" style="cursor:pointer;text-decoration:underline">'+t('locationDenied')+' — '+t('tapRetry')+'</div>';wc.querySelector('.weather-details').addEventListener('click',fetchWeather);}
 else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+err.message+')</div>';}
 weatherPending=false;},{maximumAge:600000,enableHighAccuracy:false});}
 
@@ -483,26 +517,7 @@ if(!confirm(t('confirmReset')))return;
 settings=JSON.parse(JSON.stringify(DEFAULTS));saveSettings();applyAll();updateClock();
 }
 
-function init(){
-loadSettings();applyAll();
-updateClock();setInterval(updateClock,10000);
-randomQuote();
-document.getElementById('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
-var suggestTimer=null,suggestDropdown=document.getElementById('suggestDropdown');
-function fetchSuggest(q){
-var eng=settings.searchEngine||'google';var cbName='_vs'+Date.now();
-if(eng==='google'||eng==='bing'||eng==='baidu'){
-window[cbName]=function(d){var list=[];if(eng==='google')list=d[1]||[];else if(eng==='bing')list=(d&&d[1])||[];else list=(d&&d.s)||[];
-renderSuggest(list);delete window[cbName];};
-var s=document.createElement('script');
-if(eng==='google')s.src='https://suggestqueries.google.com/complete/search?client=chrome&q='+encodeURIComponent(q)+'&callback='+cbName;
-else if(eng==='bing')s.src='https://api.bing.com/osjson.aspx?query='+encodeURIComponent(q)+'&JsonType=callback&JsonCallback='+cbName;
-else s.src='https://suggestion.baidu.com/su?wd='+encodeURIComponent(q)+'&cb='+cbName;
-s.onerror=function(){suggestDropdown.classList.remove('open');delete window[cbName];};
-document.head.appendChild(s);setTimeout(function(){s.remove();},5000);
-}else if(eng==='duckduckgo'){
-fetch('https://duckduckgo.com/ac/?q='+encodeURIComponent(q)+'&type=list').then(function(r){return r.json();}).then(function(d){renderSuggest((d||[]).map(function(i){return i.phrase||i;}));}).catch(function(){suggestDropdown.classList.remove('open');});
-}else{renderSuggest([]);}}
+// Native fetch-based search suggestions for all engines (no JSONP)
 function renderSuggest(list){if(!list||!list.length){suggestDropdown.classList.remove('open');return;}
 var sb=document.getElementById('searchBox');
 var sr=sb.getBoundingClientRect();
@@ -510,10 +525,34 @@ suggestDropdown.style.top=sr.bottom+'px';
 suggestDropdown.style.left=sr.left+'px';
 suggestDropdown.style.width=sr.width+'px';
 suggestDropdown.innerHTML=list.slice(0,6).map(function(item,n){
-return'<div class="suggest-item" data-query="'+escapeAttr(item)+'"><span class="suggest-icon">'+iconSvg('search',14)+'</span>'+escapeHtml(item)+'</div>';}).join('');
+var text=typeof item==='string'?item:(item.phrase||item.q||item||'');
+return'<div class="suggest-item" data-query="'+escapeAttr(text)+'"><span class="suggest-icon">'+iconSvg('search',14)+'</span>'+escapeHtml(text)+'</div>';}).join('');
 suggestDropdown.classList.add('open');
 suggestDropdown.querySelectorAll('.suggest-item').forEach(function(el){el.addEventListener('click',function(){
 document.getElementById('searchInput').value=el.dataset.query;doSearch();suggestDropdown.classList.remove('open');});});}
+
+function fetchSuggest(q){
+var eng=settings.searchEngine||'google';
+if(eng==='google'){
+fetch('https://suggestqueries.google.com/complete/search?client=firefox&q='+encodeURIComponent(q))
+.then(function(r){return r.json();}).then(function(d){renderSuggest(d[1]||[]);}).catch(function(){suggestDropdown.classList.remove('open');});
+}else if(eng==='bing'){
+fetch('https://api.bing.com/osjson.aspx?query='+encodeURIComponent(q))
+.then(function(r){return r.json();}).then(function(d){renderSuggest(d[1]||[]);}).catch(function(){suggestDropdown.classList.remove('open');});
+}else if(eng==='baidu'){
+fetch('https://www.baidu.com/sugrec?pre=1&p=3&ie=utf-8&json=1&prod=pc&from=wise_web&wd='+encodeURIComponent(q))
+.then(function(r){return r.json();}).then(function(d){var list=d.g||[];renderSuggest(list.map(function(i){return i.q||i;}));}).catch(function(){suggestDropdown.classList.remove('open');});
+}else if(eng==='duckduckgo'){
+fetch('https://duckduckgo.com/ac/?q='+encodeURIComponent(q)+'&type=list')
+.then(function(r){return r.json();}).then(function(d){renderSuggest((d||[]).map(function(i){return i.phrase||i;}));}).catch(function(){suggestDropdown.classList.remove('open');});
+}else{renderSuggest([]);}}
+
+function init(){
+loadSettings();applyAll();
+updateClock();setInterval(updateClock,10000);
+randomQuote();
+document.getElementById('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
+var suggestTimer=null,suggestDropdown=document.getElementById('suggestDropdown');
 document.getElementById('searchInput').addEventListener('input',function(){
 var q=this.value.trim();clearTimeout(suggestTimer);suggestDropdown.classList.remove('open');
 if(q.length<2)return;suggestTimer=setTimeout(function(){fetchSuggest(q);},250);});
