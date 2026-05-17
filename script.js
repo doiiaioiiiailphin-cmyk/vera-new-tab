@@ -254,8 +254,8 @@ r.style.setProperty('--blob-3',preset.blob3);
 r.style.setProperty('--blob-4',preset.blob4);
 document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('still',!settings.dynamicBg);});
 var bgBase=document.querySelector('.bg-base');
-if(settings.bgImage){bgBase.classList.add('has-image');bgBase.style.setProperty('--bg-image-url','url('+settings.bgImage+')');}
-else{bgBase.classList.remove('has-image');bgBase.style.removeProperty('--bg-image-url');}
+if(settings.bgImage){bgBase.classList.add('has-image');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
+else{bgBase.classList.remove('has-image');bgBase.style.backgroundImage='';}
 applyTheme();
 updateEngineDisplay();
 renderQuickLinks();
