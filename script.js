@@ -596,7 +596,7 @@ document.getElementById('setRadius').addEventListener('input',function(){setting
 document.getElementById('setAccent').addEventListener('input',function(){settings.accent=this.value;saveSettings();applyAll();});
 document.querySelectorAll('#bgPresetBtns .btn').forEach(function(btn){btn.addEventListener('click',function(){
 settings.bgPreset=btn.dataset.preset;saveSettings();applyAll();});});
-document.getElementById('setBgImage').addEventListener('input',function(){settings.bgImage=this.value.trim();saveSettings();applyAll();});
+var bgInput=document.getElementById('setBgImage');bgInput.addEventListener('blur',function(){settings.bgImage=this.value.trim();saveSettings();applyAll();});bgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){this.blur();}});
 document.getElementById('toggleWeather').addEventListener('click',function(){settings.showWeather=!settings.showWeather;saveSettings();applyAll();if(settings.showWeather)fetchWeather();});
 document.getElementById('toggleTodo').addEventListener('click',function(){settings.showTodo=!settings.showTodo;saveSettings();applyAll();});
 document.getElementById('toggleQuote').addEventListener('click',function(){settings.showQuote=!settings.showQuote;saveSettings();applyAll();});
