@@ -517,6 +517,7 @@ settings.language=langs[(idx+1)%langs.length];saveSettings();applyAll();updateCl
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
 settings=JSON.parse(JSON.stringify(DEFAULTS));saveSettings();applyAll();updateClock();
+setTimeout(function(){updateSettingsUI();},100);
 }
 
 // Native fetch-based search suggestions for all engines (no JSONP)
