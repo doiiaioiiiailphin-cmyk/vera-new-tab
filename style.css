@@ -58,7 +58,7 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 transition:all var(--transition-slow);}
 .bg-base.has-image{background-size:cover !important;background-position:center !important;background-repeat:no-repeat !important;}
 
-.bg-blob{position:absolute;border-radius:50%;filter:blur(100px);
+.bg-blob{position:absolute;border-radius:50%;filter:blur(80px);
 opacity:var(--blob-opacity);will-change:transform;transition:opacity var(--transition-slow);}
 .bg-blob.still{animation:none!important}
 .bg-blob:nth-child(1){width:600px;height:600px;background:radial-gradient(circle,var(--blob-1) 0%,transparent 70%);top:-15%;left:-10%;animation:float1 18s ease-in-out infinite;}
@@ -402,10 +402,10 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 .top-bar-btn .icon-svg{font-size:16px;}
 }
 
-@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(80px,40px) scale(1.08)}50%{transform:translate(30px,-30px) scale(0.95)}75%{transform:translate(-40px,20px) scale(1.05)}}
-@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-60px,-20px) scale(1.06)}50%{transform:translate(20px,40px) scale(0.94)}75%{transform:translate(50px,-10px) scale(1.07)}}
-@keyframes float3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-50px,-30px) scale(1.1)}66%{transform:translate(40px,25px) scale(0.92)}}
-@keyframes float4{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-30px,-40px) scale(1.12)}}
+@keyframes float1{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(120px,60px) scale(1.12)}50%{transform:translate(50px,-50px) scale(0.9)}75%{transform:translate(-60px,40px) scale(1.08)}}
+@keyframes float2{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(-90px,-40px) scale(1.1)}50%{transform:translate(40px,70px) scale(0.88)}75%{transform:translate(80px,-20px) scale(1.1)}}
+@keyframes float3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(-80px,-50px) scale(1.14)}66%{transform:translate(70px,40px) scale(0.88)}}
+@keyframes float4{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-50px,-70px) scale(1.16)}}
 @keyframes pulse-border{0%,100%{border-color:var(--accent)}50%{border-color:transparent}}
 @keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
