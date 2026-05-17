@@ -638,9 +638,9 @@ function closeSettings(){document.getElementById('settingsOverlay').classList.re
 function checkUpdate(){if(!settings.checkUpdate)return;
 fetch('https://api.github.com/repos/doiiaioiiiailphin-cmyk/vera-new-tab/releases/latest')
 .then(function(r){return r.json();}).then(function(d){
-var latest=d.tag_name?d.tag_name.replace(/^v/,''):'';if(!latest)return;
+var latest=d.tag_name?d.tag_name.replace(/^v/,''):'';if(!latest||!d.assets||!d.assets[0])return;
 var cur=(chrome.runtime&&chrome.runtime.getManifest)?chrome.runtime.getManifest().version:'1.0.0';
-if(compareVersion(latest,cur)>0){showUpdateBadge(d.tag_name,d.html_url);}
+if(compareVersion(latest,cur)>0){showUpdateBadge(d.tag_name,d.assets[0].browser_download_url);}
 }).catch(function(){});
 }
 function compareVersion(a,b){var ap=a.split('.'),bp=b.split('.');
@@ -649,9 +649,19 @@ function showUpdateBadge(tag,url){
 var btn=document.getElementById('settingsBtn');
 var badge=document.createElement('span');
 badge.style.cssText='position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent-glow);z-index:2';
-badge.title='新版本 '+tag+' 可用，点击查看';
+badge.title='新版本 '+tag+' 可用';
 btn.appendChild(badge);
-btn.addEventListener('click',function(){window.open(url,'_blank');},{once:true});
+var bar=document.createElement('div');
+bar.className='update-bar';
+bar.innerHTML='<span>Vera '+tag+' 可用</span><button class="btn sm accent" id="updateNow">更新</button><button class="btn sm" id="updateDismiss">&times;</button>';
+document.body.appendChild(bar);
+setTimeout(function(){bar.classList.add('show');},500);
+document.getElementById('updateNow').addEventListener('click',function(){
+bar.innerHTML='<span>正在下载...</span>';
+var dlUrl=url.replace('/tag/','/download/')+'/vera-v'+tag.replace('v','')+'.zip';
+window.open(dlUrl,'_blank');bar.remove();
+});
+document.getElementById('updateDismiss').addEventListener('click',function(){bar.remove();});
 }
 document.addEventListener('DOMContentLoaded',init);
 })();
