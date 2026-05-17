@@ -6,7 +6,7 @@ weather:'天气',quote:'每日一言',todo:'待办事项',todoPlaceholder:'添�
 settingsTitle:'自定义设置',tabAppearance:'外观',tabWidgets:'组件',tabLinks:'链接',tabAbout:'关于',
 themeLabel:'主题模式',themeAuto:'跟随系统',themeDark:'深色',themeLight:'浅色',
 languageLabel:'界面语言',glassOpacity:'玻璃透明度',blurStrength:'模糊强度',borderRadius:'圆角大小',
-accentColor:'强调色',bgPreset:'背景预设',dynamicBg:'动态背景',customBg:'自定义背景图URL',
+accentColor:'强调色',bgPreset:'背景预设',dynamicBg:'动态背景',showBgImage:'显示背景图片',customBg:'自定义背景图URL',
 bgPlaceholder:'输入图片URL (留空使用默认)',
 showWeather:'天气组件',showTodo:'待办组件',showQuote:'名言组件',showLinks:'快捷链接',
 addLink:'+ 添加链接',linkName:'名称',linkUrl:'网址 (https://...)',save:'保存',cancel:'取消',
@@ -24,7 +24,7 @@ weather:'Weather',quote:'Daily Quote',todo:'To-Do',todoPlaceholder:'Add a new ta
 settingsTitle:'Customization',tabAppearance:'Appearance',tabWidgets:'Widgets',tabLinks:'Links',tabAbout:'About',
 themeLabel:'Theme Mode',themeAuto:'Auto',themeDark:'Dark',themeLight:'Light',
 languageLabel:'Language',glassOpacity:'Glass Opacity',blurStrength:'Blur Strength',borderRadius:'Border Radius',
-accentColor:'Accent Color',bgPreset:'Background Preset',dynamicBg:'Dynamic Background',customBg:'Custom Background URL',
+accentColor:'Accent Color',bgPreset:'Background Preset',dynamicBg:'Dynamic Background',showBgImage:'Show Background Image',customBg:'Custom Background URL',
 bgPlaceholder:'Enter image URL (leave empty for default)',
 showWeather:'Weather Widget',showTodo:'To-Do Widget',showQuote:'Quote Widget',showLinks:'Quick Links',
 addLink:'+ Add Link',linkName:'Name',linkUrl:'URL (https://...)',save:'Save',cancel:'Cancel',
@@ -42,7 +42,7 @@ weather:'天気',quote:'今日の名言',todo:'ToDo',todoPlaceholder:'新しい�
 settingsTitle:'カスタマイズ',tabAppearance:'外観',tabWidgets:'ウィジェット',tabLinks:'リンク',tabAbout:'情報',
 themeLabel:'テーマモード',themeAuto:'自動',themeDark:'ダーク',themeLight:'ライト',
 languageLabel:'言語',glassOpacity:'透明度',blurStrength:'ぼかし強度',borderRadius:'角丸サイズ',
-accentColor:'アクセントカラー',bgPreset:'背景プリセット',dynamicBg:'動的背景',customBg:'カスタム背景URL',
+accentColor:'アクセントカラー',bgPreset:'背景プリセット',dynamicBg:'動的背景',showBgImage:'背景画像を表示',customBg:'カスタム背景URL',
 bgPlaceholder:'画像URLを入力 (空欄でデフォルト)',
 showWeather:'天気ウィジェット',showTodo:'ToDoウィジェット',showQuote:'名言ウィジェット',showLinks:'クイックリンク',
 addLink:'+ リンク追加',linkName:'名前',linkUrl:'URL (https://...)',save:'保存',cancel:'キャンセル',
@@ -59,7 +59,7 @@ faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',favico
 
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
 
-var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgImageDark:'assets/bg-dark.png',bgImageLight:'assets/bg-light.png',
+var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgImageDark:'assets/bg-dark.png',bgImageLight:'assets/bg-light.png',showBgImage:true,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
 searchEngine:'google',theme:'auto',language:'zh',
 links:[{icon:'mail',name:'Gmail',url:'https://mail.google.com'},
@@ -255,7 +255,7 @@ r.style.setProperty('--blob-4',preset.blob4);
 document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('still',!settings.dynamicBg);});
 applyTheme();
 var bgBase=document.querySelector('.bg-base');
-var bgUrl=settings.bgImage||(document.documentElement.getAttribute('data-theme')==='light'?settings.bgImageLight:settings.bgImageDark);
+var bgUrl=settings.showBgImage?(settings.bgImage||(document.documentElement.getAttribute('data-theme')==='light'?settings.bgImageLight:settings.bgImageDark)):'';
 if(bgUrl){bgBase.classList.add('has-image');bgBase.style.backgroundImage='url('+bgUrl+')';}
 else{bgBase.classList.remove('has-image');bgBase.style.backgroundImage='';}
 updateEngineDisplay();
@@ -499,6 +499,7 @@ updateToggle('toggleTodo',settings.showTodo);
 updateToggle('toggleQuote',settings.showQuote);
 updateToggle('toggleLinks',settings.showLinks);
 updateToggle('toggleDynamicBg',settings.dynamicBg);
+updateToggle('toggleShowBgImage',settings.showBgImage);
 updateThemeRadio();
 }
 function updateToggle(id,val){var btn=document.getElementById(id);if(btn)btn.classList.toggle('on',val);}
@@ -603,6 +604,7 @@ document.getElementById('toggleTodo').addEventListener('click',function(){settin
 document.getElementById('toggleQuote').addEventListener('click',function(){settings.showQuote=!settings.showQuote;saveSettings();applyAll();});
 document.getElementById('toggleLinks').addEventListener('click',function(){settings.showLinks=!settings.showLinks;saveSettings();applyAll();});
 document.getElementById('toggleDynamicBg').addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
+document.getElementById('toggleShowBgImage').addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;saveSettings();applyAll();});
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
 settings.theme=btn.dataset.themeVal;saveSettings();applyAll();});});
 document.querySelectorAll('#langRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
