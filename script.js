@@ -59,7 +59,7 @@ faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',favico
 
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
 
-var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgImageDark:'assets/bg-dark.png',bgImageLight:'assets/bg-light.png',showBgImage:true,
+var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgImageDark:'assets/bg-dark.png',bgImageLight:'assets/bg-light.png',showBgImage:false,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
 searchEngine:'google',theme:'auto',language:'zh',
 links:[{icon:'mail',name:'Gmail',url:'https://mail.google.com'},
