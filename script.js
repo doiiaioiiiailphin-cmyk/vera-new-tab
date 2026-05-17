@@ -59,7 +59,7 @@ faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',favico
 
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
 
-var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',
+var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgImageDark:'assets/bg-dark.png',bgImageLight:'assets/bg-light.png',
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
 searchEngine:'google',theme:'auto',language:'zh',
 links:[{icon:'mail',name:'Gmail',url:'https://mail.google.com'},
@@ -253,10 +253,11 @@ r.style.setProperty('--blob-2',preset.blob2);
 r.style.setProperty('--blob-3',preset.blob3);
 r.style.setProperty('--blob-4',preset.blob4);
 document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('still',!settings.dynamicBg);});
-var bgBase=document.querySelector('.bg-base');
-if(settings.bgImage){bgBase.classList.add('has-image');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
-else{bgBase.classList.remove('has-image');bgBase.style.backgroundImage='';}
 applyTheme();
+var bgBase=document.querySelector('.bg-base');
+var bgUrl=settings.bgImage||(document.documentElement.getAttribute('data-theme')==='light'?settings.bgImageLight:settings.bgImageDark);
+if(bgUrl){bgBase.classList.add('has-image');bgBase.style.backgroundImage='url('+bgUrl+')';}
+else{bgBase.classList.remove('has-image');bgBase.style.backgroundImage='';}
 updateEngineDisplay();
 renderQuickLinks();
 renderTodoList();
