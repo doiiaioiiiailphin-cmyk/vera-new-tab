@@ -258,6 +258,8 @@ var bgBase=document.querySelector('.bg-base');
 var bgUrl=settings.showBgImage?(settings.bgImage||(document.documentElement.getAttribute('data-theme')==='light'?settings.bgImageLight:settings.bgImageDark)):'';
 if(bgUrl){bgBase.classList.add('has-image');bgBase.style.backgroundImage='url('+bgUrl+')';}
 else{bgBase.classList.remove('has-image');bgBase.style.backgroundImage='';}
+var builtinBg=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
+document.body.classList.toggle('builtin-bg-light',builtinBg);
 updateEngineDisplay();
 renderQuickLinks();
 renderTodoList();

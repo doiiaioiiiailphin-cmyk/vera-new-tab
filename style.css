@@ -418,3 +418,17 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 
 .about-github-link{display:inline-flex;align-items:center;gap:6px;color:var(--text-dim);font-size:13px;text-decoration:none;transition:color var(--transition-fast)}
 .about-github-link:hover{color:var(--accent)}
+
+.builtin-bg-light .clock-time{-webkit-text-fill-color:#fff;background:none;filter:drop-shadow(0 0 20px rgba(255,255,255,0.4)) drop-shadow(0 2px 8px rgba(0,0,0,0.3));}
+.builtin-bg-light .clock-date{color:rgba(255,255,255,0.9);text-shadow:0 1px 4px rgba(0,0,0,0.3);}
+.builtin-bg-light .search-input{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
+.builtin-bg-light .search-input::placeholder{color:rgba(255,255,255,0.6);text-shadow:0 1px 2px rgba(0,0,0,0.3);}
+.builtin-bg-light .search-icon{color:rgba(255,255,255,0.7);}
+.builtin-bg-light .todo-text{color:#0a1219;}
+.builtin-bg-light .todo-input::placeholder{color:rgba(0,0,0,0.4);}
+.builtin-bg-light .todo-input{color:#0a1219;}
+.builtin-bg-light .widget-title{color:rgba(255,255,255,0.6);}
+.builtin-bg-light .quote-text{color:rgba(255,255,255,0.9);text-shadow:0 1px 3px rgba(0,0,0,0.3);}
+.builtin-bg-light .quote-author{color:rgba(255,255,255,0.6);}
+.builtin-bg-light .weather-temp{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
+.builtin-bg-light .weather-details{color:rgba(255,255,255,0.85);text-shadow:0 1px 2px rgba(0,0,0,0.3);}
