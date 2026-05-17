@@ -59,7 +59,7 @@ faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',favico
 
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
 
-var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgImageDark:'assets/bg-dark.png',bgImageLight:'assets/bg-light.png',showBgImage:false,
+var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgImageDark:'assets/bg-dark.png',bgImageLight:'assets/bg-light.png',showBgImage:false,checkUpdate:true,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
 searchEngine:'google',theme:'auto',language:'zh',
 links:[{icon:'mail',name:'Gmail',url:'https://mail.google.com'},
@@ -632,7 +632,26 @@ if(status.state==='granted'&&!weatherLoaded)fetchWeather();
 status.onchange=function(){if(this.state==='granted'&&!weatherLoaded)fetchWeather();};
 }).catch(function(){});
 }
+checkUpdate();
 }
 function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');document.getElementById('settingsPanel').classList.remove('open');}
+function checkUpdate(){if(!settings.checkUpdate)return;
+fetch('https://api.github.com/repos/doiiaioiiiailphin-cmyk/vera-new-tab/releases/latest')
+.then(function(r){return r.json();}).then(function(d){
+var latest=d.tag_name?d.tag_name.replace(/^v/,''):'';if(!latest)return;
+var cur=(chrome.runtime&&chrome.runtime.getManifest)?chrome.runtime.getManifest().version:'1.0.0';
+if(compareVersion(latest,cur)>0){showUpdateBadge(d.tag_name,d.html_url);}
+}).catch(function(){});
+}
+function compareVersion(a,b){var ap=a.split('.'),bp=b.split('.');
+for(var i=0;i<Math.max(ap.length,bp.length);i++){var an=parseInt(ap[i])||0,bn=parseInt(bp[i])||0;if(an>bn)return 1;if(an<bn)return -1;}return 0;}
+function showUpdateBadge(tag,url){
+var btn=document.getElementById('settingsBtn');
+var badge=document.createElement('span');
+badge.style.cssText='position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent-glow);z-index:2';
+badge.title='新版本 '+tag+' 可用，点击查看';
+btn.appendChild(badge);
+btn.addEventListener('click',function(){window.open(url,'_blank');},{once:true});
+}
 document.addEventListener('DOMContentLoaded',init);
 })();
