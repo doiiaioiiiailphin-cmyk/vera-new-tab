@@ -131,11 +131,17 @@ var QUOTES={zh:[
 {text:'温故知新。',author:'孔子'}
 ]};
 
-var WEATHER_ICONS={0:'w-clear',1:'w-clear',2:'cloud-sun',3:'w-cloudy',45:'w-fog',48:'w-fog',51:'w-rain',53:'w-rain',55:'w-rain',56:'w-rain',57:'w-rain',61:'w-rain',63:'w-rain',65:'w-rain',66:'w-rain',67:'w-rain',71:'w-snow',73:'w-snow',75:'w-snow',77:'w-snow',80:'w-rain',81:'w-rain',82:'w-rain',85:'w-snow',86:'w-snow',95:'w-storm',96:'w-storm',99:'w-storm'};
+var WMO_ICONS={0:'w-clear',1:'w-clear',2:'cloud-sun',3:'w-cloudy',45:'w-fog',48:'w-fog',51:'w-rain',53:'w-rain',55:'w-rain',56:'w-rain',57:'w-rain',61:'w-rain',63:'w-rain',65:'w-rain',66:'w-rain',67:'w-rain',71:'w-snow',73:'w-snow',75:'w-snow',77:'w-snow',80:'w-rain',81:'w-rain',82:'w-rain',85:'w-snow',86:'w-snow',95:'w-storm',96:'w-storm',99:'w-storm'};
+var WMO_DESC_ZH={0:'晴',1:'晴',2:'多云间晴',3:'阴',45:'雾',48:'霜雾',51:'毛毛雨',53:'毛毛雨',55:'毛毛雨',56:'冻毛毛雨',57:'冻毛毛雨',61:'小雨',63:'中雨',65:'大雨',66:'冻雨',67:'冻雨',71:'小雪',73:'中雪',75:'大雪',77:'雪粒',80:'阵雨',81:'阵雨',82:'大阵雨',85:'阵雪',86:'阵雪',95:'雷暴',96:'冰雹雷暴',99:'强雷暴'};
+var WMO_DESC_EN={0:'Clear',1:'Clear',2:'Partly Cloudy',3:'Cloudy',45:'Fog',48:'Frost Fog',51:'Drizzle',53:'Drizzle',55:'Drizzle',56:'Freezing Drizzle',57:'Freezing Drizzle',61:'Light Rain',63:'Rain',65:'Heavy Rain',66:'Freezing Rain',67:'Freezing Rain',71:'Light Snow',73:'Snow',75:'Heavy Snow',77:'Snow Grains',80:'Showers',81:'Showers',82:'Heavy Showers',85:'Snow Showers',86:'Snow Showers',95:'Thunderstorm',96:'Hail Thunderstorm',99:'Severe Thunderstorm'};
+var WMO_DESC_JA={0:'晴れ',1:'晴れ',2:'晴れ時々曇り',3:'曇り',45:'霧',48:'霜霧',51:'霧雨',53:'霧雨',55:'霧雨',56:'凍結霧雨',57:'凍結霧雨',61:'小雨',63:'雨',65:'大雨',66:'凍結雨',67:'凍結雨',71:'小雪',73:'雪',75:'大雪',77:'雪粒',80:'にわか雨',81:'にわか雨',82:'強いにわか雨',85:'にわか雪',86:'にわか雪',95:'雷雨',96:'雹雷雨',99:'激しい雷雨'};
 
-var WEATHER_DESC_ZH={0:'晴',1:'晴',2:'多云间晴',3:'阴',45:'雾',48:'霜雾',51:'毛毛雨',53:'毛毛雨',55:'毛毛雨',56:'冻毛毛雨',57:'冻毛毛雨',61:'小雨',63:'中雨',65:'大雨',66:'冻雨',67:'冻雨',71:'小雪',73:'中雪',75:'大雪',77:'雪粒',80:'阵雨',81:'阵雨',82:'大阵雨',85:'阵雪',86:'阵雪',95:'雷暴',96:'冰雹雷暴',99:'强雷暴'};
-var WEATHER_DESC_EN={0:'Clear',1:'Clear',2:'Partly Cloudy',3:'Cloudy',45:'Fog',48:'Frost Fog',51:'Drizzle',53:'Drizzle',55:'Drizzle',56:'Freezing Drizzle',57:'Freezing Drizzle',61:'Light Rain',63:'Rain',65:'Heavy Rain',66:'Freezing Rain',67:'Freezing Rain',71:'Light Snow',73:'Snow',75:'Heavy Snow',77:'Snow Grains',80:'Showers',81:'Showers',82:'Heavy Showers',85:'Snow Showers',86:'Snow Showers',95:'Thunderstorm',96:'Hail Thunderstorm',99:'Severe Thunderstorm'};
-var WEATHER_DESC_JA={0:'晴れ',1:'晴れ',2:'晴れ時々曇り',3:'曇り',45:'霧',48:'霜霧',51:'霧雨',53:'霧雨',55:'霧雨',56:'凍結霧雨',57:'凍結霧雨',61:'小雨',63:'雨',65:'大雨',66:'凍結雨',67:'凍結雨',71:'小雪',73:'雪',75:'大雪',77:'雪粒',80:'にわか雨',81:'にわか雨',82:'強いにわか雨',85:'にわか雪',86:'にわか雪',95:'雷雨',96:'雹雷雨',99:'激しい雷雨'};
+// wttr.in codes → internal icon keys
+var WW_ICON={113:'w-clear',116:'cloud-sun',119:'w-cloudy',122:'w-cloudy',143:'w-rain',176:'w-rain',179:'w-snow',182:'w-snow',185:'w-snow',200:'w-storm',227:'w-storm',230:'w-storm',248:'w-fog',260:'w-fog',263:'w-rain',266:'w-rain',293:'w-rain',296:'w-rain',299:'w-rain',302:'w-rain',305:'w-rain',308:'w-rain',311:'w-snow',314:'w-snow',317:'w-snow',320:'w-snow',323:'w-snow',326:'w-snow',329:'w-snow',332:'w-snow',335:'w-snow',338:'w-snow',350:'w-snow',353:'w-snow',356:'w-snow',359:'w-snow',362:'w-snow',365:'w-snow',368:'w-snow',371:'w-snow',374:'w-snow',377:'w-snow',386:'w-storm',389:'w-storm',392:'w-storm',395:'w-storm'};
+var WW_DESC_ZH={113:'晴',116:'多云间晴',119:'多云',122:'阴',143:'雾',176:'阵雨',179:'阵雪',182:'雨夹雪',185:'冻雨',200:'雷阵雨',227:'暴风雪',230:'暴风雪',248:'雾',260:'雾',263:'毛毛雨',266:'小雨',293:'小雨',296:'小雨',299:'中雨',302:'中雨',305:'大雨',308:'大雨',311:'冻雨',314:'小雪',317:'中雪',320:'中雪',323:'小雪',326:'小雪',329:'中雪',332:'中雪',335:'大雪',338:'大雪',350:'冰雹',353:'小冰雹',356:'中冰雹',359:'大冰雹',362:'小冰雹',365:'中冰雹',368:'小冰雹',371:'中雪',374:'小冰雹',377:'中冰雹',386:'雷暴',389:'雷暴',392:'雷暴',395:'大冰雹'};
+var WW_DESC_JA={113:'晴れ',116:'晴れ時々曇り',119:'曇り',122:'曇り',143:'霧',176:'にわか雨',179:'にわか雪',182:'みぞれ',185:'凍雨',200:'雷雨',227:'吹雪',230:'吹雪',248:'霧',260:'霧',263:'霧雨',266:'小雨',293:'小雨',296:'小雨',299:'雨',302:'雨',305:'大雨',308:'大雨',311:'凍雨',314:'小雪',317:'雪',320:'雪',323:'小雪',326:'小雪',329:'雪',332:'雪',335:'大雪',338:'大雪',350:'雹',353:'小雹',356:'雹',359:'大雹',362:'小雹',365:'雹',368:'小雹',371:'雪',374:'小雹',377:'雹',386:'雷雨',389:'雷雨',392:'雷雨',395:'大雹'};
+
+function wwDesc(code,lang){var m={zh:WW_DESC_ZH,en:{},ja:WW_DESC_JA};return (m[lang]||{})[code]||'Unknown';}
 
 var settings={},linkEditIdx=null;
 
@@ -464,22 +470,50 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 '<div class="weather-temp">--&deg;</div><div class="weather-details">'+t('loadingWeather')+'</div></div></div>';
 if(!navigator.geolocation){wc.innerHTML='<div class="weather-details">'+t('locationUnavailable')+'</div>';weatherPending=false;return;}
 navigator.geolocation.getCurrentPosition(function(pos){
-fetch('https://api.open-meteo.com/v1/forecast?latitude='+pos.coords.latitude.toFixed(2)+'&longitude='+pos.coords.longitude.toFixed(2)+'&current_weather=true')
-.then(function(r){return r.json();}).then(function(data){
+var lat=pos.coords.latitude.toFixed(2);var lon=pos.coords.longitude.toFixed(2);
+tryWW(lat,lon,wc);
+},function(err){
+if(err.code===1){wc.innerHTML='<div class="weather-details" style="cursor:pointer;text-decoration:underline">'+t('locationDenied')+' — '+t('tapRetry')+'</div>';wc.querySelector('.weather-details').addEventListener('click',fetchWeather);}
+else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+err.message+')</div>';}
+weatherPending=false;},{maximumAge:300000,enableHighAccuracy:false});}
+
+function tryWW(lat,lon,wc){
+var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();tryOM(lat,lon,wc);},8000);
+fetch('https://wttr.in/'+lat+','+lon+'?format=j1',{signal:ctrl.signal})
+.then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+.then(function(d){
+var cc=d.current_condition[0];var code=parseInt(cc.weatherCode);
+var wi=WW_ICON[code]||'w-cloudy';var temp=Math.round(cc.temp_C);
+var descEn=cc.weatherDesc[0].value;
+var desc=(settings.language==='zh')?wwDesc(code,'zh'):(settings.language==='ja')?wwDesc(code,'ja'):descEn;
+var locName=d.nearest_area?d.nearest_area[0].areaName[0].value:'';
+wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
+'<div class="weather-temp">'+temp+'&deg;</div>'+
+'<div class="weather-details">'+desc+'</div>'+
+(locName?'<div class="weather-loc">'+locName+'</div>':'')+
+'</div></div>';
+weatherLoaded=true;weatherPending=false;
+}).catch(function(e){clearTimeout(to);if(e.name!=='AbortError')tryOM(lat,lon,wc);});
+}
+
+function tryOM(lat,lon,wc){
+var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();showWFail(wc);},10000);
+fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current_weather=true',{signal:ctrl.signal})
+.then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
+.then(function(data){
 var w=data.current_weather;var temp=Math.round(w.temperature);var code=w.weathercode;
-var wi=WEATHER_ICONS[code]||'w-cloudy';
-var descMaps={zh:WEATHER_DESC_ZH,en:WEATHER_DESC_EN,ja:WEATHER_DESC_JA};
-var desc=descMaps[settings.language]?descMaps[settings.language][code]:WEATHER_DESC_EN[code]||'';
+var wi=WMO_ICONS[code]||'w-cloudy';
+var descMaps={zh:WMO_DESC_ZH,en:WMO_DESC_EN,ja:WMO_DESC_JA};
+var desc=descMaps[settings.language]?descMaps[settings.language][code]:WMO_DESC_EN[code]||'';
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
 '<div class="weather-temp">'+temp+'&deg;</div>'+
 '<div class="weather-details">'+desc+'</div>'+
 '<div class="weather-loc">'+t('windSpeed')+': '+w.windspeed+' km/h</div></div></div>';
 weatherLoaded=true;weatherPending=false;
-}).catch(function(){wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+'</div>';weatherPending=false;});
-},function(err){
-if(err.code===1){wc.innerHTML='<div class="weather-details" style="cursor:pointer;text-decoration:underline">'+t('locationDenied')+' — '+t('tapRetry')+'</div>';wc.querySelector('.weather-details').addEventListener('click',fetchWeather);}
-else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+err.message+')</div>';}
-weatherPending=false;},{maximumAge:600000,enableHighAccuracy:false});}
+}).catch(function(e){clearTimeout(to);showWFail(wc);});
+}
+
+function showWFail(wc){wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+'</div>';weatherPending=false;}
 
 function wIconSvg(name){
 return'<svg viewBox="0 0 24 24"><use href="#i-'+name+'"/></svg>';}
