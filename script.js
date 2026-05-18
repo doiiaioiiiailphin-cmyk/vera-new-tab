@@ -516,6 +516,7 @@ weatherLoaded=true;weatherPending=false;
 function showWFail(wc){wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+'</div>';weatherPending=false;}
 
 function wIconSvg(name){
+if(name==='cloud-sun')return'<svg viewBox="0 0 24 24"><g mask="url(#cs-mask)"><circle cx="17" cy="7" r="3.5" fill="currentColor" opacity="0.15"/><circle cx="17" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 2V1M17 12v1M12 7h-1M22 7h1M13.5 3.5l-.7-.7M20.5 10.5l.7.7M13.5 10.5l-.7.7M20.5 3.5l.7-.7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></g><path d="M 7.5 17 H 16.5 C 19.5 17 21 15.5 21 12.5 C 21 10.5 19.8 8.8 18.2 8.2 C 17.5 5 15 3 12 3 C 9 3 6.5 5 5.8 8.2 C 4.2 8.8 3 10.5 3 12.5 C 3 15.5 4.5 17 7.5 17 Z" fill="currentColor" opacity="0.15"/><path d="M 7.5 17 H 16.5 C 19.5 17 21 15.5 21 12.5 C 21 10.5 19.8 8.8 18.2 8.2 C 17.5 5 15 3 12 3 C 9 3 6.5 5 5.8 8.2 C 4.2 8.8 3 10.5 3 12.5 C 3 15.5 4.5 17 7.5 17 Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 return'<svg viewBox="0 0 24 24"><use href="#i-'+name+'"/></svg>';}
 
 function randomQuote(){var langQuotes=QUOTES[settings.language]||QUOTES.zh;
