@@ -1,9 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Vera - Liquid Glass New Tab",
+  "name": "__MSG_extensionName__",
   "short_name": "Vera",
-  "version": "1.0.0",
-  "description": "冰晶液态玻璃风格新建标签页 — 高自定义、毛玻璃透明感、深色/浅色模式、多语言支持。",
+  "version": "1.0.1",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
   "chrome_url_overrides": {
     "newtab": "index.html"
   },
