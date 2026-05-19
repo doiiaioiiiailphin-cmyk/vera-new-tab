@@ -701,6 +701,9 @@ document.getElementById('linkModalCancel').addEventListener('click',closeLinkMod
 document.getElementById('linkModalOverlay').addEventListener('click',function(e){if(e.target===this)closeLinkModal();});
 document.getElementById('linkModalSave').addEventListener('click',saveLinkFromModal);
 document.getElementById('resetBtn').addEventListener('click',resetSettings);
+var donateLink=document.getElementById('donateLink');if(donateLink)donateLink.addEventListener('click',function(e){e.preventDefault();document.getElementById('donateModalOverlay').classList.add('open');});
+var donateClose=document.getElementById('donateModalClose');if(donateClose)donateClose.addEventListener('click',function(){document.getElementById('donateModalOverlay').classList.remove('open');});
+var donateOverlay=document.getElementById('donateModalOverlay');if(donateOverlay)donateOverlay.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
 document.getElementById('linkNameInput').addEventListener('keydown',function(e){if(e.key==='Enter'){document.getElementById('linkUrlInput').focus();e.preventDefault();}});
 document.getElementById('linkUrlInput').addEventListener('keydown',function(e){if(e.key==='Enter'){saveLinkFromModal();}});
 document.getElementById('linkUrlInput').addEventListener('input',function(){

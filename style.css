@@ -376,6 +376,9 @@ outline:none;transition:all var(--transition);}
 .modal input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;}
 
+.donate-modal{text-align:center;gap:16px;}
+.donate-modal img{width:220px;height:220px;border-radius:var(--radius-sm);display:block;margin:0 auto;}
+
 .icon-picker{display:flex;flex-wrap:wrap;gap:6px;max-height:140px;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;}
 .icon-picker::-webkit-scrollbar{display:none}
 .icon-picker button{width:40px;height:40px;border-radius:10px;background:transparent;
