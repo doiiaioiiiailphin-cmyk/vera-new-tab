@@ -181,10 +181,14 @@
 
 <div class="modal-overlay" id="donateModalOverlay">
 <div class="modal donate-modal" id="donateModal">
+<button class="donate-modal-close" id="donateModalClose">&times;</button>
 <h3>赞赏支持</h3>
-<img src="https://v50-images-1386875830.cos.ap-beijing.myqcloud.com/%E8%B5%9E%E8%B5%8F%E7%A0%81.png" alt="赞赏码" onerror="this.parentElement.innerHTML='<p style=color:var(--text-dim)>二维码加载失败</p>'">
-<button class="btn" id="donateModalClose" style="margin-top:12px;width:100%">关闭</button>
+<img id="donateQr" src="https://v50-images-1386875830.cos.ap-beijing.myqcloud.com/%E8%B5%9E%E8%B5%8F%E7%A0%812.png" alt="赞赏码" onerror="this.parentElement.innerHTML='<p style=color:var(--text-dim)>二维码加载失败</p>'">
 </div>
+</div>
+
+<div class="modal-overlay" id="qrZoomOverlay">
+<img id="qrZoomImg" src="" alt="赞赏码">
 </div>
 
 <script src="script.js"></script>
