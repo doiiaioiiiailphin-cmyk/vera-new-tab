@@ -670,7 +670,11 @@ document.getElementById('settingsOverlay').addEventListener('click',closeSetting
 document.querySelectorAll('.settings-tab').forEach(function(tab){tab.addEventListener('click',function(){
 document.querySelectorAll('.settings-tab').forEach(function(t){t.classList.remove('active');});
 document.querySelectorAll('.settings-section').forEach(function(s){s.classList.remove('active');});
-tab.classList.add('active');document.getElementById('sec-'+tab.dataset.tab).classList.add('active');});});
+tab.classList.add('active');document.getElementById('sec-'+tab.dataset.tab).classList.add('active');
+var slider=document.querySelector('.tab-slider');
+if(slider){var tabs=document.querySelector('.settings-tabs');var rect=tabs.getBoundingClientRect();var tr=tab.getBoundingClientRect();slider.style.left=(tr.left-rect.left)+'px';slider.style.width=tr.width+'px';}
+});});
+(function initSlider(){var t=document.querySelector('.settings-tab.active');var s=document.querySelector('.tab-slider');var tabs=document.querySelector('.settings-tabs');if(t&&s&&tabs){var r0=tabs.getBoundingClientRect();var r1=t.getBoundingClientRect();s.style.left=(r1.left-r0.left)+'px';s.style.width=r1.width+'px';}})();
 document.getElementById('setGlassOpacity').addEventListener('input',function(){settings.glassOpacity=parseInt(this.value);saveSettings();applyAll();});
 document.getElementById('setBlur').addEventListener('input',function(){settings.blur=parseInt(this.value);saveSettings();applyAll();});
 document.getElementById('setRadius').addEventListener('input',function(){settings.radius=parseInt(this.value);saveSettings();applyAll();});
