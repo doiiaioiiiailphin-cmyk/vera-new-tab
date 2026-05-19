@@ -376,7 +376,7 @@ outline:none;transition:all var(--transition);}
 .modal input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);}
 .modal-actions{display:flex;gap:10px;justify-content:flex-end;}
 
-.donate-modal{text-align:center;gap:16px;position:relative;padding:20px 16px 16px;width:340px;}
+.donate-modal{text-align:center;gap:16px;position:relative;padding:20px 16px 16px;width:420px;}
 .donate-modal h3{font-size:16px;margin:0;}
 .donate-modal img{width:100%;border-radius:var(--radius-sm);display:block;cursor:pointer;transition:transform var(--transition);}
 .donate-modal img:hover{transform:scale(1.02);}
