@@ -486,11 +486,9 @@ var cc=d.current_condition[0];var code=parseInt(cc.weatherCode);
 var wi=WW_ICON[code]||'w-cloudy';var temp=Math.round(cc.temp_C);
 var descEn=cc.weatherDesc[0].value;
 var desc=(settings.language==='zh')?wwDesc(code,'zh'):(settings.language==='ja')?wwDesc(code,'ja'):descEn;
-var locName=d.nearest_area?d.nearest_area[0].areaName[0].value:'';
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
 '<div class="weather-temp">'+temp+'&deg;</div>'+
 '<div class="weather-details">'+desc+'</div>'+
-(locName?'<div class="weather-loc">'+locName+'</div>':'')+
 '</div></div>';
 weatherLoaded=true;weatherPending=false;
 }).catch(function(e){clearTimeout(to);if(e.name!=='AbortError')tryOM(lat,lon,wc);});
