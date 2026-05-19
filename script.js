@@ -494,7 +494,15 @@ function addTodo(){var input=document.getElementById('todoInput');var text=input
 if(settings.todos.some(function(t){return t.text===text;})){input.value='';return;}
 settings.todos.unshift({text:text,done:false});saveSettings();renderTodoList();input.value='';}
 
-var weatherPending=false,weatherLoaded=false;
+var weatherPending=false,weatherLoaded=false,lastWeather=null;
+function renderWeatherFromCache(){if(!lastWeather||!settings.showWeather||!weatherLoaded)return;
+var wc=document.getElementById('weatherContent');var d=lastWeather;
+var desc=d.src==='wttr'?((settings.language==='zh')?wwDesc(d.code,'zh'):(settings.language==='ja')?wwDesc(d.code,'ja'):d.descEn):(({zh:WMO_DESC_ZH,en:WMO_DESC_EN,ja:WMO_DESC_JA})[settings.language]||WMO_DESC_EN)[d.code]||d.descEn;
+wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(d.icon)+'</div><div>'+
+'<div class="weather-temp">'+d.temp+'&deg;</div>'+
+'<div class="weather-details">'+escapeHtml(desc||'')+'</div>'+
+(d.wind?'<div class="weather-loc">'+t('windSpeed')+': '+d.wind+' km/h</div>':'')+
+'</div></div>';}
 function fetchWeather(){if(!settings.showWeather||weatherPending)return;
 weatherPending=true;
 var wc=document.getElementById('weatherContent');
@@ -517,6 +525,7 @@ fetch('https://wttr.in/'+lat+','+lon+'?format=j1',{signal:ctrl.signal})
 var cc=d.current_condition[0];var code=parseInt(cc.weatherCode);
 var wi=WW_ICON[code]||'w-cloudy';var temp=Math.round(cc.temp_C);
 var descEn=cc.weatherDesc[0].value;
+lastWeather={src:'wttr',code:code,icon:wi,temp:temp,descEn:descEn};
 var desc=(settings.language==='zh')?wwDesc(code,'zh'):(settings.language==='ja')?wwDesc(code,'ja'):descEn;
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
 '<div class="weather-temp">'+temp+'&deg;</div>'+
@@ -533,6 +542,7 @@ fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'
 .then(function(data){
 var w=data.current_weather;var temp=Math.round(w.temperature);var code=w.weathercode;
 var wi=WMO_ICONS[code]||'w-cloudy';
+lastWeather={src:'om',code:code,icon:wi,temp:temp,descEn:WMO_DESC_EN[code]||'',wind:w.windspeed};
 var descMaps={zh:WMO_DESC_ZH,en:WMO_DESC_EN,ja:WMO_DESC_JA};
 var desc=descMaps[settings.language]?descMaps[settings.language][code]:WMO_DESC_EN[code]||'';
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
@@ -580,7 +590,7 @@ settings.theme=themes[(idx+1)%themes.length];saveSettings();applyAll();
 }
 function cycleLanguage(){
 var langs=['zh','en','ja'];var idx=langs.indexOf(settings.language);
-settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();applyAll();updateClock();randomQuote();
+settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();applyAll();updateClock();randomQuote();renderWeatherFromCache();
 }
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
