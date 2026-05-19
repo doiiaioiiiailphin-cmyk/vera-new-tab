@@ -7,6 +7,7 @@
 <link rel="icon" href="icons/icon48.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.open-meteo.com">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&family=Lexend:wght@200..700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="preload.js"></script>
 <link rel="stylesheet" href="style.css">
@@ -54,7 +55,7 @@
 </svg>
 
 <div class="bg-layer">
-<div class="bg-base"></div>
+<div class="bg-base"><img class="bg-img bg-img-dark" src="assets/bg-dark.png"><img class="bg-img bg-img-light" src="assets/bg-light.png"></div>
 <div class="bg-blob"></div><div class="bg-blob"></div><div class="bg-blob"></div><div class="bg-blob"></div>
 <div class="bg-noise"></div>
 </div>
@@ -146,6 +147,7 @@
 <div class="settings-row"><label data-i18n="showTodo">待办组件</label><button class="toggle-switch on" id="toggleTodo"></button></div>
 <div class="settings-row"><label data-i18n="showQuote">名言组件</label><button class="toggle-switch on" id="toggleQuote"></button></div>
 <div class="settings-row"><label data-i18n="showLinks">快捷链接</label><button class="toggle-switch on" id="toggleLinks"></button></div>
+<div class="settings-row"><label data-i18n="checkUpdate">检查更新</label><button class="toggle-switch on" id="toggleCheckUpdate"></button></div>
 </div>
 
 <div class="settings-section" id="sec-links">

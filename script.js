@@ -1,4 +1,5 @@
 (function(){
+"use strict";
 
 var I18N={
 zh:{theme:'主题',language:'语言',settings:'设置',searchPlaceholder:'搜索网页... (Ctrl+K 快速聚焦)',
@@ -9,6 +10,7 @@ languageLabel:'界面语言',glassOpacity:'玻璃透明度',blurStrength:'模糊
 accentColor:'强调色',bgPreset:'背景预设',dynamicBg:'动态背景',showBgImage:'显示背景图片',customBg:'自定义背景图URL',
 bgPlaceholder:'输入图片URL (留空使用默认)',
 showWeather:'天气组件',showTodo:'待办组件',showQuote:'名言组件',showLinks:'快捷链接',
+checkUpdate:'检查更新',
 addLink:'+ 添加链接',linkName:'名称',linkUrl:'网址 (https://...)',save:'保存',cancel:'取消',
 resetSettings:'恢复默认设置',
 aboutText:'Vera · 冰晶玻璃新标签页<br>液态玻璃设计风格<br>支持深色/浅色模式切换<br>多语言界面支持<br>所有设置自动保存在本地浏览器',
@@ -18,7 +20,8 @@ weatherFailed:'获取天气失败',locationUnavailable:'位置不可用',
 windSpeed:'风速',currentWeather:'当前',
 presetIce:'冰晶蓝',presetAurora:'极光紫',presetOcean:'深海蓝',presetForest:'森林绿',presetSunset:'日落橙',
 noTasks:'暂无任务',confirmReset:'确认恢复默认设置？所有自定义将丢失。',
-faviconText:'从网站获取',faviconTitle:'自动获取网站图标',faviconFail:'获取失败',tapRetry:'点击重试'},
+faviconText:'从网站获取',faviconTitle:'自动获取网站图标',faviconFail:'获取失败',tapRetry:'点击重试',
+updateAvailable:'新版本 ',updateNow:'更新'},
 en:{theme:'Theme',language:'Language',settings:'Settings',searchPlaceholder:'Search the web... (Ctrl+K to focus)',
 weather:'Weather',quote:'Daily Quote',todo:'To-Do',todoPlaceholder:'Add a new task...',
 settingsTitle:'Customization',tabAppearance:'Appearance',tabWidgets:'Widgets',tabLinks:'Links',tabAbout:'About',
@@ -27,6 +30,7 @@ languageLabel:'Language',glassOpacity:'Glass Opacity',blurStrength:'Blur Strengt
 accentColor:'Accent Color',bgPreset:'Background Preset',dynamicBg:'Dynamic Background',showBgImage:'Show Background Image',customBg:'Custom Background URL',
 bgPlaceholder:'Enter image URL (leave empty for default)',
 showWeather:'Weather Widget',showTodo:'To-Do Widget',showQuote:'Quote Widget',showLinks:'Quick Links',
+checkUpdate:'Check for updates',
 addLink:'+ Add Link',linkName:'Name',linkUrl:'URL (https://...)',save:'Save',cancel:'Cancel',
 resetSettings:'Reset to Defaults',
 aboutText:'Vera · Ice Crystal New Tab<br>Liquid Glass Design<br>Dark/Light theme support<br>Multi-language interface<br>All settings saved locally',
@@ -36,7 +40,8 @@ weatherFailed:'Weather fetch failed',locationUnavailable:'Location unavailable',
 windSpeed:'Wind Speed',currentWeather:'Currently',
 presetIce:'Ice Blue',presetAurora:'Aurora',presetOcean:'Ocean',presetForest:'Forest',presetSunset:'Sunset',
 noTasks:'No tasks',confirmReset:'Reset all settings? This cannot be undone.',
-faviconText:'From Website',faviconTitle:'Auto-detect favicon',faviconFail:'Failed',tapRetry:'Tap to retry'},
+faviconText:'From Website',faviconTitle:'Auto-detect favicon',faviconFail:'Failed',tapRetry:'Tap to retry',
+updateAvailable:'New version ',updateNow:'Update'},
 ja:{theme:'テーマ',language:'言語',settings:'設定',searchPlaceholder:'ウェブ検索... (Ctrl+K)',
 weather:'天気',quote:'今日の名言',todo:'ToDo',todoPlaceholder:'新しいタスクを追加...',
 settingsTitle:'カスタマイズ',tabAppearance:'外観',tabWidgets:'ウィジェット',tabLinks:'リンク',tabAbout:'情報',
@@ -45,6 +50,7 @@ languageLabel:'言語',glassOpacity:'透明度',blurStrength:'ぼかし強度',b
 accentColor:'アクセントカラー',bgPreset:'背景プリセット',dynamicBg:'動的背景',showBgImage:'背景画像を表示',customBg:'カスタム背景URL',
 bgPlaceholder:'画像URLを入力 (空欄でデフォルト)',
 showWeather:'天気ウィジェット',showTodo:'ToDoウィジェット',showQuote:'名言ウィジェット',showLinks:'クイックリンク',
+checkUpdate:'アップデート確認',
 addLink:'+ リンク追加',linkName:'名前',linkUrl:'URL (https://...)',save:'保存',cancel:'キャンセル',
 resetSettings:'デフォルトに戻す',
 aboutText:'Vera · アイスクリスタル新規タブ<br>リキッドグラスデザイン<br>ダーク/ライトテーマ対応<br>多言語インターフェース<br>設定はローカルに保存',
@@ -54,12 +60,13 @@ weatherFailed:'天気の取得に失敗',locationUnavailable:'位置情報が利
 windSpeed:'風速',currentWeather:'現在',
 presetIce:'アイスブルー',presetAurora:'オーロラ',presetOcean:'オーシャン',presetForest:'フォレスト',presetSunset:'サンセット',
 noTasks:'タスクなし',confirmReset:'すべての設定をリセットしますか？',
-faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',faviconFail:'失敗',tapRetry:'タップして再試行'}
+faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',faviconFail:'失敗',tapRetry:'タップして再試行',
+updateAvailable:'新しいバージョン ',updateNow:'更新'}
 };
 
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
 
-var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgImageDark:'assets/bg-dark.png',bgImageLight:'assets/bg-light.png',showBgImage:false,checkUpdate:true,
+var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',showBgImage:false,checkUpdate:true,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
 searchEngine:'google',theme:'auto',language:'zh',
 links:[{icon:'mail',name:'Gmail',url:'https://mail.google.com'},
@@ -141,9 +148,10 @@ var WW_ICON={113:'w-clear',116:'cloud-sun',119:'w-cloudy',122:'w-cloudy',143:'w-
 var WW_DESC_ZH={113:'晴',116:'多云间晴',119:'多云',122:'阴',143:'雾',176:'阵雨',179:'阵雪',182:'雨夹雪',185:'冻雨',200:'雷阵雨',227:'暴风雪',230:'暴风雪',248:'雾',260:'雾',263:'毛毛雨',266:'小雨',293:'小雨',296:'小雨',299:'中雨',302:'中雨',305:'大雨',308:'大雨',311:'冻雨',314:'小雪',317:'中雪',320:'中雪',323:'小雪',326:'小雪',329:'中雪',332:'中雪',335:'大雪',338:'大雪',350:'冰雹',353:'小冰雹',356:'中冰雹',359:'大冰雹',362:'小冰雹',365:'中冰雹',368:'小冰雹',371:'中雪',374:'小冰雹',377:'中冰雹',386:'雷暴',389:'雷暴',392:'雷暴',395:'大冰雹'};
 var WW_DESC_JA={113:'晴れ',116:'晴れ時々曇り',119:'曇り',122:'曇り',143:'霧',176:'にわか雨',179:'にわか雪',182:'みぞれ',185:'凍雨',200:'雷雨',227:'吹雪',230:'吹雪',248:'霧',260:'霧',263:'霧雨',266:'小雨',293:'小雨',296:'小雨',299:'雨',302:'雨',305:'大雨',308:'大雨',311:'凍雨',314:'小雪',317:'雪',320:'雪',323:'小雪',326:'小雪',329:'雪',332:'雪',335:'大雪',338:'大雪',350:'雹',353:'小雹',356:'雹',359:'大雹',362:'小雹',365:'雹',368:'小雹',371:'雪',374:'小雹',377:'雹',386:'雷雨',389:'雷雨',392:'雷雨',395:'大雹'};
 
+// en map is empty — English weather descriptions come directly from wttr.in API response, not translated
 function wwDesc(code,lang){var m={zh:WW_DESC_ZH,en:{},ja:WW_DESC_JA};return (m[lang]||{})[code]||'Unknown';}
 
-var settings={},linkEditIdx=null;
+var settings={},linkEditIdx=null,suggestTimer=null,suggestDropdown=null;
 
 function iconSvg(name,size){size=size||18;
 return'<span class="icon-svg" style="font-size:'+size+'px"><svg viewBox="0 0 24 24"><use href="#i-'+name+'"/></svg></span>';}
@@ -185,8 +193,9 @@ pickerImgs.forEach(function(img){img.dataset.favSetup='1';img.addEventListener('
 
 function createFaviconImgElement(src,size){
 size=size||18;var img=document.createElement('img');
-img.src=src;img.style.cssText='width:'+size+'px;height:'+size+'px;border-radius:3px;display:block;flex-shrink:0';
+img.style.cssText='width:'+size+'px;height:'+size+'px;border-radius:3px;display:block;flex-shrink:0';
 img.addEventListener('error',function(){var span=document.createElement('span');span.className='icon-svg';span.style.fontSize=size+'px';span.innerHTML='<svg viewBox="0 0 24 24"><use href="#i-web"/></svg>';img.replaceWith(span);});
+img.src=src;
 return img;}
 
 function t(key){var lang=settings.language||'zh';return (I18N[lang]&&I18N[lang][key])||(I18N.zh[key])||key;}
@@ -251,8 +260,6 @@ r.style.setProperty('--radius-sm',Math.round(settings.radius*0.67)+'px');
 r.style.setProperty('--radius-xs',Math.round(settings.radius*0.5)+'px');
 r.style.setProperty('--accent',settings.accent);
 r.style.setProperty('--accent-glow',hexToRgba(settings.accent,0.3));
-r.style.setProperty('--accent2',settings.accent);
-r.style.setProperty('--accent3',shiftHue(settings.accent,40));
 var preset=BG_PRESETS[settings.bgPreset]||BG_PRESETS.ice;
 r.style.setProperty('--blob-1',preset.blob1);
 r.style.setProperty('--blob-2',preset.blob2);
@@ -261,13 +268,13 @@ r.style.setProperty('--blob-4',preset.blob4);
 document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('still',!settings.dynamicBg);});
 applyTheme();
 var bgBase=document.querySelector('.bg-base');
-var bgUrl=settings.showBgImage?(settings.bgImage||(document.documentElement.getAttribute('data-theme')==='light'?settings.bgImageLight:settings.bgImageDark)):'';
-if(bgUrl){bgBase.classList.add('has-image');bgBase.style.backgroundImage='url('+bgUrl+')';}
+var builtinBg=settings.showBgImage&&!settings.bgImage;
+if(builtinBg){bgBase.classList.add('has-image');bgBase.style.backgroundImage='';}
+else if(settings.showBgImage&&settings.bgImage){bgBase.classList.add('has-image');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
 else{bgBase.classList.remove('has-image');bgBase.style.backgroundImage='';}
-var builtinBg=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
-document.body.classList.toggle('builtin-bg-light',builtinBg);
+var builtinLight=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
+document.body.classList.toggle('builtin-bg-light',builtinLight);
 updateEngineDisplay();
-renderQuickLinks();
 renderTodoList();
 updateWidgetVisibility();
 updateSettingsUI();
@@ -278,10 +285,29 @@ function hexToRgba(hex,a){var h=hex.replace('#','');if(h.length===3)h=h[0]+h[0]+
 var r=parseInt(h.substring(0,2),16),g=parseInt(h.substring(2,4),16),b=parseInt(h.substring(4,6),16);
 return'rgba('+r+','+g+','+b+','+a+')';}
 
-function shiftHue(hex,a){var h=hex.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
-var r=Math.min(255,parseInt(h.substring(0,2),16)+a);
-var g=Math.min(255,parseInt(h.substring(2,4),16)+a);
-var b=Math.min(255,parseInt(h.substring(4,6),16)+a);
+function shiftHue(hex,degrees){var h=hex.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+var r=parseInt(h.substring(0,2),16),g=parseInt(h.substring(2,4),16),b=parseInt(h.substring(4,6),16);
+r/=255;g/=255;b/=255;
+var max=Math.max(r,g,b),min=Math.min(r,g,b);
+var hh=0,s,l=(max+min)/2;
+if(max!==min){
+var d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);
+if(max===r)hh=((g-b)/d+(g<b?6:0))*60;
+else if(max===g)hh=((b-r)/d+2)*60;
+else hh=((r-g)/d+4)*60;
+}
+hh=(hh+degrees)%360;if(hh<0)hh+=360;
+var c=(1-Math.abs(2*l-1))*s;
+var x=c*(1-Math.abs((hh/60)%2-1));
+var m=l-c/2;
+var rr,gg,bb;
+if(hh<60){rr=c;gg=x;bb=0;}
+else if(hh<120){rr=x;gg=c;bb=0;}
+else if(hh<180){rr=0;gg=c;bb=x;}
+else if(hh<240){rr=0;gg=x;bb=c;}
+else if(hh<300){rr=x;gg=0;bb=c;}
+else{rr=c;gg=0;bb=x;}
+r=Math.round((rr+m)*255);g=Math.round((gg+m)*255);b=Math.round((bb+m)*255);
 return'#'+[r,g,b].map(function(c){return('0'+c.toString(16)).slice(-2)}).join('');}
 
 function updateClock(){var n=new Date();var h=n.getHours(),m=n.getMinutes();
@@ -289,11 +315,15 @@ document.getElementById('clockTime').textContent=(h<10?'0':'')+h+':'+(m<10?'0':'
 var days=settings.language==='en'?['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']:
 settings.language==='ja'?['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日']:
 ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
-document.getElementById('clockDate').textContent=
-n.getFullYear()+(settings.language==='ja'?'年':settings.language==='en'?'/':'年')+
-(settings.language==='en'?'':(n.getMonth()+1)+(settings.language==='ja'?'月':settings.language==='en'?'/':'月'))+
-(settings.language==='en'?('/'+(n.getMonth()+1)):'')+
-n.getDate()+(settings.language==='ja'?'日':settings.language==='en'?' ':'日 ')+days[n.getDay()];}
+var dateStr;
+if(settings.language==='ja'){
+dateStr=n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 '+days[n.getDay()];
+}else if(settings.language==='en'){
+dateStr=days[n.getDay()]+', '+(n.getMonth()+1)+'/'+n.getDate()+'/'+n.getFullYear();
+}else{
+dateStr=n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 '+days[n.getDay()];
+}
+document.getElementById('clockDate').textContent=dateStr;}
 
 function updateEngineDisplay(){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
@@ -364,7 +394,7 @@ if(addBtn)addBtn.addEventListener('click',function(e){e.stopPropagation();openLi
 var draggedIdx=null,wasDragged=false;
 container.querySelectorAll('.link-card[draggable]').forEach(function(card){
 card.addEventListener('click',function(e){if(wasDragged){wasDragged=false;return;}
-var url=card.dataset.url;if(url)window.open(url,'_blank');});
+var url=card.dataset.url;if(url)window.open(url,'_blank','noopener');});
 card.addEventListener('dragstart',function(e){draggedIdx=parseInt(card.dataset.idx);wasDragged=false;
 card.classList.add('dragging');e.dataTransfer.effectAllowed='move';e.dataTransfer.setData('text/plain',draggedIdx);});
 card.addEventListener('dragend',function(){card.classList.remove('dragging');wasDragged=true;});
@@ -382,11 +412,12 @@ function renderLinkEditList(){
 var list=document.getElementById('linkEditList');if(!list)return;
 list.innerHTML=settings.links.map(function(link,idx){
 var icoHtml=link.useFavicon===false?iconSvg(link.icon||'web',20):('<span class="le-favicon-box"></span>');
-return'<div class="link-edit-item"><div class="link-edit-icon">'+icoHtml+'</div>'+
+return'<div class="link-edit-item" data-idx="'+idx+'"><div class="link-edit-icon">'+icoHtml+'</div>'+
 '<div class="info"><div class="name">'+escapeHtml(link.name)+'</div><div class="url">'+escapeHtml(link.url)+'</div></div>'+
 '<div class="actions"><button class="btn sm" data-edit="'+idx+'">'+t('editLink')+'</button>'+
 '<button class="btn sm danger" data-del="'+idx+'">'+t('cancel')+'</button></div></div>';}).join('');
-list.querySelectorAll('.link-edit-item').forEach(function(el,idx){
+list.querySelectorAll('.link-edit-item').forEach(function(el){
+var idx=parseInt(el.dataset.idx);
 var link=settings.links[idx];
 if(link&&link.useFavicon!==false){
 var fvbox=el.querySelector('.le-favicon-box');
@@ -441,7 +472,7 @@ btn.classList.add('selected');});});}
 function saveLinkFromModal(){var name=document.getElementById('linkNameInput').value.trim();
 var url=document.getElementById('linkUrlInput').value.trim();if(!name||!url)return;
 var sel=document.querySelector('#linkIconPicker .selected');
-var icon=sel?sel.dataset.icon:'favicon';
+var icon=sel?sel.dataset.icon||'favicon':'favicon';
 var useFavicon=icon==='favicon';
 if(!/^https?:\/\//i.test(url))url='https://'+url;
 var linkData={icon:icon,name:name,url:url,useFavicon:useFavicon};
@@ -460,6 +491,7 @@ list.querySelectorAll('.todo-del').forEach(function(btn){btn.addEventListener('c
 e.stopPropagation();settings.todos.splice(parseInt(btn.dataset.del),1);saveSettings();renderTodoList();});});}
 
 function addTodo(){var input=document.getElementById('todoInput');var text=input.value.trim();if(!text)return;
+if(settings.todos.some(function(t){return t.text===text;})){input.value='';return;}
 settings.todos.unshift({text:text,done:false});saveSettings();renderTodoList();input.value='';}
 
 var weatherPending=false,weatherLoaded=false;
@@ -473,8 +505,8 @@ navigator.geolocation.getCurrentPosition(function(pos){
 var lat=pos.coords.latitude.toFixed(2);var lon=pos.coords.longitude.toFixed(2);
 tryWW(lat,lon,wc);
 },function(err){
-if(err.code===1){wc.innerHTML='<div class="weather-details" style="cursor:pointer;text-decoration:underline">'+t('locationDenied')+' — '+t('tapRetry')+'</div>';wc.querySelector('.weather-details').addEventListener('click',fetchWeather);}
-else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+err.message+')</div>';}
+if(err.code===1){wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'</div><div class="weather-details" style="font-size:11px;margin-top:6px">'+t('tapRetry')+'</div>';wc.style.cursor='pointer';wc.addEventListener('click',function(){navigator.permissions.query({name:'geolocation'}).then(function(s){if(s.state==='prompt'){weatherPending=false;fetchWeather();}else{wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'<br><span style="font-size:11px;opacity:0.7">请在浏览器设置中允许位置权限</span></div>';}}).catch(function(){weatherPending=false;fetchWeather();});});}
+else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+escapeHtml(err.message)+')</div>';}
 weatherPending=false;},{maximumAge:300000,enableHighAccuracy:false});}
 
 function tryWW(lat,lon,wc){
@@ -488,7 +520,7 @@ var descEn=cc.weatherDesc[0].value;
 var desc=(settings.language==='zh')?wwDesc(code,'zh'):(settings.language==='ja')?wwDesc(code,'ja'):descEn;
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
 '<div class="weather-temp">'+temp+'&deg;</div>'+
-'<div class="weather-details">'+desc+'</div>'+
+'<div class="weather-details">'+escapeHtml(desc)+'</div>'+
 '</div></div>';
 weatherLoaded=true;weatherPending=false;
 }).catch(function(e){clearTimeout(to);if(e.name!=='AbortError')tryOM(lat,lon,wc);});
@@ -535,6 +567,7 @@ updateToggle('toggleQuote',settings.showQuote);
 updateToggle('toggleLinks',settings.showLinks);
 updateToggle('toggleDynamicBg',settings.dynamicBg);
 updateToggle('toggleShowBgImage',settings.showBgImage);
+updateToggle('toggleCheckUpdate',settings.checkUpdate);
 updateThemeRadio();
 }
 function updateToggle(id,val){var btn=document.getElementById(id);if(btn)btn.classList.toggle('on',val);}
@@ -547,11 +580,11 @@ settings.theme=themes[(idx+1)%themes.length];saveSettings();applyAll();
 }
 function cycleLanguage(){
 var langs=['zh','en','ja'];var idx=langs.indexOf(settings.language);
-settings.language=langs[(idx+1)%langs.length];saveSettings();applyAll();updateClock();randomQuote();
+settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();applyAll();updateClock();randomQuote();
 }
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
-settings=JSON.parse(JSON.stringify(DEFAULTS));saveSettings();applyAll();updateClock();
+settings=JSON.parse(JSON.stringify(DEFAULTS));saveSettings();renderQuickLinks();applyAll();updateClock();
 setTimeout(function(){updateSettingsUI();},100);
 }
 
@@ -586,11 +619,11 @@ fetch('https://duckduckgo.com/ac/?q='+encodeURIComponent(q)+'&type=list')
 }else{renderSuggest([]);}}
 
 function init(){
-loadSettings();applyAll();
+loadSettings();applyAll();renderQuickLinks();
 updateClock();setInterval(updateClock,10000);
 randomQuote();
 document.getElementById('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
-var suggestTimer=null,suggestDropdown=document.getElementById('suggestDropdown');
+suggestTimer=null;suggestDropdown=document.getElementById('suggestDropdown');
 document.getElementById('searchInput').addEventListener('input',function(){
 var q=this.value.trim();clearTimeout(suggestTimer);suggestDropdown.classList.remove('open');
 if(q.length<2)return;suggestTimer=setTimeout(function(){fetchSuggest(q);},250);});
@@ -641,6 +674,7 @@ document.getElementById('toggleQuote').addEventListener('click',function(){setti
 document.getElementById('toggleLinks').addEventListener('click',function(){settings.showLinks=!settings.showLinks;saveSettings();applyAll();});
 document.getElementById('toggleDynamicBg').addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
 document.getElementById('toggleShowBgImage').addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;saveSettings();applyAll();});
+document.getElementById('toggleCheckUpdate').addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
 settings.theme=btn.dataset.themeVal;saveSettings();applyAll();});});
 document.querySelectorAll('#langRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
@@ -672,7 +706,8 @@ function checkUpdate(){if(!settings.checkUpdate)return;
 fetch('https://api.github.com/repos/doiiaioiiiailphin-cmyk/vera-new-tab/releases/latest')
 .then(function(r){return r.json();}).then(function(d){
 var latest=d.tag_name?d.tag_name.replace(/^v/,''):'';if(!latest||!d.assets||!d.assets[0])return;
-var cur=(chrome.runtime&&chrome.runtime.getManifest)?chrome.runtime.getManifest().version:'1.0.0';
+var rt=(typeof browser!=='undefined')?browser.runtime:chrome.runtime;
+var cur=(rt&&rt.getManifest)?rt.getManifest().version:'1.0.0';
 if(compareVersion(latest,cur)>0){showUpdateBadge(d.tag_name,d.assets[0].browser_download_url);}
 }).catch(function(){});
 }
@@ -682,17 +717,16 @@ function showUpdateBadge(tag,url){
 var btn=document.getElementById('settingsBtn');
 var badge=document.createElement('span');
 badge.style.cssText='position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent-glow);z-index:2';
-badge.title='新版本 '+tag+' 可用';
+badge.title=t('updateAvailable')+tag;
 btn.appendChild(badge);
 var bar=document.createElement('div');
 bar.className='update-bar';
-bar.innerHTML='<span>Vera '+tag+' 可用</span><button class="btn sm accent" id="updateNow">更新</button><button class="btn sm" id="updateDismiss">&times;</button>';
+bar.innerHTML='<span>'+t('updateAvailable').replace(/ $/,'')+' '+escapeHtml(tag)+'</span><button class="btn sm accent" id="updateNow">'+t('updateNow')+'</button><button class="btn sm" id="updateDismiss">&times;</button>';
 document.body.appendChild(bar);
 setTimeout(function(){bar.classList.add('show');},500);
 document.getElementById('updateNow').addEventListener('click',function(){
 bar.innerHTML='<span>正在下载...</span>';
-var dlUrl=url.replace('/tag/','/download/')+'/vera-v'+tag.replace('v','')+'.zip';
-window.open(dlUrl,'_blank');bar.remove();
+window.open(url,'_blank','noopener');bar.remove();
 });
 document.getElementById('updateDismiss').addEventListener('click',function(){bar.remove();});
 }
