@@ -332,6 +332,8 @@ font-weight:500;cursor:pointer;transition:all var(--transition-spring);backdrop-
 .btn.accent:hover{background:rgba(94,234,212,0.22);box-shadow:0 0 20px var(--accent-glow);}
 .btn.danger{border-color:rgba(255,80,80,0.25);color:#ff6b6b;}
 .btn.danger:hover{background:rgba(255,80,80,0.12);}
+.btn.donate{display:inline-flex;align-items:center;gap:8px;background:rgba(255,107,157,0.12);border-color:rgba(255,107,157,0.25);color:#ff6b9d;font-weight:600;text-decoration:none;border-style:solid;border-width:1px;border-radius:var(--radius-xs);padding:10px 18px;font-size:13px;cursor:pointer;transition:all var(--transition-fast)}
+.btn.donate:hover{background:rgba(255,107,157,0.22);box-shadow:0 0 20px rgba(255,107,157,0.2)}
 .btn.sm{padding:6px 14px;font-size:12px;border-radius:10px;}
 .btn-group{display:flex;gap:8px;flex-wrap:wrap;}
 
