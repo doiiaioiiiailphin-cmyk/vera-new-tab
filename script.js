@@ -688,7 +688,7 @@ document.getElementById('toggleCheckUpdate').addEventListener('click',function()
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
 settings.theme=btn.dataset.themeVal;saveSettings();applyAll();});});
 document.querySelectorAll('#langRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
-settings.language=btn.dataset.langVal;saveSettings();applyAll();updateClock();randomQuote();});});
+settings.language=btn.dataset.langVal;saveSettings();applyAll();updateClock();randomQuote();renderWeatherFromCache();});});
 document.getElementById('addLinkBtn').addEventListener('click',function(){openLinkModal();});
 document.getElementById('linkModalCancel').addEventListener('click',closeLinkModal);
 document.getElementById('linkModalOverlay').addEventListener('click',function(e){if(e.target===this)closeLinkModal();});
