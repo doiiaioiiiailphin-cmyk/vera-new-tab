@@ -380,8 +380,6 @@ outline:none;transition:all var(--transition);}
 .donate-modal h3{font-size:16px;margin:0;}
 .donate-modal img{width:100%;border-radius:var(--radius-sm);display:block;cursor:pointer;transition:transform var(--transition);}
 .donate-modal img:hover{transform:scale(1.02);}
-.donate-modal-close{position:absolute;top:6px;right:6px;width:24px;height:24px;border:none;background:transparent;color:var(--text-dim);font-size:16px;cursor:pointer;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:all var(--transition-fast);z-index:1;padding:0;}
-.donate-modal-close:hover{background:var(--input-bg);color:var(--text);}
 #qrZoomOverlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity 0.3s ease,visibility 0.3s ease;}
 #qrZoomOverlay.open{opacity:1;visibility:visible;}
 #qrZoomOverlay img{width:90vw;max-height:90vh;object-fit:contain;border-radius:var(--radius);box-shadow:0 0 60px rgba(0,0,0,0.5);cursor:pointer;}
