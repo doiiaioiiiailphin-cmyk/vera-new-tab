@@ -524,12 +524,13 @@ fetch('https://wttr.in/'+lat+','+lon+'?format=j1',{signal:ctrl.signal})
 .then(function(d){
 var cc=d.current_condition[0];var code=parseInt(cc.weatherCode);
 var wi=WW_ICON[code]||'w-cloudy';var temp=Math.round(cc.temp_C);
-var descEn=cc.weatherDesc[0].value;
-lastWeather={src:'wttr',code:code,icon:wi,temp:temp,descEn:descEn};
+var descEn=cc.weatherDesc[0].value;var wind=Math.round(cc.windspeedKmph);
+lastWeather={src:'wttr',code:code,icon:wi,temp:temp,descEn:descEn,wind:wind};
 var desc=(settings.language==='zh')?wwDesc(code,'zh'):(settings.language==='ja')?wwDesc(code,'ja'):descEn;
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
 '<div class="weather-temp">'+temp+'&deg;</div>'+
 '<div class="weather-details">'+escapeHtml(desc)+'</div>'+
+'<div class="weather-loc">'+t('windSpeed')+': '+wind+' km/h</div>'+
 '</div></div>';
 weatherLoaded=true;weatherPending=false;
 }).catch(function(e){clearTimeout(to);if(e.name!=='AbortError')tryOM(lat,lon,wc);});
