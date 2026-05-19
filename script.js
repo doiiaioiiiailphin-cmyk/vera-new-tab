@@ -675,6 +675,7 @@ var slider=document.querySelector('.tab-slider');
 if(slider){var tabs=document.querySelector('.settings-tabs');var rect=tabs.getBoundingClientRect();var tr=tab.getBoundingClientRect();slider.style.left=(tr.left-rect.left)+'px';slider.style.width=tr.width+'px';}
 });});
 (function initSlider(){var t=document.querySelector('.settings-tab.active');var s=document.querySelector('.tab-slider');var tabs=document.querySelector('.settings-tabs');if(t&&s&&tabs){var r0=tabs.getBoundingClientRect();var r1=t.getBoundingClientRect();s.style.left=(r1.left-r0.left)+'px';s.style.width=r1.width+'px';}})();
+(function initRadioSliders(){document.querySelectorAll('.radio-group').forEach(function(g){moveRadioSlider(g);});})();
 document.getElementById('setGlassOpacity').addEventListener('input',function(){settings.glassOpacity=parseInt(this.value);saveSettings();applyAll();});
 document.getElementById('setBlur').addEventListener('input',function(){settings.blur=parseInt(this.value);saveSettings();applyAll();});
 document.getElementById('setRadius').addEventListener('input',function(){settings.radius=parseInt(this.value);saveSettings();applyAll();});
@@ -689,10 +690,11 @@ document.getElementById('toggleLinks').addEventListener('click',function(){setti
 document.getElementById('toggleDynamicBg').addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
 document.getElementById('toggleShowBgImage').addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;saveSettings();applyAll();});
 document.getElementById('toggleCheckUpdate').addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
+function moveRadioSlider(groupEl){var slider=groupEl.querySelector('.radio-slider');var active=groupEl.querySelector('.radio-option.active');if(!slider||!active)return;var r0=groupEl.getBoundingClientRect();var r1=active.getBoundingClientRect();slider.style.left=(r1.left-r0.left)+'px';slider.style.width=r1.width+'px';}
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
-settings.theme=btn.dataset.themeVal;saveSettings();applyAll();});});
+settings.theme=btn.dataset.themeVal;saveSettings();applyAll();moveRadioSlider(this.parentNode);});});
 document.querySelectorAll('#langRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
-settings.language=btn.dataset.langVal;saveSettings();applyAll();updateClock();randomQuote();renderWeatherFromCache();});});
+settings.language=btn.dataset.langVal;saveSettings();applyAll();updateClock();randomQuote();renderWeatherFromCache();moveRadioSlider(this.parentNode);});});
 document.getElementById('addLinkBtn').addEventListener('click',function(){openLinkModal();});
 document.getElementById('linkModalCancel').addEventListener('click',closeLinkModal);
 document.getElementById('linkModalOverlay').addEventListener('click',function(e){if(e.target===this)closeLinkModal();});
