@@ -160,9 +160,9 @@ document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('st
 applyTheme();
 var bgBase=document.querySelector('.bg-base');
 var builtinBg=settings.showBgImage&&!settings.bgImage;
-if(builtinBg){bgBase.classList.add('has-image');bgBase.style.backgroundImage='';}
-else if(settings.showBgImage&&settings.bgImage){bgBase.classList.add('has-image');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
-else{bgBase.classList.remove('has-image');bgBase.style.backgroundImage='';}
+if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';}
+else if(settings.showBgImage&&settings.bgImage){bgBase.classList.add('has-image','custom-bg');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
+else{bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';}
 var builtinLight=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
 document.body.classList.toggle('builtin-bg-light',builtinLight);
 updateEngineDisplay();
@@ -559,6 +559,8 @@ document.getElementById('setAccent').addEventListener('input',function(){setting
 document.querySelectorAll('#bgPresetBtns .btn').forEach(function(btn){btn.addEventListener('click',function(){
 settings.bgPreset=btn.dataset.preset;saveSettings();applyAll();});});
 var bgInput=document.getElementById('setBgImage');bgInput.addEventListener('blur',function(){settings.bgImage=this.value.trim();saveSettings();applyAll();});bgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){this.blur();}});
+document.getElementById('bgUploadBtn').addEventListener('click',function(){document.getElementById('bgFileInput').click();});
+document.getElementById('bgFileInput').addEventListener('change',function(){var f=this.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(){settings.bgImage=reader.result;saveSettings();applyAll();document.getElementById('setBgImage').value='[已上传: '+f.name+']';};reader.readAsDataURL(f);});
 document.getElementById('toggleWeather').addEventListener('click',function(){settings.showWeather=!settings.showWeather;saveSettings();applyAll();if(settings.showWeather)fetchWeather();});
 document.getElementById('toggleTodo').addEventListener('click',function(){settings.showTodo=!settings.showTodo;saveSettings();applyAll();});
 document.getElementById('toggleQuote').addEventListener('click',function(){settings.showQuote=!settings.showQuote;saveSettings();applyAll();});
