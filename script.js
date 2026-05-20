@@ -21,7 +21,12 @@ windSpeed:'风速',currentWeather:'当前',
 presetIce:'冰晶蓝',presetAurora:'极光紫',presetOcean:'深海蓝',presetForest:'森林绿',presetSunset:'日落橙',
 noTasks:'暂无任务',confirmReset:'确认恢复默认设置？所有自定义将丢失。',
 faviconText:'从网站获取',faviconTitle:'自动获取网站图标',faviconFail:'获取失败',tapRetry:'点击重试',
-updateAvailable:'新版本 ',updateNow:'更新'},
+updateAvailable:'新版本 ',updateNow:'更新',
+githubLink:'项目仓库 →',donate:'赞赏',donateTitle:'赞赏支持',qrFailed:'二维码加载失败',
+locationPermHint:'请在浏览器设置中允许位置权限',downloading:'正在下载...',
+langZh:'中文',langEn:'English',langJa:'日本語',
+engineBaidu:'百度',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
+pageTitle:'Vera — 新标签页'},
 en:{theme:'Theme',language:'Language',settings:'Settings',searchPlaceholder:'Search the web... (Ctrl+K to focus)',
 weather:'Weather',quote:'Daily Quote',todo:'To-Do',todoPlaceholder:'Add a new task...',
 settingsTitle:'Customization',tabAppearance:'Appearance',tabWidgets:'Widgets',tabLinks:'Links',tabAbout:'About',
@@ -41,7 +46,12 @@ windSpeed:'Wind Speed',currentWeather:'Currently',
 presetIce:'Ice Blue',presetAurora:'Aurora',presetOcean:'Ocean',presetForest:'Forest',presetSunset:'Sunset',
 noTasks:'No tasks',confirmReset:'Reset all settings? This cannot be undone.',
 faviconText:'From Website',faviconTitle:'Auto-detect favicon',faviconFail:'Failed',tapRetry:'Tap to retry',
-updateAvailable:'New version ',updateNow:'Update'},
+updateAvailable:'New version ',updateNow:'Update',
+githubLink:'GitHub →',donate:'Support',donateTitle:'Support Us',qrFailed:'QR code failed to load',
+locationPermHint:'Please allow location in browser settings',downloading:'Downloading...',
+langZh:'中文',langEn:'English',langJa:'日本語',
+engineBaidu:'Baidu',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
+pageTitle:'Vera — New Tab'},
 ja:{theme:'テーマ',language:'言語',settings:'設定',searchPlaceholder:'ウェブ検索... (Ctrl+K)',
 weather:'天気',quote:'今日の名言',todo:'ToDo',todoPlaceholder:'新しいタスクを追加...',
 settingsTitle:'カスタマイズ',tabAppearance:'外観',tabWidgets:'ウィジェット',tabLinks:'リンク',tabAbout:'情報',
@@ -61,7 +71,12 @@ windSpeed:'風速',currentWeather:'現在',
 presetIce:'アイスブルー',presetAurora:'オーロラ',presetOcean:'オーシャン',presetForest:'フォレスト',presetSunset:'サンセット',
 noTasks:'タスクなし',confirmReset:'すべての設定をリセットしますか？',
 faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',faviconFail:'失敗',tapRetry:'タップして再試行',
-updateAvailable:'新しいバージョン ',updateNow:'更新'}
+updateAvailable:'新しいバージョン ',updateNow:'更新',
+githubLink:'リポジトリ →',donate:'サポート',donateTitle:'サポート',qrFailed:'QRコード読込失敗',
+locationPermHint:'ブラウザ設定で位置情報を許可',downloading:'ダウンロード中...',
+langZh:'中国語',langEn:'English',langJa:'日本語',
+engineBaidu:'Baidu',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
+pageTitle:'Vera — 新規タブ'}
 };
 
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
@@ -201,6 +216,7 @@ return img;}
 function t(key){var lang=settings.language||'zh';return (I18N[lang]&&I18N[lang][key])||(I18N.zh[key])||key;}
 
 function translateDOM(){
+document.title=t('pageTitle');
 document.querySelectorAll('[data-i18n]').forEach(function(el){
 var key=el.getAttribute('data-i18n');
 var translated=t(key);
@@ -213,13 +229,15 @@ el.placeholder=t(el.getAttribute('data-i18n-placeholder'));
 document.querySelectorAll('[data-i18n-tip]').forEach(function(el){
 el.textContent=t(el.getAttribute('data-i18n-tip'));
 });
-document.querySelectorAll('.bg-preset').forEach(function(btn){
+document.querySelectorAll('[data-preset]').forEach(function(btn){
 btn.textContent=t('preset'+btn.dataset.preset.charAt(0).toUpperCase()+btn.dataset.preset.slice(1));
 });
 document.querySelectorAll('.radio-option[data-theme-val]').forEach(function(btn){
 btn.textContent=t('theme'+btn.dataset.themeVal.charAt(0).toUpperCase()+btn.dataset.themeVal.slice(1));
 });
-var addLabel=document.querySelector('.add-link-card .add-label');
+document.querySelectorAll('.radio-option[data-lang-val]').forEach(function(btn){
+btn.textContent=t('lang'+btn.dataset.langVal.charAt(0).toUpperCase()+btn.dataset.langVal.slice(1));
+});var addLabel=document.querySelector('.add-link-card .add-label');
 if(addLabel)addLabel.textContent=t('add');
 }
 
@@ -331,14 +349,17 @@ var favurl=KNOWN_FAVICONS[eng.domain]||('https://www.google.com/s2/favicons?doma
 var engIcon=document.getElementById('engineIconSvg');
 engIcon.innerHTML='';
 engIcon.appendChild(createFaviconImgElement(favurl,18));
-document.getElementById('engineName').textContent=eng.name;
+document.getElementById('engineName').textContent=engineDisplayName(eng);
 renderEngineDropdown();
 }
+
+function engineDisplayName(eng){var key='engine'+eng.id.charAt(0).toUpperCase()+eng.id.slice(1);return t(key)||eng.name;}
+
 
 function renderEngineDropdown(){
 var dd=document.getElementById('engineDropdown');
 dd.innerHTML=SEARCH_ENGINES.map(function(e){var active=e.id===settings.searchEngine?' active':'';
-return'<div class="engine-option'+active+'" data-engine="'+e.id+'"><span class="eng-favicon-box"></span> '+e.name+'</div>';}).join('');
+return'<div class="engine-option'+active+'" data-engine="'+e.id+'"><span class="eng-favicon-box"></span> '+engineDisplayName(e)+'</div>';}).join('');
 dd.querySelectorAll('.engine-option').forEach(function(el){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===el.dataset.engine});
 if(eng){
@@ -513,7 +534,7 @@ navigator.geolocation.getCurrentPosition(function(pos){
 var lat=pos.coords.latitude.toFixed(2);var lon=pos.coords.longitude.toFixed(2);
 tryWW(lat,lon,wc);
 },function(err){
-if(err.code===1){wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'</div><div class="weather-details" style="font-size:11px;margin-top:6px">'+t('tapRetry')+'</div>';wc.style.cursor='pointer';wc.addEventListener('click',function(){navigator.permissions.query({name:'geolocation'}).then(function(s){if(s.state==='prompt'){weatherPending=false;fetchWeather();}else{wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'<br><span style="font-size:11px;opacity:0.7">请在浏览器设置中允许位置权限</span></div>';}}).catch(function(){weatherPending=false;fetchWeather();});});}
+if(err.code===1){wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'</div><div class="weather-details" style="font-size:11px;margin-top:6px">'+t('tapRetry')+'</div>';wc.style.cursor='pointer';wc.addEventListener('click',function(){navigator.permissions.query({name:'geolocation'}).then(function(s){if(s.state==='prompt'){weatherPending=false;fetchWeather();}else{wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'<br><span style="font-size:11px;opacity:0.7">'+t('locationPermHint')+'</span></div>';}}).catch(function(){weatherPending=false;fetchWeather();});});}
 else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+escapeHtml(err.message)+')</div>';}
 weatherPending=false;},{maximumAge:300000,enableHighAccuracy:false});}
 
@@ -704,7 +725,7 @@ document.getElementById('resetBtn').addEventListener('click',resetSettings);
 var donateLink=document.getElementById('donateLink');if(donateLink)donateLink.addEventListener('click',function(e){e.preventDefault();document.getElementById('donateModalOverlay').classList.add('open');});
 var donateClose=document.getElementById('donateModalClose');if(donateClose)donateClose.addEventListener('click',function(){document.getElementById('donateModalOverlay').classList.remove('open');});
 var donateOverlay=document.getElementById('donateModalOverlay');if(donateOverlay)donateOverlay.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
-var donateQr=document.getElementById('donateQr');if(donateQr)donateQr.addEventListener('click',function(){var z=document.getElementById('qrZoomOverlay');var zi=document.getElementById('qrZoomImg');zi.src=this.src;z.classList.add('open');});
+var donateQr=document.getElementById('donateQr');if(donateQr){donateQr.addEventListener('click',function(){var z=document.getElementById('qrZoomOverlay');var zi=document.getElementById('qrZoomImg');zi.src=this.src;z.classList.add('open');});donateQr.addEventListener('error',function(){this.parentElement.innerHTML='<p style=color:var(--text-dim)>'+t('qrFailed')+'</p>';});}
 var qrZoom=document.getElementById('qrZoomOverlay');if(qrZoom)qrZoom.addEventListener('click',function(){this.classList.remove('open');});
 document.getElementById('linkNameInput').addEventListener('keydown',function(e){if(e.key==='Enter'){document.getElementById('linkUrlInput').focus();e.preventDefault();}});
 document.getElementById('linkUrlInput').addEventListener('keydown',function(e){if(e.key==='Enter'){saveLinkFromModal();}});
@@ -747,7 +768,7 @@ bar.innerHTML='<span>'+t('updateAvailable').replace(/ $/,'')+' '+escapeHtml(tag)
 document.body.appendChild(bar);
 setTimeout(function(){bar.classList.add('show');},500);
 document.getElementById('updateNow').addEventListener('click',function(){
-bar.innerHTML='<span>正在下载...</span>';
+bar.innerHTML='<span>'+t('downloading')+'</span>';
 window.open(url,'_blank','noopener');bar.remove();
 });
 document.getElementById('updateDismiss').addEventListener('click',function(){bar.remove();});
