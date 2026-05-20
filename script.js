@@ -25,56 +25,6 @@ ocean:{blob1:'#38bdf8',blob2:'#2dd4bf',blob3:'#60a5fa',blob4:'#06b6d4'},
 forest:{blob1:'#34d399',blob2:'#a3e635',blob3:'#4ade80',blob4:'#6ee7b7'},
 sunset:{blob1:'#fb923c',blob2:'#fbbf24',blob3:'#f97316',blob4:'#f59e0b'}};
 
-var QUOTES={zh:[
-{text:'生活不止眼前的苟且，还有诗和远方。',author:'高晓松'},
-{text:'世界以痛吻我，要我报之以歌。',author:'泰戈尔'},
-{text:'人生如逆旅，我亦是行人。',author:'苏轼'},
-{text:'但凡不能杀死你的，最终都会使你更强大。',author:'尼采'},
-{text:'黑夜无论怎样悠长，白昼总会到来。',author:'莎士比亚'},
-{text:'宝剑锋从磨砺出，梅花香自苦寒来。',author:'佚名'},
-{text:'千里之行，始于足下。',author:'老子'},
-{text:'你所浪费的今天，是昨天死去的人奢望的明天。',author:'哈佛校训'},
-{text:'路漫漫其修远兮，吾将上下而求索。',author:'屈原'},
-{text:'既然选择了远方，便只顾风雨兼程。',author:'汪国真'},
-{text:'不经一番寒彻骨，怎得梅花扑鼻香。',author:'黄檗禅师'},
-{text:'天行健，君子以自强不息。',author:'《周易》'},
-{text:'知之为知之，不知为不知，是知也。',author:'孔子'},
-{text:'学而不思则罔，思而不学则殆。',author:'孔子'},
-{text:'知之者不如好之者，好之者不如乐之者。',author:'孔子'}
-],en:[
-{text:'The only way to do great work is to love what you do.',author:'Steve Jobs'},
-{text:'Stay hungry, stay foolish.',author:'Steve Jobs'},
-{text:'The best time to plant a tree was 20 years ago. The second best time is now.',author:'Chinese Proverb'},
-{text:'It does not matter how slowly you go as long as you do not stop.',author:'Confucius'},
-{text:'In the middle of difficulty lies opportunity.',author:'Albert Einstein'},
-{text:'Imagination is more important than knowledge.',author:'Albert Einstein'},
-{text:'Be the change that you wish to see in the world.',author:'Mahatma Gandhi'},
-{text:'Life is what happens when you\'re busy making other plans.',author:'John Lennon'},
-{text:'The purpose of our lives is to be happy.',author:'Dalai Lama'},
-{text:'Get busy living or get busy dying.',author:'Stephen King'},
-{text:'You miss 100% of the shots you don\'t take.',author:'Wayne Gretzky'},
-{text:'Whether you think you can or you think you can\'t, you\'re right.',author:'Henry Ford'},
-{text:'The future belongs to those who believe in the beauty of their dreams.',author:'Eleanor Roosevelt'},
-{text:'Do what you can, with what you have, where you are.',author:'Theodore Roosevelt'},
-{text:'Everything you\'ve ever wanted is on the other side of fear.',author:'George Addair'}
-],ja:[
-{text:'千里の道も一歩から。',author:'老子'},
-{text:'為せば成る、為さねば成らぬ何事も。',author:'上杉鷹山'},
-{text:'石の上にも三年。',author:'日本のことわざ'},
-{text:'七転び八起き。',author:'日本のことわざ'},
-{text:'一期一会。',author:'千利休'},
-{text:'継続は力なり。',author:'日本のことわざ'},
-{text:'明日は明日の風が吹く。',author:'日本のことわざ'},
-{text:'案ずるより産むが易し。',author:'日本のことわざ'},
-{text:'塵も積もれば山となる。',author:'日本のことわざ'},
-{text:'急がば回れ。',author:'日本のことわざ'},
-{text:'花鳥風月。',author:'日本の美意識'},
-{text:'初心忘るべからず。',author:'世阿弥'},
-{text:'日々是新。',author:'禅語'},
-{text:'諸行無常。',author:'仏教'},
-{text:'温故知新。',author:'孔子'}
-]};
-
 var WMO_ICONS={0:'w-clear',1:'w-clear',2:'cloud-sun',3:'w-cloudy',45:'w-fog',48:'w-fog',51:'w-rain',53:'w-rain',55:'w-rain',56:'w-rain',57:'w-rain',61:'w-rain',63:'w-rain',65:'w-rain',66:'w-rain',67:'w-rain',71:'w-snow',73:'w-snow',75:'w-snow',77:'w-snow',80:'w-rain',81:'w-rain',82:'w-rain',85:'w-snow',86:'w-snow',95:'w-storm',96:'w-storm',99:'w-storm'};
 var WMO_DESC_ZH={0:'晴',1:'晴',2:'多云间晴',3:'阴',45:'雾',48:'霜雾',51:'毛毛雨',53:'毛毛雨',55:'毛毛雨',56:'冻毛毛雨',57:'冻毛毛雨',61:'小雨',63:'中雨',65:'大雨',66:'冻雨',67:'冻雨',71:'小雪',73:'中雪',75:'大雪',77:'雪粒',80:'阵雨',81:'阵雨',82:'大阵雨',85:'阵雪',86:'阵雪',95:'雷暴',96:'冰雹雷暴',99:'强雷暴'};
 var WMO_DESC_EN={0:'Clear',1:'Clear',2:'Partly Cloudy',3:'Cloudy',45:'Fog',48:'Frost Fog',51:'Drizzle',53:'Drizzle',55:'Drizzle',56:'Freezing Drizzle',57:'Freezing Drizzle',61:'Light Rain',63:'Rain',65:'Heavy Rain',66:'Freezing Rain',67:'Freezing Rain',71:'Light Snow',73:'Snow',75:'Heavy Snow',77:'Snow Grains',80:'Showers',81:'Showers',82:'Heavy Showers',85:'Snow Showers',86:'Snow Showers',95:'Thunderstorm',96:'Hail Thunderstorm',99:'Severe Thunderstorm'};
