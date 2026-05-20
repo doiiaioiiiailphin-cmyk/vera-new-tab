@@ -619,7 +619,11 @@ checkUpdate();
 }
 function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');document.getElementById('settingsPanel').classList.remove('open');}
 function checkUpdate(){if(!settings.checkUpdate)return;
-fetch('https://api.github.com/repos/doiiaioiiiailphin-cmyk/vera-new-tab/releases/latest')
+var today=new Date().toISOString().slice(0,10);
+var last;try{last=localStorage.getItem('lastUpdateCheck');}catch(e){}
+if(last===today)return;
+try{localStorage.setItem('lastUpdateCheck',today);}catch(e){}
+fetch('https://api.github.com/repos/doiiaioiiiailphin-cmyk/vera-new-tab/releases/latest',{headers:{Accept:'application/vnd.github+json'}})
 .then(function(r){return r.json();}).then(function(d){
 var latest=d.tag_name?d.tag_name.replace(/^v/,''):'';if(!latest||!d.assets||!d.assets[0])return;
 var rt=(typeof browser!=='undefined')?browser.runtime:chrome.runtime;
