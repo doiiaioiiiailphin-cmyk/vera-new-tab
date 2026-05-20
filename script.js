@@ -529,7 +529,7 @@ function init(){
 loadSettings();applyAll();renderQuickLinks();
 updateClock();setInterval(updateClock,10000);
 randomQuote();
-var qc=document.getElementById('quoteContent');if(qc){qc.addEventListener('mousedown',function(){qc._ts=Date.now();});qc.addEventListener('mouseup',function(){if(qc._ts&&Date.now()-qc._ts<300&&!window.getSelection().toString().trim())randomQuote();});}
+var qc=document.getElementById('quoteContent');if(qc){qc.addEventListener('mousedown',function(e){if(e.detail>1){e.preventDefault();window.getSelection().removeAllRanges();}qc._ts=Date.now();});qc.addEventListener('mouseup',function(){if(qc._ts&&Date.now()-qc._ts<300&&!window.getSelection().toString().trim())randomQuote();});}
 document.getElementById('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
 suggestTimer=null;suggestDropdown=document.getElementById('suggestDropdown');
 document.getElementById('searchInput').addEventListener('input',function(){
