@@ -126,6 +126,7 @@ font-size:13px;color:var(--text-dim);transition:all var(--transition);user-selec
 .search-engine.open .arrow{transform:rotate(180deg);}
 
 .engine-dropdown{position:fixed;top:0;left:0;
+background:var(--bg-overlay);
 background:color-mix(in srgb,var(--bg-overlay) 88%,transparent);
 backdrop-filter:blur(40px) saturate(200%);
 -webkit-backdrop-filter:blur(40px) saturate(200%);
@@ -139,6 +140,7 @@ background:linear-gradient(135deg,var(--glass-highlight) 0%,transparent 55%);bor
 .engine-dropdown.open{opacity:1;visibility:visible;transform:translateY(0) scale(1);pointer-events:auto;}
 
 .suggest-dropdown{position:fixed;top:0;left:0;
+background:var(--bg-overlay);
 background:color-mix(in srgb,var(--bg-overlay) 94%,transparent);
 backdrop-filter:blur(36px) saturate(200%);
 -webkit-backdrop-filter:blur(36px) saturate(200%);
@@ -264,6 +266,7 @@ opacity:0;visibility:hidden;transition:all var(--transition);}
 .settings-overlay.open{opacity:1;visibility:visible;}
 
 .settings-panel{position:fixed;top:0;right:0;width:440px;max-width:100vw;height:100vh;
+background:var(--bg-overlay);
 background:color-mix(in srgb,var(--bg-overlay) 92%,transparent);
 backdrop-filter:blur(50px) saturate(200%);
 -webkit-backdrop-filter:blur(50px) saturate(200%);
@@ -362,7 +365,8 @@ display:flex;align-items:center;justify-content:center;
 opacity:0;visibility:hidden;transition:all var(--transition);}
 .modal-overlay.open{opacity:1;visibility:visible;}
 
-.modal{background:color-mix(in srgb,var(--bg-overlay) 95%,transparent);
+.modal{background:var(--bg-overlay);
+background:color-mix(in srgb,var(--bg-overlay) 95%,transparent);
 backdrop-filter:blur(50px) saturate(200%);
 -webkit-backdrop-filter:blur(50px) saturate(200%);
 border:1px solid var(--glass-border);border-radius:var(--radius);padding:30px;
@@ -450,6 +454,7 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 
 .update-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);z-index:1000;
 display:flex;align-items:center;gap:10px;padding:10px 20px;
+background:var(--bg-overlay);
 background:color-mix(in srgb,var(--bg-overlay) 92%,transparent);
 backdrop-filter:blur(30px) saturate(200%);
 -webkit-backdrop-filter:blur(30px) saturate(200%);

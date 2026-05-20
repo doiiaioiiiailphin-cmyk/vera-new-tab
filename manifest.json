@@ -19,15 +19,13 @@
     "https://wttr.in/*",
     "https://suggestqueries.google.com/*",
     "https://api.bing.com/*",
-    "https://suggestion.baidu.com/*",
+    "https://www.baidu.com/sugrec*",
     "https://duckduckgo.com/*",
-    "https://www.google.com/*",
-      "https://www.baidu.com/*",
-    "https://fonts.googleapis.com/*",
-    "https://fonts.gstatic.com/*",
+    "https://www.google.com/s2/favicons*",
+    "https://www.google.com/complete/search*",
     "https://api.github.com/*"
   ],
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.open-meteo.com https://wttr.in https://suggestqueries.google.com https://api.bing.com https://suggestion.baidu.com https://duckduckgo.com https://www.google.com https://www.baidu.com https://fonts.googleapis.com https://fonts.gstatic.com https://api.github.com"
+    "extension_pages": "script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' https: data:; connect-src 'self' https://api.open-meteo.com https://wttr.in https://suggestqueries.google.com https://api.bing.com https://www.baidu.com https://duckduckgo.com https://www.google.com https://api.github.com"
   }
 }
