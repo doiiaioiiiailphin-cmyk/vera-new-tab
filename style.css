@@ -341,6 +341,7 @@ font-weight:500;cursor:pointer;transition:all var(--transition-spring);backdrop-
 .btn.accent:hover{background:rgba(94,234,212,0.22);box-shadow:0 0 20px var(--accent-glow);}
 .btn.danger{border-color:rgba(255,80,80,0.25);color:#ff6b6b;}
 .btn.danger:hover{background:rgba(255,80,80,0.12);}
+.btn.sm{flex:1;padding:6px 8px;font-size:12px;border-radius:10px;white-space:nowrap;min-width:0;}
 .btn.sm:disabled{opacity:0.4;cursor:not-allowed;}
 .btn-group{display:flex;gap:6px;}
 
