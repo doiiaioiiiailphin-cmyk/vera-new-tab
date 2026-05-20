@@ -452,6 +452,7 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 .builtin-bg-light .weather-temp{color:#0a1219;}
 .builtin-bg-light .weather-details{color:rgba(0,0,0,0.7);}
 .builtin-bg-light .weather-loc{color:rgba(0,0,0,0.5);}
+.builtin-bg-light .search-engine{color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.3);}
 
 .update-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);z-index:1000;
 display:flex;align-items:center;gap:10px;padding:10px 20px;
