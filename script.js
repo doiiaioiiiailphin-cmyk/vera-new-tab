@@ -68,7 +68,7 @@ function linkFaviconHtml(link){var useFav=link.useFavicon!==false;if(!useFav)ret
 var favurl=getFaviconUrl(link.url,64);
 return'<img class="link-favicon" src="'+escapeAttr(favurl)+'" alt="">';}
 
-function linkIconHtml(link){if(link.icon&&/^https?:\/\//.test(link.icon))return'<span class="link-icon-clip"><img class="link-icon-img" src="'+escapeAttr(link.icon)+'" alt=""></span>';return iconSvg(link.icon||'web',22);}
+function linkIconHtml(link){if(link.icon&&/^https?:\/\//.test(link.icon))return'<span class="link-icon-clip"><img class="link-icon-img" src="'+escapeAttr(link.icon)+'" alt=""></span>';if(link.icon==='gmail')return'<svg viewBox="52 39.35 88 74.65" style="width:22px;height:22px"><use href="#i-gmail"/></svg>';return iconSvg(link.icon||'web',22);}
 
 function attachFaviconListeners(container){
 container.querySelectorAll('img.link-favicon:not([data-fav-setup])').forEach(function(img){
