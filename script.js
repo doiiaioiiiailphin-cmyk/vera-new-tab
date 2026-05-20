@@ -450,6 +450,8 @@ updateToggle('toggleQuote',settings.showQuote);
 updateToggle('toggleLinks',settings.showLinks);
 updateToggle('toggleDynamicBg',settings.dynamicBg);
 updateToggle('toggleShowBgImage',settings.showBgImage);
+document.getElementById('setBgImage').disabled=!settings.showBgImage;
+document.getElementById('bgUploadBtn').disabled=!settings.showBgImage;
 updateToggle('toggleCheckUpdate',settings.checkUpdate);
 updateThemeRadio();
 }

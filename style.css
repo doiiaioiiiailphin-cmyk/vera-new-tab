@@ -238,6 +238,7 @@ padding:10px 15px;color:var(--text);font-family:var(--font-body);font-size:13px;
 transition:all var(--transition);}
 .todo-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow);}
 .todo-input::placeholder{color:var(--text-subtle);opacity:0.5;}
+.todo-input:disabled{opacity:0.35;cursor:not-allowed;}
 .todo-list{list-style:none;margin-top:10px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:2px;}
 .todo-list::-webkit-scrollbar{width:4px}
 .todo-list::-webkit-scrollbar-thumb{background:var(--glass-border);border-radius:2px}
@@ -338,7 +339,7 @@ font-weight:500;cursor:pointer;transition:all var(--transition-spring);backdrop-
 .btn.accent:hover{background:rgba(94,234,212,0.22);box-shadow:0 0 20px var(--accent-glow);}
 .btn.danger{border-color:rgba(255,80,80,0.25);color:#ff6b6b;}
 .btn.danger:hover{background:rgba(255,80,80,0.12);}
-.btn.sm{flex:1;padding:6px 8px;font-size:12px;border-radius:10px;white-space:nowrap;min-width:0;}
+.btn.sm:disabled{opacity:0.4;cursor:not-allowed;}
 .btn-group{display:flex;gap:6px;}
 
 .radio-group{display:flex;gap:4px;background:var(--input-bg);border-radius:var(--radius-xs);padding:4px;position:relative;}
