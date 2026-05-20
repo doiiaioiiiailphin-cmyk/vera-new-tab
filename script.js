@@ -528,6 +528,7 @@ function init(){
 loadSettings();applyAll();renderQuickLinks();
 updateClock();setInterval(updateClock,10000);
 randomQuote();
+var qc=document.getElementById('quoteContent');if(qc)qc.addEventListener('click',randomQuote);
 document.getElementById('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
 suggestTimer=null;suggestDropdown=document.getElementById('suggestDropdown');
 document.getElementById('searchInput').addEventListener('input',function(){
