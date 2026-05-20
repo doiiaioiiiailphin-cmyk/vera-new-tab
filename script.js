@@ -68,7 +68,7 @@ function linkFaviconHtml(link){var useFav=link.useFavicon!==false;if(!useFav)ret
 var favurl=getFaviconUrl(link.url,64);
 return'<img class="link-favicon" src="'+escapeAttr(favurl)+'" alt="">';}
 
-function linkIconHtml(link){if(link.icon&&/^https?:\/\//.test(link.icon))return'<span class="link-icon-clip"><img class="link-icon-img" src="'+escapeAttr(link.icon)+'" alt=""></span>';if(link.icon==='gmail')return'<svg viewBox="52 39.35 88 74.65" style="width:22px;height:22px"><use href="#i-gmail"/></svg>';return iconSvg(link.icon||'web',22);}
+function linkIconHtml(link){if(link.icon&&/^https?:\/\//.test(link.icon))return'<span class="link-icon-clip"><img class="link-icon-img" src="'+escapeAttr(link.icon)+'" alt=""></span>';if(link.icon==='gmail')return'<svg viewBox="40 30 110 90" style="width:22px;height:22px;display:block" fill="none"><path d="M58 108h14V74L52 59v43c0 3.315 2.685 6 6 6z" fill="#4285F4"/><path d="M120 108h14c3.315 0 6-2.685 6-6V59l-20 15v34z" fill="#34A853"/><path d="M120 48v26l20-15v-8c0-7.415-8.465-11.65-14.4-7.2L120 48z" fill="#FBBC04"/><path fill-rule="evenodd" clip-rule="evenodd" d="M72 74V48l24 18 24-18v26L96 92 72 74z" fill="#EA4335"/><path d="M52 51v8l20 15V48l-5.6-4.2C60.465 39.35 52 43.585 52 51z" fill="#C5221F"/></svg>';return iconSvg(link.icon||'web',22);}
 
 function attachFaviconListeners(container){
 container.querySelectorAll('img.link-favicon:not([data-fav-setup])').forEach(function(img){
