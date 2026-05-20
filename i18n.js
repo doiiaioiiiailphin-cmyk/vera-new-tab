@@ -71,7 +71,7 @@ faviconText:'サイトから取得',faviconTitle:'Faviconを自動取得',favico
 updateAvailable:'新しいバージョン ',updateNow:'更新',
 githubLink:'リポジトリ →',donate:'サポート',donateTitle:'サポート',qrFailed:'QRコード読込失敗',
 locationPermHint:'ブラウザ設定で位置情報を許可',downloading:'ダウンロード中...',
-langZh:'中国語',langEn:'English',langJa:'日本語',
+langZh:'中文',langEn:'English',langJa:'日本語',
 engineBaidu:'Baidu',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
 pageTitle:'Vera — 新規タブ'}
 };
