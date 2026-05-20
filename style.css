@@ -446,11 +446,12 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 .builtin-bg-light .todo-text{color:#0a1219;}
 .builtin-bg-light .todo-input::placeholder{color:rgba(0,0,0,0.4);}
 .builtin-bg-light .todo-input{color:#0a1219;}
-.builtin-bg-light .widget-title{color:rgba(255,255,255,0.6);}
-.builtin-bg-light .quote-text{color:rgba(255,255,255,0.9);text-shadow:0 1px 3px rgba(0,0,0,0.3);}
-.builtin-bg-light .quote-author{color:rgba(255,255,255,0.6);}
-.builtin-bg-light .weather-temp{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
-.builtin-bg-light .weather-details{color:rgba(255,255,255,0.85);text-shadow:0 1px 2px rgba(0,0,0,0.3);}
+.builtin-bg-light .widget-title{color:#0a1219;}
+.builtin-bg-light .quote-text{color:#0a1219;}
+.builtin-bg-light .quote-author{color:rgba(0,0,0,0.55);}
+.builtin-bg-light .weather-temp{color:#0a1219;}
+.builtin-bg-light .weather-details{color:rgba(0,0,0,0.7);}
+.builtin-bg-light .weather-loc{color:rgba(0,0,0,0.5);}
 
 .update-bar{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);z-index:1000;
 display:flex;align-items:center;gap:10px;padding:10px 20px;
