@@ -12,14 +12,21 @@
 </p>
 
 <p align="center">
+  <a href="#english">English</a> &nbsp;|&nbsp;
+  <a href="#chinese">简体中文</a> &nbsp;|&nbsp;
+  <a href="#japanese">日本語</a>
+</p>
+
+<p align="center">
   <img src="screenshots/dark-thumb.png" alt="Dark Mode" width="420">
   <img src="screenshots/light-thumb.png" alt="Light Mode" width="420">
 </p>
 
-<details open>
-<summary><b>English</b></summary>
+---
 
-## Features
+<h2 id="english">English</h2>
+
+### Features
 
 - **Clock & Date** — Large liquid-crystal style clock, date formatted by locale
 - **Multi-engine Search** — Google / Bing / DuckDuckGo / Baidu / GitHub
@@ -35,23 +42,22 @@
   - Dynamic blob background toggle
   - Individual widget visibility toggles
 
-## Install
+### Install
 
 ```bash
 git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
 ```
 Open `chrome://extensions/` → Developer mode → Load unpacked → select folder.
 
-## License
+### License
 
 MIT © Vera
 
-</details>
+---
 
-<details>
-<summary><b>中文</b></summary>
+<h2 id="chinese">简体中文</h2>
 
-## 功能
+### 功能
 
 - **时钟与日期** — 大号液晶感时钟，日期随语言格式化
 - **多引擎搜索** — Google / Bing / DuckDuckGo / 百度 / GitHub
@@ -67,23 +73,22 @@ MIT © Vera
   - 动态背景开关
   - 所有组件独立显隐
 
-## 安装
+### 安装
 
 ```bash
 git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
 ```
 打开 `chrome://extensions/` → 开发者模式 → 加载已解压的扩展程序 → 选择项目文件夹。
 
-## 许可
+### 许可
 
 MIT © Vera
 
-</details>
+---
 
-<details>
-<summary><b>日本語</b></summary>
+<h2 id="japanese">日本語</h2>
 
-## 機能
+### 機能
 
 - **時計と日付** — 大きな液晶風時計、言語に応じた日付フォーマット
 - **マルチ検索エンジン** — Google / Bing / DuckDuckGo / Baidu / GitHub
@@ -99,15 +104,13 @@ MIT © Vera
   - 動的背景の切り替え
   - 各ウィジェットの表示/非表示
 
-## インストール
+### インストール
 
 ```bash
 git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
 ```
 `chrome://extensions/` を開く → デベロッパーモード → パッケージ化されていない拡張機能を読み込む → フォルダ選択。
 
-## ライセンス
+### ライセンス
 
 MIT © Vera
-
-</details>
