@@ -164,9 +164,10 @@ if(addLabel)addLabel.textContent=t('add');
 }
 
 function loadSettings(){
-try{var s=JSON.parse(localStorage.getItem('newtab_settings_v3'));settings=s||{};}catch(e){settings={};}
+try{var raw=JSON.parse(localStorage.getItem('newtab_settings_v3'));}catch(e){raw=null;}
+settings=raw||{};
 for(var k in DEFAULTS){if(!(k in settings))settings[k]=DEFAULTS[k];}
-if(!s||!s.language){var bl=(navigator.language||'').split('-')[0];settings.language={'zh':'zh','ja':'ja'}[bl]||'en';}
+if(!raw||!raw.language){var bl=(navigator.language||'').split('-')[0];settings.language={'zh':'zh','ja':'ja'}[bl]||'en';saveSettings();}
 }
 function saveSettings(){try{localStorage.setItem('newtab_settings_v3',JSON.stringify(settings));}catch(e){}}
 
@@ -374,6 +375,7 @@ settings.links.splice(parseInt(btn.dataset.del),1);saveSettings();renderQuickLin
 
 function openLinkModal(idx){linkEditIdx=(idx!==undefined)?idx:null;
 var link=linkEditIdx!==null?settings.links[linkEditIdx]:null;
+translateDOM();
 document.getElementById('linkModalTitle').textContent=t(linkEditIdx!==null?'editLink':'addLinkTitle');
 document.getElementById('linkNameInput').value=link?link.name:'';
 document.getElementById('linkUrlInput').value=link?link.url:'';
