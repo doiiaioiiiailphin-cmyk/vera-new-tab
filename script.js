@@ -6,7 +6,7 @@ var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','b
 var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',showBgImage:false,checkUpdate:true,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
 searchEngine:'google',theme:'auto',language:'zh',
-links:[{icon:'mail',name:'Gmail',url:'https://mail.google.com'},
+links:[{icon:'https://www.gstatic.com/apps/signup/resources/products_lockup_icon.svg',name:'Gmail',url:'https://mail.google.com'},
 {icon:'code',name:'GitHub',url:'https://github.com'},
 {icon:'play',name:'YouTube',url:'https://youtube.com'},
 {icon:'web',name:'Bilibili',url:'https://bilibili.com'},
@@ -67,6 +67,8 @@ return'https://www.google.com/s2/favicons?domain='+domain+'&sz='+(size||64);}
 function linkFaviconHtml(link){var useFav=link.useFavicon!==false;if(!useFav)return'';
 var favurl=getFaviconUrl(link.url,64);
 return'<img class="link-favicon" src="'+escapeAttr(favurl)+'" alt="">';}
+
+function linkIconHtml(link){if(link.icon&&/^https?:\/\//.test(link.icon))return'<img class="link-icon-img" src="'+escapeAttr(link.icon)+'" alt="">';return iconSvg(link.icon||'web',22);}
 
 function attachFaviconListeners(container){
 container.querySelectorAll('img.link-favicon:not([data-fav-setup])').forEach(function(img){
@@ -249,7 +251,7 @@ var html='';
 settings.links.forEach(function(link,idx){
 html+='<div class="link-card" draggable="true" data-idx="'+idx+'" data-url="'+escapeAttr(link.url)+'">'+
 '<button class="link-delete" data-del="'+idx+'">&times;</button>'+
-'<div class="link-icon">'+linkFaviconHtml(link)+iconSvg(link.icon||'web',22)+'</div>'+
+'<div class="link-icon">'+(link.icon&&/^https?:\/\//.test(link.icon)?'':linkFaviconHtml(link))+linkIconHtml(link)+'</div>'+
 '<div class="link-name">'+escapeHtml(link.name)+'</div></div>';
 });
 html+='<div class="add-link-card" id="addLinkCard"><span class="plus">+</span><span class="add-label">'+t('add')+'</span></div>';
