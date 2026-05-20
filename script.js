@@ -6,7 +6,7 @@ var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','b
 var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',showBgImage:false,checkUpdate:true,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
 searchEngine:'google',theme:'auto',language:'zh',
-links:[{icon:'web',name:'Gmail',url:'https://mail.google.com'},
+links:[{icon:'https://www.gstatic.com/apps/signup/resources/products_lockup_icon.svg',name:'Gmail',url:'https://mail.google.com'},
 {icon:'code',name:'GitHub',url:'https://github.com'},
 {icon:'play',name:'YouTube',url:'https://youtube.com'},
 {icon:'web',name:'Bilibili',url:'https://bilibili.com'},
