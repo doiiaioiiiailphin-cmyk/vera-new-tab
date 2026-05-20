@@ -3,7 +3,7 @@
 
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
 
-var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',theme:'horizon',showBgImage:false,checkUpdate:true,
+var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgTheme:'horizon',showBgImage:false,checkUpdate:true,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
 searchEngine:'google',theme:'auto',language:'zh',
 links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false},
@@ -163,7 +163,7 @@ r.style.setProperty('--blob-4',preset.blob4);
 document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('still',!settings.dynamicBg);});
 applyTheme();
 var bgBase=document.querySelector('.bg-base');
-var activeTheme=THEMES.find(function(t){return t.id===settings.theme})||THEMES[0];
+var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES[0];
 var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 document.querySelector('.bg-img-dark').src=activeTheme.bgDark;
@@ -464,11 +464,11 @@ updateThemeRadio();
 }
 function updateToggle(id,val){var btn=document.getElementById(id);if(btn)btn.classList.toggle('on',val);}
 function renderThemePicker(){var tp=document.getElementById('themePicker');if(!tp)return;
-tp.innerHTML=THEMES.map(function(th){var active=th.id===settings.theme?' active':'';
+tp.innerHTML=THEMES.map(function(th){var active=th.id===settings.bgTheme?' active':'';
 return'<div class="theme-card'+active+'" data-theme="'+th.id+'"><img src="'+th.bgLight+'" alt=""><span>'+t(th.nameKey)+'</span></div>';}).join('');
 tp.querySelectorAll('.theme-card').forEach(function(card){card.addEventListener('click',function(){
-settings.theme=this.dataset.theme;settings.showBgImage=true;
-var th=THEMES.find(function(t){return t.id===settings.theme;});
+settings.bgTheme=this.dataset.theme;settings.showBgImage=true;
+var th=THEMES.find(function(t){return t.id===settings.bgTheme;});
 if(th){if(th.preset)settings.bgPreset=th.preset;if(th.accent)settings.accent=th.accent;}
 saveSettings();applyAll();renderThemePicker();});});}
 function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
