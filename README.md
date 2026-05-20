@@ -1,10 +1,16 @@
 <p align="center">
+  <a href="README_zh.md">中文</a> &nbsp;|&nbsp;
+  <b>English</b> &nbsp;|&nbsp;
+  <a href="README_ja.md">日本語</a>
+</p>
+
+<p align="center">
   <img src="icons/icon128.png" width="96" alt="Vera">
 </p>
 
 <h1 align="center">Vera</h1>
 
-<p align="center">Liquid Glass New Tab — 冰晶液态玻璃风格 Chrome 新标签页</p>
+<p align="center">Liquid Glass New Tab — Ice crystal glassmorphism Chrome/Edge extension</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/manifest-v3-blue" alt="Manifest V3">
@@ -13,7 +19,7 @@
 
 ---
 
-## 预览
+## Preview
 
 <p align="center">
   <a href="screenshots/dark.png" target="_blank">
@@ -25,66 +31,67 @@
 </p>
 
 <p align="center" style="color: #8a9db5; font-size: 13px; margin-top: 4px;">
-  深色模式 &nbsp;·&nbsp; 浅色模式 &nbsp;·&nbsp; 点击查看原图
+  Dark Mode &nbsp;·&nbsp; Light Mode &nbsp;·&nbsp; Click to view full size
 </p>
 
 ---
 
-## 功能
+## Features
 
-- **时钟与日期** — 大号液晶感时钟，日期随语言格式化
-- **多引擎搜索** — Google / Bing / DuckDuckGo / 百度 / GitHub，引擎 Logo 自动获取
-- **快捷链接** — 拖拽排序，自动拉取网站 favicon，支持自定义 SVG 图标
-- **天气组件** — Open-Meteo 免费 API，Permissions API 监听权限变化，图标覆盖全部 WMO 天气代码
-- **待办事项** — 本地存储，点击完成/删除
-- **每日名言** — 中文古诗词 / 英文经典 / 日本谚语，随语言切换
-- **三语言界面** — 中文 / English / 日本語，首次自动跟随系统语言
-- **深色/浅色/跟随系统** — 启动即生效无闪烁，所有 CSS 变量二套配色
-- **高自定义设置面板**
-  - 玻璃透明度 / 模糊强度 / 圆角大小
-  - 强调色 + 5 套背景预设 + 自定义背景图
-  - 动态背景开关
-  - 所有组件独立显隐
+- **Clock & Date** — Large liquid-crystal style clock, date formatted by locale
+- **Multi-engine Search** — Google / Bing / DuckDuckGo / Baidu / GitHub, auto-fetched engine logos
+- **Quick Links** — Drag-to-sort, auto-fetch website favicons, custom SVG icons
+- **Weather Widget** — wttr.in + Open-Meteo APIs, Permissions API for location, full weather code coverage
+- **To-Do List** — Local storage, click to complete/delete
+- **Daily Quotes** — Classical Chinese poetry / English classics / Japanese proverbs, switch with language
+- **Three Languages** — 中文 / English / 日本語, auto-detect system language on first launch
+- **Dark / Light / System** — Instant theme apply with no flicker, dual CSS variable sets
+- **Customization Panel**
+  - Glass opacity / blur strength / border radius
+  - Accent color + 5 background presets + custom background image
+  - Dynamic blob background toggle
+  - Individual widget visibility toggles
 
-## 安装
+## Install
 
-1. 下载或克隆本仓库
+1. Download or clone this repo
    ```bash
    git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
    ```
-2. 打开 Chrome，地址栏输入 `chrome://extensions/`
-3. 开启右上角 **"开发者模式"**
-4. 点击 **"加载已解压的扩展程序"**
-5. 选择项目文件夹，完成
+2. Open Chrome/Edge, go to `chrome://extensions/`
+3. Enable **"Developer mode"** (top right)
+4. Click **"Load unpacked"**
+5. Select the project folder
 
-## 项目结构
+## Project Structure
 
 ```
 vera-new-tab/
-├── manifest.json        # Chrome 扩展清单 (Manifest V3)
-├── index.html           # 新标签页主文件
-├── script.js            # 交互逻辑 (搜索、天气、待办、设置)
-├── style.css            # UI 样式 (毛玻璃、主题变量、动画)
-├── preload.js           # 防闪烁主题初始化
-├── icons/               # 扩展图标
+├── manifest.json        # Extension manifest (Manifest V3)
+├── index.html           # New tab page
+├── i18n.js              # All UI translations
+├── script.js            # Core logic (search, weather, todos, settings)
+├── style.css            # UI styles (glassmorphism, theme variables, animations)
+├── preload.js           # Anti-flicker theme init
+├── icons/               # Extension icons
 │   ├── icon16.png
 │   ├── icon48.png
 │   └── icon128.png
-├── screenshots/         # 预览截图
+├── screenshots/         # Preview screenshots
 └── .gitignore
 ```
 
-## 技术栈
+## Tech Stack
 
-纯前端 — HTML + CSS + JavaScript，零依赖，单文件架构。
+Pure frontend — HTML + CSS + JavaScript, zero dependencies.
 
-- CSS `backdrop-filter` 毛玻璃效果
-- CSS 自定义属性全主题化
-- SVG Sprite 图标系统（34+ 矢量符号）
-- `localStorage` 持久化所有设置
-- Open-Meteo 免费天气 API
-- Permissions API 监听地理位置授权
-- Google Fonts（Sora + Lexend + Noto Sans SC/JP）
+- CSS `backdrop-filter` glassmorphism
+- CSS custom properties for full theming
+- SVG Sprite icon system (34+ vector symbols)
+- `localStorage` for all settings persistence
+- wttr.in + Open-Meteo weather APIs
+- Permissions API for geolocation
+- Google Fonts (Sora + Lexend + Noto Sans SC/JP)
 
 ## License
 
