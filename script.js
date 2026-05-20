@@ -457,9 +457,9 @@ return'<svg viewBox="0 0 24 24"><use href="#i-'+name+'"/></svg>';}
 
 function randomQuote(){var langQuotes=QUOTES[settings.language]||QUOTES.zh;
 var q=langQuotes[Math.floor(Math.random()*langQuotes.length)];
-var qc=document.getElementById('quoteContent');
-if(!qc)return;qc.classList.remove('bounce');void qc.offsetWidth;qc.classList.add('bounce');
-qc.innerHTML='<div class="quote-text">'+escapeHtml(q.text)+'</div><div class="quote-author">— '+escapeHtml(q.author)+'</div>';}
+var qc=document.getElementById('quoteContent');if(!qc)return;
+qc.innerHTML='<div class="quote-text">'+escapeHtml(q.text)+'</div><div class="quote-author">— '+escapeHtml(q.author)+'</div>';
+qc.classList.remove('bounce');void qc.offsetWidth;qc.classList.add('bounce');}
 
 function updateSettingsUI(){
 document.getElementById('setGlassOpacity').value=settings.glassOpacity;
