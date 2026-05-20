@@ -186,7 +186,7 @@ background:var(--glass-hover);}
 display:flex;align-items:center;justify-content:center;
 transition:transform var(--transition-spring),background var(--transition-fast);flex-shrink:0;position:relative;}
 .link-icon .icon-svg{font-size:22px;color:var(--text-dim);transition:color var(--transition-fast);}
-.link-icon-img{width:30px;height:26px;object-fit:none;object-position:7.4% center;overflow:hidden;}
+.link-icon-img{width:42px;height:26px;object-fit:none;object-position:0 center;overflow:hidden;}
 .link-favicon{position:absolute;inset:0;width:100%;height:100%;
 border-radius:14px;object-fit:contain;z-index:1;padding:9px;transition:opacity var(--transition-fast);}
 .link-card:hover .link-icon{transform:scale(1.1) rotate(-5deg);background:var(--glass-active);}
