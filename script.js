@@ -161,7 +161,8 @@ r.style.setProperty('--blob-2',preset.blob2);
 r.style.setProperty('--blob-3',preset.blob3);
 r.style.setProperty('--blob-4',preset.blob4);
 document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('still',!settings.dynamicBg);});
-applyTheme();
+  document.querySelectorAll('.bg-blob').forEach(function(b){b.style.display=(settings.showBgImage&&!settings.bgImage)?'none':'';});
+  applyTheme();
 var bgBase=document.querySelector('.bg-base');
 var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES[0];
 var builtinBg=settings.showBgImage&&!settings.bgImage;
@@ -465,6 +466,9 @@ updateToggle('toggleDynamicBg',settings.dynamicBg);
 updateToggle('toggleShowBgImage',settings.showBgImage);
 updateToggle('toggleCheckUpdate',settings.checkUpdate);
 renderThemePicker();
+var isDynamicTheme = settings.bgTheme === 'landscape';
+var themeOpts = document.querySelectorAll('#themeRadio .radio-option');
+themeOpts.forEach(function(btn){ btn.disabled = isDynamicTheme; btn.style.opacity = isDynamicTheme ? '0.4' : ''; btn.style.pointerEvents = isDynamicTheme ? 'none' : ''; });
 updateThemeRadio();
 }
 function updateToggle(id,val){var btn=document.getElementById(id);if(btn)btn.classList.toggle('on',val);}
@@ -482,7 +486,7 @@ saveSettings();applyAll();renderThemePicker();});});}
 function updateLandscapeFilter(){var imgs=document.querySelectorAll('.bg-img-landscape,.bg-img[src$="theme-landscape.svg"]');
 if(!imgs.length)return;var h=new Date().getHours();var f='';
 if(h>=6&&h<9)f='brightness(1.0) saturate(1.2) sepia(0.25)';else if(h>=9&&h<16)f='brightness(1.0) saturate(1.0)';else if(h>=16&&h<19)f='brightness(0.9) saturate(1.3) sepia(0.35)';else f='brightness(0.35) saturate(0.5) hue-rotate(-25deg)';
-if(lastWeather){var c=lastWeather.code;if(c>=119&&c<=122)f+=' saturate(0.5)';if(c>=263&&c<=311||c===182||c===185)f+=' brightness(0.8) saturate(0.3)';if(c>=314&&c<=395)f+=' brightness(1.1) saturate(0.4) hue-rotate(10deg)';}
+if(lastWeather){var c=lastWeather.code;if(c>=119&&c<=122||c>=2&&c<=3||c===45||c===48)f+=' saturate(0.5)';if(c>=263&&c<=311||c===182||c===185||c>=51&&c<=67||c>=80&&c<=82)f+=' brightness(0.8) saturate(0.3)';if(c>=314&&c<=395||c>=71&&c<=77||c>=85&&c<=86)f+=' brightness(1.1) saturate(0.4) hue-rotate(10deg)';}
 imgs.forEach(function(img){img.style.filter=f;});}
 function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}

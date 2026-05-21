@@ -360,6 +360,7 @@ color:var(--text-dim);font-family:var(--font-body);font-size:13px;font-weight:50
 cursor:pointer;transition:color var(--transition-fast);position:relative;z-index:1;}
 .radio-option.active{color:var(--text);}
 .radio-option:hover:not(.active){color:var(--text);}
+#themeRadio .radio-option:disabled{opacity:0.4;cursor:not-allowed;}
 .radio-slider{position:absolute;top:4px;bottom:4px;left:4px;border-radius:9px;background:var(--glass-bg);box-shadow:var(--shadow-sm);transition:left 0.3s ease,width 0.3s ease;pointer-events:none;}
 
 .link-edit-item{display:flex;align-items:center;gap:12px;padding:12px 14px;
