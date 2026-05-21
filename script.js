@@ -49,7 +49,7 @@ function extractDomain(url){if(!/^https?:\/\//i.test(url))url='https://'+url;
 try{return new URL(url).hostname;}catch(e){return null;}}
 
 var KNOWN_FAVICONS={'mail.google.com':'https://ssl.gstatic.com/ui/v1/icons/mail/rfr/logo_gmail_lockup_default_1x_r5.png',
-'github.com':'https://github.githubassets.com/favicons/favicon-dark.svg',
+'github.com':'https://github.com/favicon.ico',
 'youtube.com':'https://www.youtube.com/s/desktop/12d6b690/img/favicon_32x32.png',
 'bilibili.com':'https://www.bilibili.com/favicon.ico',
 'chat.openai.com':'https://chat.openai.com/favicon.ico',
