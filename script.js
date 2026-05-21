@@ -137,8 +137,6 @@ var isDark=document.documentElement.getAttribute('data-theme')==='dark';
 h.setAttribute('href',isDark?'#i-moon':'#i-sun');
 }
 updateThemeRadio();
-moveRadioSlider(document.getElementById('themeRadio'));
-moveRadioSlider(document.getElementById('langRadio'));
 }
 function updateThemeRadio(){
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.classList.toggle('active',btn.dataset.themeVal===settings.theme);});
@@ -475,6 +473,8 @@ var isDynamicTheme = settings.bgTheme === 'landscape';
 var themeOpts = document.querySelectorAll('#themeRadio .radio-option');
 themeOpts.forEach(function(btn){ btn.disabled = isDynamicTheme; btn.style.opacity = isDynamicTheme ? '0.4' : ''; btn.style.pointerEvents = isDynamicTheme ? 'none' : ''; });
 updateThemeRadio();
+moveRadioSlider(document.getElementById('themeRadio'));
+moveRadioSlider(document.getElementById('langRadio'));
 }
 function updateToggle(id,val){var btn=document.getElementById(id);if(btn)btn.classList.toggle('on',val);}
 function renderThemePicker(){var tp=document.getElementById('themePicker');if(!tp)return;
