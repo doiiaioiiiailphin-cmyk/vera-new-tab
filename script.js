@@ -173,10 +173,10 @@ var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 var bgDark=document.querySelector('.bg-img-dark');if(bgDark){bgDark.src=activeTheme.bgDark;bgDark.className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
 var bgLight=document.querySelector('.bg-img-light');if(bgLight){bgLight.src=activeTheme.bgLight;bgLight.className='bg-img bg-img-light'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
+}
 updateLandscapeFilter();
 applyLandscapeScene();
-}
-else if(settings.showBgImage&&settings.bgImage){bgBase.classList.add('has-image','custom-bg');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
+if(settings.showBgImage&&settings.bgImage){bgBase.classList.add('has-image','custom-bg');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
 else{bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';}
 var builtinLight=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
 document.body.classList.toggle('builtin-bg-light',builtinLight);
@@ -589,7 +589,7 @@ settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();
 }
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
-settings=JSON.parse(JSON.stringify(DEFAULTS));saveSettings();renderQuickLinks();applyAll();updateClock();
+settings=JSON.parse(JSON.stringify(DEFAULTS));delete settings._showBgAuto;delete settings.bgThemeSaved;saveSettings();renderQuickLinks();applyAll();updateClock();
 setTimeout(function(){updateSettingsUI();},100);
 }
 
