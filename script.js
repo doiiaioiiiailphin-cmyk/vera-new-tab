@@ -467,7 +467,6 @@ updateToggle('toggleTodo',settings.showTodo);
 updateToggle('toggleQuote',settings.showQuote);
 updateToggle('toggleLinks',settings.showLinks);
 updateToggle('toggleDynamicBg',settings.dynamicBg);
-updateToggle('toggleShowBgImage',settings.showBgImage);
 updateToggle('toggleCheckUpdate',settings.checkUpdate);
 renderThemePicker();
 var isDynamicTheme = settings.bgTheme === 'landscape';
