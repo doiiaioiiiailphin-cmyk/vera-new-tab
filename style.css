@@ -113,8 +113,7 @@ background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(180%
 -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
 border:1px solid var(--glass-border);border-radius:var(--radius-pill);
 box-shadow:var(--shadow);transition:all var(--transition);cursor:text;position:relative;overflow:hidden;}
-.search-box::before{content:'';position:absolute;inset:0;
-background:linear-gradient(135deg,var(--glass-highlight) 0%,transparent 60%);border-radius:var(--radius-pill);pointer-events:none;}
+.search-box::before{display:none;}
 .search-box:focus-within{border-color:var(--accent);box-shadow:var(--shadow),0 0 30px var(--accent-glow);
 background:var(--glass-hover);transform:scale(1.01);}
 .search-box .icon-svg{font-size:18px;color:var(--text-dim);transition:color var(--transition);}
@@ -177,8 +176,7 @@ border:1px solid var(--glass-border);border-radius:var(--radius-sm);
 display:flex;flex-direction:column;align-items:center;gap:8px;
 cursor:pointer;transition:transform var(--transition-spring),border-color var(--transition-fast),box-shadow var(--transition-spring),background var(--transition-fast);box-shadow:var(--shadow);text-decoration:none;
 position:relative;overflow:hidden;user-select:none;}
-.link-card::before{content:'';position:absolute;inset:0;
-background:linear-gradient(135deg,var(--glass-highlight) 0%,transparent 60%);border-radius:var(--radius-sm);pointer-events:none;}
+.link-card::before{display:none;}
 .link-card:hover{transform:translateY(-5px) scale(1.03);
 border-color:var(--accent);box-shadow:var(--shadow),0 0 30px var(--accent-glow);
 background:var(--glass-hover);}
@@ -227,8 +225,7 @@ background:var(--widget-bg);backdrop-filter:blur(var(--glass-blur)) saturate(180
 -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
 border:1px solid var(--glass-border);border-radius:var(--radius-sm);
 box-shadow:var(--shadow);padding:20px;transition:all var(--transition);}
-.widget::before{content:'';position:absolute;inset:0;
-background:linear-gradient(135deg,var(--glass-highlight) 0%,transparent 60%);border-radius:var(--radius-sm);pointer-events:none;}
+.widget::before{display:none;}
 .widget:hover{border-color:rgba(180,220,255,0.2);box-shadow:var(--shadow),0 0 20px rgba(0,0,0,0.05);}
 .widget-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-subtle);margin-bottom:12px;}
 
