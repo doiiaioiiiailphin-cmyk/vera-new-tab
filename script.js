@@ -137,8 +137,9 @@ var isDark=document.documentElement.getAttribute('data-theme')==='dark';
 h.setAttribute('href',isDark?'#i-moon':'#i-sun');
 }
 updateThemeRadio();
+moveRadioSlider(document.getElementById('themeRadio'));
+moveRadioSlider(document.getElementById('langRadio'));
 }
-
 function updateThemeRadio(){
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.classList.toggle('active',btn.dataset.themeVal===settings.theme);});
 document.querySelectorAll('#langRadio .radio-option').forEach(function(btn){btn.classList.toggle('active',btn.dataset.langVal===settings.language);});
@@ -594,10 +595,12 @@ function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').rep
 function cycleTheme(){
 var themes=['auto','dark','light'];var idx=themes.indexOf(settings.theme);
 settings.theme=themes[(idx+1)%themes.length];saveSettings();applyAll();
+updateThemeRadio();moveRadioSlider(document.getElementById('themeRadio'));
 }
 function cycleLanguage(){
 var langs=['zh','en','ja'];var idx=langs.indexOf(settings.language);
 settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();renderLinkEditList();applyAll();updateClock();showQuote();renderWeatherFromCache();
+updateThemeRadio();moveRadioSlider(document.getElementById('langRadio'));
 }
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
