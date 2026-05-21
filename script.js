@@ -491,7 +491,7 @@ saveSettings();applyAll();renderThemePicker();});});}
 function updateLandscapeFilter(){var imgs=document.querySelectorAll('.bg-img-landscape,.bg-img[src$="theme-landscape.svg"]');
 if(!imgs.length){document.querySelectorAll('.bg-img-dark,.bg-img-light').forEach(function(img){img.style.filter='';});return;}var h=new Date().getHours();var f='';
 if(h>=6&&h<9)f='brightness(1.0) saturate(1.2) sepia(0.25)';else if(h>=9&&h<16)f='brightness(1.0) saturate(1.0)';else if(h>=16&&h<19)f='brightness(0.9) saturate(1.3) sepia(0.35)';else f='brightness(0.35) saturate(0.5) hue-rotate(-25deg)';
-if(lastWeather){var c=lastWeather.code;if(c>=119&&c<=122||c>=2&&c<=3||c===45||c===48)f+=' saturate(0.5)';if(c>=263&&c<=311||c===182||c===185||c>=51&&c<=67||c>=80&&c<=82)f+=' brightness(0.8) saturate(0.3)';if(c>=314&&c<=395||c>=71&&c<=77||c>=85&&c<=86)f+=' brightness(1.1) saturate(0.4) hue-rotate(10deg)';}
+if(lastWeather){var c=lastWeather.code;if(c>=119&&c<=122||c>=2&&c<=3||c===45||c===48||c===143||c===248||c===260)f+=' saturate(0.5)';if(c>=263&&c<=311||c===176||c===182||c===185||c>=51&&c<=67||c>=80&&c<=82)f+=' brightness(0.8) saturate(0.3)';if(c>=314&&c<=395||c>=71&&c<=77||c>=85&&c<=86||c===179||c===227||c===230)f+=' brightness(1.1) saturate(0.4) hue-rotate(10deg)';}
 imgs.forEach(function(img){img.style.filter=f;});}
 
 var LSEASONS=[{skyTop:'#d9f0e6',skyMid:'#f3dfcf',skyBottom:'#eec2a7',farTop:'#a8c9b3',farBottom:'#80aa9c',side:'#6f9e90',nearTop:'#4f7770',nearBottom:'#31595a',lakeTop:'#b8d7cf',lakeMid:'#9dc8bf',lakeBottom:'#6f9997',foreTop:'#2d5850',foreBottom:'#173a38',dots:0.72,snow:0},
@@ -515,7 +515,7 @@ var scene=document.getElementById('landscapeScene');if(!scene||(!scene.classList
 var h=lDebugHour!==undefined?lDebugHour:new Date().getHours(),m=new Date().getMonth();
 var timeAngle=(h*60+new Date().getMinutes())/1440*360,seasonAngle=(m/12)*360;
 var s=lsBlendSeason(seasonAngle),t=lsBlendTime(timeAngle);
-var wKey='clear';var wc=lDebugWeather||(lastWeather?lastWeather.code:null);if(wc){if(wc>=119&&wc<=122||wc>=2&&wc<=3||wc===45||wc===48)wKey='cloudy';else if(wc>=263&&wc<=311||wc===182||wc===185||wc>=51&&wc<=67||wc>=80&&wc<=82)wKey='rain';else if(wc>=314&&wc<=395||wc>=71&&wc<=77||wc>=85&&wc<=86)wKey='snow';}
+var wKey='clear';var wc=lDebugWeather||(lastWeather?lastWeather.code:null);if(wc){if(wc>=119&&wc<=122||wc>=2&&wc<=3||wc===45||wc===48||wc===143||wc===248||wc===260)wKey='cloudy';else if(wc>=263&&wc<=311||wc===176||wc===182||wc===185||wc>=51&&wc<=67||wc>=80&&wc<=82)wKey='rain';else if(wc>=314&&wc<=395||wc>=71&&wc<=77||wc>=85&&wc<=86||wc===179||wc===227||wc===230)wKey='snow';}
 var w=LWEATHERS[wKey],rad=(timeAngle-180)*Math.PI/180,day=Math.max(0,Math.cos(rad)),nightMix=Math.min(0.72,(1-day)*0.44+w.dim*0.42),skySS=0.08+day*0.14;
 lsSetStop('ls-skyTop',lsMix(t.top,s.skyTop,skySS));lsSetStop('ls-skyMid',lsMix(t.mid,s.skyMid,skySS));lsSetStop('ls-skyBottom',lsMix(t.bottom,s.skyBottom,skySS));
 lsSetStop('ls-farHillTop',lsMix(s.farTop,'#17263a',nightMix));lsSetStop('ls-farHillBottom',lsMix(s.farBottom,'#182d38',nightMix));
