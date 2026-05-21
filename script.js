@@ -681,15 +681,18 @@ var sr=document.getElementById('setRadius');if(sr)sr.addEventListener('input',fu
 var sa=document.getElementById('setAccent');if(sa)sa.addEventListener('input',function(){settings.accent=this.value;debounceApply();});
 document.querySelectorAll('#bgPresetBtns .btn').forEach(function(btn){btn.addEventListener('click',function(){
 settings.bgPreset=btn.dataset.preset;saveSettings();applyAll();});});
-var bgInput=document.getElementById('setBgImage');if(bgInput){bgInput.addEventListener('blur',function(){var v=this.value.trim();settings.bgImage=v;if(v)settings.bgTheme='';saveSettings();applyAll();});bgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){this.blur();}});}
+var bgInput=document.getElementById('setBgImage');if(bgInput){bgInput.addEventListener('blur',function(){var v=this.value.trim();
+if(v&&!settings.showBgImage){settings.showBgImage=true;settings._showBgAuto=true;settings.bgThemeSaved=settings.bgTheme;}
+else if(!v&&settings.bgImage){if(settings._showBgAuto){settings.showBgImage=false;settings._showBgAuto=undefined;}settings.bgTheme=settings.bgThemeSaved||'horizon';settings.bgThemeSaved=undefined;}
+settings.bgImage=v;if(v)settings.bgTheme='';saveSettings();applyAll();});bgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){this.blur();}});}
 var buBtn=document.getElementById('bgUploadBtn');if(buBtn)buBtn.addEventListener('click',function(){var bfi=document.getElementById('bgFileInput');if(bfi)bfi.click();});
-var bfi=document.getElementById('bgFileInput');if(bfi)bfi.addEventListener('change',function(){var f=this.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(){settings.bgImage=reader.result;settings.bgTheme='';saveSettings();applyAll();var bi=document.getElementById('setBgImage');if(bi)bi.value='[已上传: '+f.name+']';};reader.readAsDataURL(f);});
+var bfi=document.getElementById('bgFileInput');if(bfi)bfi.addEventListener('change',function(){var f=this.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(){if(!settings.showBgImage){settings.showBgImage=true;settings._showBgAuto=true;settings.bgThemeSaved=settings.bgTheme;}settings.bgImage=reader.result;settings.bgTheme='';saveSettings();applyAll();var bi=document.getElementById('setBgImage');if(bi)bi.value='[已上传: '+f.name+']';};reader.readAsDataURL(f);});
 var tw=document.getElementById('toggleWeather');if(tw)tw.addEventListener('click',function(){settings.showWeather=!settings.showWeather;saveSettings();applyAll();if(settings.showWeather)fetchWeather();});
 var ttd=document.getElementById('toggleTodo');if(ttd)ttd.addEventListener('click',function(){settings.showTodo=!settings.showTodo;saveSettings();applyAll();});
 var tq=document.getElementById('toggleQuote');if(tq)tq.addEventListener('click',function(){settings.showQuote=!settings.showQuote;saveSettings();applyAll();});
 var tl=document.getElementById('toggleLinks');if(tl)tl.addEventListener('click',function(){settings.showLinks=!settings.showLinks;saveSettings();applyAll();});
 var tdb=document.getElementById('toggleDynamicBg');if(tdb)tdb.addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
-var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;if(settings.showBgImage&&!settings.bgTheme)settings.bgTheme='horizon';saveSettings();applyAll();});
+var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;settings._showBgAuto=undefined;if(settings.showBgImage&&!settings.bgTheme)settings.bgTheme='horizon';saveSettings();applyAll();});
 var tcu=document.getElementById('toggleCheckUpdate');if(tcu)tcu.addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
 function moveRadioSlider(groupEl){if(!groupEl)return;var slider=groupEl.querySelector('.radio-slider');var active=groupEl.querySelector('.radio-option.active');if(!slider||!active)return;var r0=groupEl.getBoundingClientRect();var r1=active.getBoundingClientRect();slider.style.left=(r1.left-r0.left)+'px';slider.style.width=r1.width+'px';}
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
