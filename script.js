@@ -511,10 +511,10 @@ function lsSetSun(angle,sunScale){var rad=(angle-180)*Math.PI/180,x=960+560*Math
 
 function applyLandscapeScene(){
 var scene=document.getElementById('landscapeScene');if(!scene||scene.style.display==='none')return;
-var h=new Date().getHours(),m=new Date().getMonth();
+var h=lDebugHour!==undefined?lDebugHour:new Date().getHours(),m=new Date().getMonth();
 var timeAngle=(h*60+new Date().getMinutes())/1440*360,seasonAngle=(m/12)*360;
 var s=lsBlendSeason(seasonAngle),t=lsBlendTime(timeAngle);
-var wKey='clear';if(lastWeather){var c=lastWeather.code;if(c>=119&&c<=122||c>=2&&c<=3||c===45||c===48)wKey='cloudy';else if(c>=263&&c<=311||c===182||c===185||c>=51&&c<=67||c>=80&&c<=82)wKey='rain';else if(c>=314&&c<=395||c>=71&&c<=77||c>=85&&c<=86)wKey='snow';}
+var wKey='clear';var wc=lDebugWeather||(lastWeather?lastWeather.code:null);if(wc){if(wc>=119&&wc<=122||wc>=2&&wc<=3||wc===45||wc===48)wKey='cloudy';else if(wc>=263&&wc<=311||wc===182||wc===185||wc>=51&&wc<=67||wc>=80&&wc<=82)wKey='rain';else if(wc>=314&&wc<=395||wc>=71&&wc<=77||wc>=85&&wc<=86)wKey='snow';}
 var w=LWEATHERS[wKey],rad=(timeAngle-180)*Math.PI/180,day=Math.max(0,Math.cos(rad)),nightMix=Math.min(0.72,(1-day)*0.44+w.dim*0.42),skySS=0.08+day*0.14;
 lsSetStop('ls-skyTop',lsMix(t.top,s.skyTop,skySS));lsSetStop('ls-skyMid',lsMix(t.mid,s.skyMid,skySS));lsSetStop('ls-skyBottom',lsMix(t.bottom,s.skyBottom,skySS));
 lsSetStop('ls-farHillTop',lsMix(s.farTop,'#17263a',nightMix));lsSetStop('ls-farHillBottom',lsMix(s.farBottom,'#182d38',nightMix));
@@ -564,6 +564,18 @@ sf.setAttribute('begin','-'+lsRand(0,12).toFixed(1)+'s');sf.setAttribute('repeat
 flake.appendChild(sf);sg.appendChild(flake);}
 layer.appendChild(sg);}
 }
+
+window.__vera={
+scene:function(h,w){if(h!==undefined)lDebugHour=h;if(w!==undefined)lDebugWeather=w;var t=lastWeather;try{lastWeather=lDebugWeather?{code:lDebugWeather}:t;}catch(e){}var now=new Date();var orig=now.getHours();if(lDebugHour!==undefined){now.getHours=function(){return lDebugHour;};now.getMinutes=function(){return 0;};}
+applyLandscapeScene();
+try{lastWeather=t;}catch(e){}
+},
+weather:function(w){lastWeather={code:w};createWeatherEffect(w==71||w==314?'snow':w>=51||w>=263?'rain':w>=119||w>=2?'cloudy':'clear');applyLandscapeScene();},
+time:function(h){lDebugHour=h;applyLandscapeScene();},
+reset:function(){lDebugHour=undefined;lDebugWeather=undefined;applyLandscapeScene();},
+status:function(){console.log('debugHour:',lDebugHour,'debugWeather:',lDebugWeather,'realHour:',new Date().getHours(),'lastWeather:',lastWeather?lastWeather.code:'none','scene:',document.getElementById('landscapeScene')?document.getElementById('landscapeScene').style.display:'N/A');}
+};
+var lDebugHour,lDebugWeather;
 function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
