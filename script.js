@@ -584,7 +584,7 @@ settings.theme=themes[(idx+1)%themes.length];saveSettings();applyAll();
 }
 function cycleLanguage(){
 var langs=['zh','en','ja'];var idx=langs.indexOf(settings.language);
-settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();applyAll();updateClock();showQuote();renderWeatherFromCache();
+settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();renderLinkEditList();applyAll();updateClock();showQuote();renderWeatherFromCache();
 }
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
@@ -697,7 +697,7 @@ function moveRadioSlider(groupEl){if(!groupEl)return;var slider=groupEl.querySel
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
 settings.theme=btn.dataset.themeVal;saveSettings();applyAll();moveRadioSlider(this.parentNode);});});
 document.querySelectorAll('#langRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
-settings.language=btn.dataset.langVal;saveSettings();applyAll();updateClock();showQuote();renderWeatherFromCache();moveRadioSlider(this.parentNode);});});
+settings.language=btn.dataset.langVal;saveSettings();renderQuickLinks();renderLinkEditList();applyAll();updateClock();showQuote();renderWeatherFromCache();moveRadioSlider(this.parentNode);});});
 var alb=document.getElementById('addLinkBtn');if(alb)alb.addEventListener('click',function(){openLinkModal();});
 var lmc=document.getElementById('linkModalCancel');if(lmc)lmc.addEventListener('click',closeLinkModal);
 var lmo2=document.getElementById('linkModalOverlay');if(lmo2)lmo2.addEventListener('click',function(e){if(e.target===this)closeLinkModal();});
