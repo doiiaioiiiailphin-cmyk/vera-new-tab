@@ -168,7 +168,7 @@ var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES
 var isLandscape=activeTheme.id==='landscape';
 var scene=document.getElementById('landscapeScene');
 lDebugMode=false;lDebugHour=undefined;lDebugWeather=undefined;
-if(scene){var showScene=isLandscape&&settings.showBgImage&&!settings.bgImage;scene.style.display=showScene?'':'none';scene.classList.toggle('on',showScene);}
+if(scene){var showScene=isLandscape&&settings.showBgImage&&!settings.bgImage;if(showScene){scene.style.display='';requestAnimationFrame(function(){scene.classList.add('on');});}else{scene.classList.remove('on');scene.addEventListener('transitionend',function h(){scene.style.display='none';scene.removeEventListener('transitionend',h);});}}
 var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg&&!isLandscape){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 var bgDark=document.querySelector('.bg-img-dark');if(bgDark){bgDark.src=activeTheme.bgDark;bgDark.className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
