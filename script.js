@@ -168,6 +168,9 @@ var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 document.querySelector('.bg-img-dark').src=activeTheme.bgDark;
 document.querySelector('.bg-img-light').src=activeTheme.bgLight;
+document.querySelector('.bg-img-dark').className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');
+document.querySelector('.bg-img-light').className='bg-img bg-img-light'+(activeTheme.id==='landscape'?' bg-img-landscape':'');
+updateLandscapeFilter();
 }
 else if(settings.showBgImage&&settings.bgImage){bgBase.classList.add('has-image','custom-bg');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
 else{bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';}
@@ -198,7 +201,7 @@ dateStr=days[n.getDay()]+', '+(n.getMonth()+1)+'/'+n.getDate()+'/'+n.getFullYear
 dateStr=n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 '+days[n.getDay()];
 }
 document.getElementById('clockDate').textContent=dateStr;}
-function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();setInterval(updateClock,60000);},s*1000);}
+function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();setInterval(function(){updateClock();updateLandscapeFilter();},60000);},s*1000);}
 
 function updateEngineDisplay(){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
@@ -413,6 +416,7 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 '</div></div>';
 weatherLoaded=true;weatherPending=false;
 try{localStorage.setItem('weatherCache',JSON.stringify(lastWeather));}catch(e){}
+updateLandscapeFilter();
 }).catch(function(e){clearTimeout(to);if(e.name!=='AbortError')tryOM(lat,lon,wc);});
 }
 
@@ -432,6 +436,7 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 '<div class="weather-loc">'+t('windSpeed')+': '+escapeHtml(''+w.windspeed)+' km/h</div></div></div>';
 weatherLoaded=true;weatherPending=false;
 try{localStorage.setItem('weatherCache',JSON.stringify(lastWeather));}catch(e){}
+updateLandscapeFilter();
 }).catch(function(e){clearTimeout(to);showWFail(wc);});
 }
 
@@ -472,7 +477,14 @@ if(this.dataset.theme===settings.bgTheme&&settings.showBgImage){settings.showBgI
 settings.bgTheme=this.dataset.theme;settings.showBgImage=true;
 var th=THEMES.find(function(t){return t.id===settings.bgTheme;});
 if(th){if(th.preset)settings.bgPreset=th.preset;if(th.accent)settings.accent=th.accent;}
-saveSettings();applyAll();renderThemePicker();});});}
+saveSettings();applyAll();renderThemePicker();}
+
+function updateLandscapeFilter(){var imgs=document.querySelectorAll('.bg-img-landscape,.bg-img[src$="theme-landscape.svg"]');
+if(!imgs.length)return;var h=new Date().getHours();var f='';
+if(h>=6&&h<9)f='brightness(1.0) saturate(1.2) sepia(0.25)';else if(h>=9&&h<16)f='brightness(1.0) saturate(1.0)';else if(h>=16&&h<19)f='brightness(0.9) saturate(1.3) sepia(0.35)';else f='brightness(0.35) saturate(0.5) hue-rotate(-25deg)';
+if(lastWeather&&lastWeather.src==='wttr'){var c=lastWeather.code;if(c>=119&&c<=122)f+=' saturate(0.5)';if(c>=263&&c<=311||c===182||c===185)f+=' brightness(0.8) saturate(0.3)';if(c>=314&&c<=395)f+=' brightness(1.1) saturate(0.4) hue-rotate(10deg)';}
+imgs.forEach(function(img){img.style.filter=f;});}
+);});}
 function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
