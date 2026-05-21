@@ -167,6 +167,7 @@ var bgBase=document.querySelector('.bg-base');
 var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES[0];
 var isLandscape=activeTheme.id==='landscape';
 var scene=document.getElementById('landscapeScene');
+lDebugMode=false;lDebugHour=undefined;lDebugWeather=undefined;
 if(scene)scene.classList.toggle('on',isLandscape&&settings.showBgImage&&!settings.bgImage);
 var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
