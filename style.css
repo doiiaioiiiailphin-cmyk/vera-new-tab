@@ -386,10 +386,9 @@ opacity:0;visibility:hidden;transition:all var(--transition);}
 
 .modal{background:var(--bg-overlay);
 background:color-mix(in srgb,var(--bg-overlay) 95%,transparent);
-backdrop-filter:blur(50px) saturate(200%);
--webkit-backdrop-filter:blur(50px) saturate(200%);
+backdrop-filter:blur(50px) saturate(200%);-webkit-backdrop-filter:blur(50px) saturate(200%);
 border:1px solid var(--glass-border);border-radius:var(--radius);padding:30px;
-width:400px;max-width:90vw;box-shadow:var(--shadow-lg);
+width:fit-content;min-width:320px;max-width:90vw;box-shadow:var(--shadow-lg);
 display:flex;flex-direction:column;gap:18px;
 transform:scale(0.9);transition:transform var(--transition-spring);}
 .modal-overlay.open .modal{transform:scale(1);}
