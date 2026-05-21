@@ -477,7 +477,7 @@ if(this.dataset.theme===settings.bgTheme&&settings.showBgImage){settings.showBgI
 settings.bgTheme=this.dataset.theme;settings.showBgImage=true;
 var th=THEMES.find(function(t){return t.id===settings.bgTheme;});
 if(th){if(th.preset)settings.bgPreset=th.preset;if(th.accent)settings.accent=th.accent;}
-saveSettings();applyAll();renderThemePicker();}
+saveSettings();applyAll();renderThemePicker();});});}
 
 function updateLandscapeFilter(){var imgs=document.querySelectorAll('.bg-img-landscape,.bg-img[src$="theme-landscape.svg"]');
 if(!imgs.length)return;var h=new Date().getHours();var f='';
