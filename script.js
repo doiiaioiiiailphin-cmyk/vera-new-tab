@@ -167,7 +167,7 @@ var bgBase=document.querySelector('.bg-base');
 var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES[0];
 var isLandscape=activeTheme.id==='landscape';
 var scene=document.getElementById('landscapeScene');
-if(scene)scene.style.display=isLandscape&&settings.showBgImage&&!settings.bgImage?'':'none';
+if(scene)scene.classList.toggle('on',isLandscape&&settings.showBgImage&&!settings.bgImage);
 var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 document.querySelector('.bg-img-dark').src=activeTheme.bgDark;
@@ -510,7 +510,7 @@ function lsSetStop(id,color){var el=document.getElementById(id);if(el)el.setAttr
 function lsSetSun(angle,sunScale){var rad=(angle-180)*Math.PI/180,x=960+560*Math.sin(rad),y=650-300*Math.cos(rad),day=Math.max(0,Math.cos(rad)),op=(0.16+day*0.8)*sunScale;['ls-sunCore','ls-sunHalo1','ls-sunHalo2','ls-sunHalo3','ls-sunHalo4'].forEach(function(id){var el=document.getElementById(id);if(el){el.setAttribute('cx',x.toFixed(1));el.setAttribute('cy',y.toFixed(1));}});var sc=document.getElementById('ls-sunCore');if(sc)sc.setAttribute('opacity',op.toFixed(2));var sh=document.getElementById('ls-sunHalo');if(sh)sh.setAttribute('opacity',((0.22+day*0.5)*sunScale).toFixed(2));}
 
 function applyLandscapeScene(){
-var scene=document.getElementById('landscapeScene');if(!scene||scene.style.display==='none')return;
+var scene=document.getElementById('landscapeScene');if(!scene||!scene.classList.contains('on'))return;
 var h=lDebugHour!==undefined?lDebugHour:new Date().getHours(),m=new Date().getMonth();
 var timeAngle=(h*60+new Date().getMinutes())/1440*360,seasonAngle=(m/12)*360;
 var s=lsBlendSeason(seasonAngle),t=lsBlendTime(timeAngle);
