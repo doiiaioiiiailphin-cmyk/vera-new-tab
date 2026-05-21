@@ -481,12 +481,24 @@ if(!THEMES||!THEMES.length)return;
 tp.innerHTML=THEMES.map(function(th){var active=(th.id===settings.bgTheme&&settings.showBgImage)?' active':'';
 return'<div class="theme-card'+active+'" data-theme="'+th.id+'"><img src="'+th.bgDark+'" alt="" class="theme-thumb-dark"><img src="'+th.bgLight+'" alt="" class="theme-thumb-light"><span>'+t(th.nameKey)+'</span></div>';}).join('');
 tp.querySelectorAll('.theme-card').forEach(function(card){card.addEventListener('click',function(){
-if(this.dataset.theme===settings.bgTheme&&settings.showBgImage){settings.showBgImage=false;settings.bgTheme='';if(settings._savedPreset)settings.bgPreset=settings._savedPreset;if(settings._savedAccent)settings.accent=settings._savedAccent;settings._savedPreset=undefined;settings._savedAccent=undefined;saveSettings();applyAll();renderThemePicker();return;}
-settings._savedPreset=settings.bgPreset;settings._savedAccent=settings.accent;
-settings.bgTheme=this.dataset.theme;settings.showBgImage=true;
-var th=THEMES.find(function(t){return t.id===settings.bgTheme;});
-if(th){if(th.preset)settings.bgPreset=th.preset;if(th.accent)settings.accent=th.accent;}
+var themeId=this.dataset.theme;
+if(themeId===settings.bgTheme&&settings.showBgImage){
+  saveThemeAccentPreset(settings.bgTheme);
+  settings.showBgImage=false;settings.bgTheme='';
+  settings.accent=settings._accentNone||DEFAULTS.accent;
+  settings.bgPreset=settings._presetNone||DEFAULTS.bgPreset;
+  saveSettings();applyAll();renderThemePicker();return;
+}
+saveThemeAccentPreset(settings.bgTheme);
+settings.bgTheme=themeId;settings.showBgImage=true;
+settings.accent=settings['_accent_'+themeId]||THEMES.find(function(t){return t.id===themeId;}).accent||DEFAULTS.accent;
+settings.bgPreset=settings['_preset_'+themeId]||THEMES.find(function(t){return t.id===themeId;}).preset||DEFAULTS.bgPreset;
 saveSettings();applyAll();renderThemePicker();});});}
+function saveThemeAccentPreset(themeId){
+  var ak=themeId?'_accent_'+themeId:'_accentNone';
+  var pk=themeId?'_preset_'+themeId:'_presetNone';
+  settings[ak]=settings.accent;settings[pk]=settings.bgPreset;
+}
 
 function updateLandscapeFilter(){var imgs=document.querySelectorAll('.bg-img-landscape,.bg-img[src$="theme-landscape.svg"]');
 if(!imgs.length){document.querySelectorAll('.bg-img-dark,.bg-img-light').forEach(function(img){img.style.filter='';});return;}var h=new Date().getHours();var f='';
@@ -678,9 +690,9 @@ function debounceApply(){clearTimeout(debounceTimer);debounceTimer=setTimeout(fu
 var sgo=document.getElementById('setGlassOpacity');if(sgo)sgo.addEventListener('input',function(){settings.glassOpacity=parseInt(this.value);debounceApply();});
 var sbl=document.getElementById('setBlur');if(sbl)sbl.addEventListener('input',function(){settings.blur=parseInt(this.value);debounceApply();});
 var sr=document.getElementById('setRadius');if(sr)sr.addEventListener('input',function(){settings.radius=parseInt(this.value);debounceApply();});
-var sa=document.getElementById('setAccent');if(sa)sa.addEventListener('input',function(){settings.accent=this.value;debounceApply();});
+var sa=document.getElementById('setAccent');if(sa)sa.addEventListener('input',function(){settings.accent=this.value;if(settings.showBgImage&&settings.bgTheme){settings['_accent_'+settings.bgTheme]=this.value;}else{settings._accentNone=this.value;}debounceApply();});
 document.querySelectorAll('#bgPresetBtns .btn').forEach(function(btn){btn.addEventListener('click',function(){
-settings.bgPreset=btn.dataset.preset;saveSettings();applyAll();});});
+settings.bgPreset=btn.dataset.preset;if(settings.showBgImage&&settings.bgTheme){settings['_preset_'+settings.bgTheme]=btn.dataset.preset;}else{settings._presetNone=btn.dataset.preset;}saveSettings();applyAll();});});
 var bgInput=document.getElementById('setBgImage');if(bgInput){bgInput.addEventListener('blur',function(){var v=this.value.trim();
 if(v&&!settings.showBgImage){settings.showBgImage=true;settings._showBgAuto=true;settings.bgThemeSaved=settings.bgTheme;}
 else if(!v&&settings.bgImage){if(settings._showBgAuto){settings.showBgImage=false;settings._showBgAuto=undefined;}settings.bgTheme=settings.bgThemeSaved||'horizon';settings.bgThemeSaved=undefined;}
