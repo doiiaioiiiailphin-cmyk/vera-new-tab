@@ -122,9 +122,6 @@
     <rect width="1920" height="1080" filter="url(#fineGrain)" opacity="0.5"/>
     <rect id="weatherDim" width="1920" height="1080" fill="#455d68" opacity="0"/>
     <g id="weatherLayer" pointer-events="none"/>
-
-    </g>
-    </g>
   </g>
 
 </svg>
