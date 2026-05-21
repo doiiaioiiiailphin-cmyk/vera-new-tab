@@ -125,7 +125,7 @@ background:var(--glass-hover);transform:scale(1.01);}
 background:var(--input-bg);border:1px solid var(--glass-border);cursor:pointer;flex-shrink:0;
 font-size:13px;color:var(--text-dim);transition:all var(--transition);user-select:none;}
 .search-engine:hover{background:var(--glass-hover);color:var(--text);}
-.search-engine .icon-svg{font-size:14px;}
+.search-engine .icon-svg{font-size:14px;display:flex;align-items:center;}
 .search-engine .arrow{font-size:10px;margin-left:2px;transition:transform var(--transition);}
 .search-engine .arrow svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
 .search-engine.open .arrow{transform:rotate(180deg);}
