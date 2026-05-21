@@ -533,6 +533,36 @@ var wd=document.getElementById('ls-weatherDim');if(wd)wd.setAttribute('opacity',
 var sn=document.getElementById('ls-snowCap');if(sn)sn.setAttribute('opacity',(Math.max(s.snow,wKey==='snow'?0.78:0)*(0.6+day*0.4)).toFixed(2));
 var sd=document.getElementById('ls-seasonDots');if(sd)sd.setAttribute('opacity',(s.dots*(0.35+day*0.65)).toFixed(2));
 lsSetSun(timeAngle,w.sunScale);
+createWeatherEffect(wKey);
+}
+
+var lWeatherKey='';
+function lsSvg(name){return document.createElementNS('http://www.w3.org/2000/svg',name);}
+function lsRand(min,max){return min+Math.random()*(max-min);}
+function createWeatherEffect(wKey){if(wKey===lWeatherKey)return;lWeatherKey=wKey;
+var layer=document.getElementById('ls-weatherLayer');if(!layer)return;
+while(layer.firstChild)layer.removeChild(layer.firstChild);
+if(wKey==='rain'){
+var g=lsSvg('g');g.setAttribute('stroke','#d7edf5');g.setAttribute('stroke-linecap','round');g.setAttribute('opacity','0.58');
+for(var i=0;i<95;i++){var x=(i/95)*2040+lsRand(-60,60)-80,y=lsRand(-220,1060),len=lsRand(42,78);
+var drop=lsSvg('line');drop.setAttribute('x1',x.toFixed(1));drop.setAttribute('y1',y.toFixed(1));
+drop.setAttribute('x2',(x-len*0.28).toFixed(1));drop.setAttribute('y2',(y+len).toFixed(1));
+drop.setAttribute('stroke-width',lsRand(1.4,2.7).toFixed(1));
+var fall=lsSvg('animateTransform');fall.setAttribute('attributeName','transform');fall.setAttribute('type','translate');
+fall.setAttribute('from','0 -160');fall.setAttribute('to','0 1180');fall.setAttribute('dur',lsRand(1.0,1.9).toFixed(2)+'s');
+fall.setAttribute('begin','-'+lsRand(0,1.9).toFixed(2)+'s');fall.setAttribute('repeatCount','indefinite');
+drop.appendChild(fall);g.appendChild(drop);}
+layer.appendChild(g);}
+if(wKey==='snow'){
+var sg=lsSvg('g');sg.setAttribute('fill','#f8fcff');sg.setAttribute('opacity','0.76');
+for(var j=0;j<120;j++){var fx=(j/120)*2040+lsRand(-80,80)-60,fy=lsRand(-260,1060),drift=lsRand(-90,90);
+var flake=lsSvg('circle');flake.setAttribute('cx',fx.toFixed(1));flake.setAttribute('cy',fy.toFixed(1));
+flake.setAttribute('r',lsRand(2.0,5.2).toFixed(1));flake.setAttribute('opacity',lsRand(0.32,0.88).toFixed(2));
+var sf=lsSvg('animateTransform');sf.setAttribute('attributeName','transform');sf.setAttribute('type','translate');
+sf.setAttribute('values','0 -180;'+drift.toFixed(1)+' 1120;0 -180');sf.setAttribute('dur',lsRand(8,16).toFixed(1)+'s');
+sf.setAttribute('begin','-'+lsRand(0,12).toFixed(1)+'s');sf.setAttribute('repeatCount','indefinite');
+flake.appendChild(sf);sg.appendChild(flake);}
+layer.appendChild(sg);}
 }
 function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
