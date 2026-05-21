@@ -480,7 +480,8 @@ if(!THEMES||!THEMES.length)return;
 tp.innerHTML=THEMES.map(function(th){var active=(th.id===settings.bgTheme&&settings.showBgImage)?' active':'';
 return'<div class="theme-card'+active+'" data-theme="'+th.id+'"><img src="'+th.bgDark+'" alt="" class="theme-thumb-dark"><img src="'+th.bgLight+'" alt="" class="theme-thumb-light"><span>'+t(th.nameKey)+'</span></div>';}).join('');
 tp.querySelectorAll('.theme-card').forEach(function(card){card.addEventListener('click',function(){
-if(this.dataset.theme===settings.bgTheme&&settings.showBgImage){settings.showBgImage=false;settings.bgTheme='';saveSettings();applyAll();renderThemePicker();return;}
+if(this.dataset.theme===settings.bgTheme&&settings.showBgImage){settings.showBgImage=false;settings.bgTheme='';if(settings._savedPreset)settings.bgPreset=settings._savedPreset;if(settings._savedAccent)settings.accent=settings._savedAccent;settings._savedPreset=undefined;settings._savedAccent=undefined;saveSettings();applyAll();renderThemePicker();return;}
+settings._savedPreset=settings.bgPreset;settings._savedAccent=settings.accent;
 settings.bgTheme=this.dataset.theme;settings.showBgImage=true;
 var th=THEMES.find(function(t){return t.id===settings.bgTheme;});
 if(th){if(th.preset)settings.bgPreset=th.preset;if(th.accent)settings.accent=th.accent;}
@@ -587,7 +588,7 @@ settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();
 }
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
-settings=JSON.parse(JSON.stringify(DEFAULTS));delete settings._showBgAuto;delete settings.bgThemeSaved;saveSettings();renderQuickLinks();applyAll();updateClock();
+settings=JSON.parse(JSON.stringify(DEFAULTS));delete settings._showBgAuto;delete settings.bgThemeSaved;delete settings._savedPreset;delete settings._savedAccent;saveSettings();renderQuickLinks();applyAll();updateClock();
 setTimeout(function(){updateSettingsUI();renderThemePicker();},100);
 }
 
