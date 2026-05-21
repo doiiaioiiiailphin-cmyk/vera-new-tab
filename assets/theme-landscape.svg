@@ -1,0 +1,578 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">Minimal landscape wallpaper</title>
+  <desc id="desc">A quiet 16:9 minimalist animated landscape with a central dark mountain, side mountains, a soft sun, and still water.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop id="skyTop" offset="0" stop-color="#d9eef0"/>
+      <stop id="skyMid" offset="0.48" stop-color="#f3ded0"/>
+      <stop id="skyBottom" offset="1" stop-color="#e7c4aa"/>
+    </linearGradient>
+
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff0bf" stop-opacity="0.95"/>
+      <stop offset="0.55" stop-color="#f5b77e" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#f5b77e" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="farHills" x1="0" y1="0" x2="0" y2="1">
+      <stop id="farHillTop" offset="0" stop-color="#8eb3b1"/>
+      <stop id="farHillBottom" offset="1" stop-color="#739b9a"/>
+    </linearGradient>
+
+    <linearGradient id="nearHills" x1="0" y1="0" x2="0" y2="1">
+      <stop id="nearHillTop" offset="0" stop-color="#547a7b"/>
+      <stop id="nearHillBottom" offset="1" stop-color="#365f63"/>
+    </linearGradient>
+
+    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1">
+      <stop id="lakeTop" offset="0" stop-color="#b7d1ce"/>
+      <stop id="lakeMid" offset="0.5" stop-color="#9fbbb9"/>
+      <stop id="lakeBottom" offset="1" stop-color="#6e8f91"/>
+    </linearGradient>
+
+    <linearGradient id="foreground" x1="0" y1="0" x2="0" y2="1">
+      <stop id="foregroundTop" offset="0" stop-color="#274c4f"/>
+      <stop id="foregroundBottom" offset="1" stop-color="#17383b"/>
+    </linearGradient>
+
+    <filter id="soften" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="fineGrain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.045"/>
+      </feComponentTransfer>
+    </filter>
+
+    <clipPath id="horizonClip">
+      <rect x="0" y="0" width="1920" height="1080" rx="0"/>
+    </clipPath>
+
+    <filter id="uiShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#15363a" flood-opacity="0.18"/>
+    </filter>
+
+    <style>
+      .dial { cursor: pointer; user-select: none; }
+      .dial text { font-family: Inter, Segoe UI, Arial, sans-serif; letter-spacing: 0; pointer-events: none; }
+      .dial-track { fill: none; stroke: rgba(255,255,255,0.3); stroke-width: 12; }
+      .dial-progress { fill: none; stroke: rgba(255,255,255,0.82); stroke-width: 12; stroke-linecap: round; }
+      .dial-knob { fill: #ffffff; stroke: rgba(31,68,71,0.28); stroke-width: 3; }
+      .weather-button { cursor: pointer; }
+      .weather-button rect { fill: rgba(22,52,55,0.22); stroke: rgba(255,255,255,0.28); stroke-width: 1.5; }
+      .weather-button text { font-family: Inter, Segoe UI, Arial, sans-serif; font-size: 18px; fill: rgba(255,255,255,0.82); letter-spacing: 0; pointer-events: none; }
+      .weather-button.active rect { fill: rgba(255,255,255,0.26); stroke: rgba(255,255,255,0.78); }
+      .weather-button.active text { fill: #ffffff; }
+    </style>
+  </defs>
+
+  <g clip-path="url(#horizonClip)">
+    <rect width="1920" height="1080" fill="url(#sky)"/>
+
+    <g id="sunHalo" opacity="0.72">
+      <circle id="sunHalo4" cx="960" cy="358" r="285" fill="#f4a98b" opacity="0.12">
+        <animate attributeName="opacity" values="0.1;0.16;0.1" dur="9s" repeatCount="indefinite"/>
+      </circle>
+      <circle id="sunHalo3" cx="960" cy="358" r="232" fill="#f2c391" opacity="0.18">
+        <animate attributeName="opacity" values="0.14;0.24;0.14" dur="8s" repeatCount="indefinite"/>
+      </circle>
+      <circle id="sunHalo2" cx="960" cy="358" r="180" fill="#f6d9a0" opacity="0.22">
+        <animate attributeName="opacity" values="0.18;0.3;0.18" dur="7s" repeatCount="indefinite"/>
+      </circle>
+      <circle id="sunHalo1" cx="960" cy="358" r="128" fill="#ffe7ac" opacity="0.3">
+        <animate attributeName="opacity" values="0.24;0.36;0.24" dur="6s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+    <circle id="sunCore" cx="960" cy="358" r="86" fill="#ffe7ac" opacity="0.96"/>
+
+    <g id="clouds" opacity="0.28" filter="url(#soften)"/>
+
+    <path id="farMountain" d="M0 570Q125 540 250 510Q335 525 420 540Q515 514 610 488Q705 525 800 562Q880 560 960 558Q1040 560 1120 562Q1215 525 1310 488Q1405 514 1500 540Q1585 525 1670 510Q1795 540 1920 570V698H0Z" fill="url(#farHills)" opacity="0.76"/>
+    <path id="sideMountain" d="M0 632Q120 600 240 570Q332 590 425 610Q520 579 615 548Q698 586 780 625Q870 630 960 635Q1050 630 1140 625Q1222 586 1305 548Q1400 579 1495 610Q1588 590 1680 570Q1800 600 1920 632V744H0Z" fill="#668e8e" opacity="0.5"/>
+    <path id="mainMountain" d="M0 704Q130 672 260 640Q345 662 430 684Q525 626 620 568Q690 612 760 655Q825 578 890 505Q925 462 960 440Q995 462 1030 505Q1095 578 1160 655Q1230 612 1300 568Q1395 626 1490 684Q1575 662 1660 640Q1790 672 1920 704V795H0Z" fill="url(#nearHills)"/>
+    <g id="snowCap" fill="#f7fbff" opacity="0">
+      <path d="M890 505Q925 462 960 440Q995 462 1030 505L1000 498L960 488L920 498Z"/>
+      <path d="M575 594Q598 581 620 568Q655 590 690 612L645 600L608 590Z"/>
+      <path d="M1230 612Q1265 590 1300 568Q1322 581 1345 594L1312 590L1275 600Z"/>
+      <path d="M720 630Q740 642 760 655Q783 628 806 602L785 636L750 642Z"/>
+      <path d="M1114 602Q1137 628 1160 655Q1180 642 1200 630L1170 642L1135 636Z"/>
+    </g>
+
+    <rect id="lakeRect" x="0" y="690" width="1920" height="390" fill="url(#lake)"/>
+    <g id="waterFlow" fill="none" stroke="#e6f6f0" stroke-linecap="round" opacity="0.34">
+      <path d="M-220 760C80 728 318 786 620 758S1168 730 1490 758S1900 790 2140 754" stroke-width="3" stroke-dasharray="82 150" opacity="0.36">
+        <animate attributeName="stroke-dashoffset" from="0" to="-232" dur="11s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.22;0.42;0.22" dur="8s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-160 835C120 810 355 858 660 832S1215 806 1505 834S1870 856 2080 826" stroke-width="2" stroke-dasharray="64 130" opacity="0.28">
+        <animate attributeName="stroke-dashoffset" from="0" to="-194" dur="13s" repeatCount="indefinite"/>
+      </path>
+      <path d="M-260 910C20 884 300 932 590 906S1125 880 1400 906S1815 934 2180 900" stroke-width="2" stroke-dasharray="48 116" opacity="0.22">
+        <animate attributeName="stroke-dashoffset" from="0" to="-164" dur="15s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    <path id="horizonMist" d="M0 689C230 706 375 674 575 690C785 706 970 676 1195 694C1422 712 1632 681 1920 697V742C1650 725 1426 754 1190 735C970 718 770 750 560 730C354 711 212 741 0 722Z" fill="#d7e4df" opacity="0.32">
+      <animateTransform attributeName="transform" type="translate" values="-18 0;18 0;-18 0" dur="14s" repeatCount="indefinite"/>
+    </path>
+
+    <g id="ripples" opacity="0.22">
+      <animate attributeName="opacity" values="0.16;0.28;0.16" dur="10s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="16 0;-16 0;16 0" dur="16s" repeatCount="indefinite"/>
+      <path d="M0 810C185 790 321 816 492 798C690 777 842 820 1015 800C1225 775 1374 820 1552 802C1715 785 1810 806 1920 792" fill="none" stroke="#ffffff" stroke-width="3"/>
+      <path d="M0 874C214 852 346 885 548 863C756 841 938 884 1148 862C1382 837 1532 884 1725 862C1810 852 1870 854 1920 846" fill="none" stroke="#ffffff" stroke-width="2"/>
+    </g>
+
+    <g id="seasonDots" opacity="0">
+      <circle cx="386" cy="686" r="7" fill="#f4c6cf"/>
+      <circle cx="520" cy="696" r="5" fill="#f4d5b6"/>
+      <circle cx="1365" cy="688" r="6" fill="#f0b78b"/>
+      <circle cx="1515" cy="696" r="5" fill="#f4c6cf"/>
+      <circle cx="1220" cy="700" r="4" fill="#e0e8a8"/>
+    </g>
+
+    <path id="foregroundLand" d="M0 968C178 920 350 932 522 960C694 988 818 1015 995 980C1194 941 1332 930 1510 960C1660 986 1770 1015 1920 966V1080H0Z" fill="url(#foreground)"/>
+
+    <rect width="1920" height="1080" filter="url(#fineGrain)" opacity="0.5"/>
+    <rect id="weatherDim" width="1920" height="1080" fill="#455d68" opacity="0"/>
+    <g id="weatherLayer" pointer-events="none"/>
+
+    <g id="controls" filter="url(#uiShadow)" opacity="0.88">
+      <g id="seasonDial" class="dial" transform="translate(1630 865)" data-control="season">
+        <circle r="82" fill="rgba(22,52,55,0.2)"/>
+        <circle class="dial-track" r="62"/>
+        <path id="seasonArc" class="dial-progress"/>
+        <circle id="seasonKnob" class="dial-knob" r="12"/>
+        <text id="seasonValue" y="-6" text-anchor="middle" font-size="28" fill="#ffffff">Spring</text>
+        <text y="24" text-anchor="middle" font-size="15" fill="rgba(255,255,255,0.78)">season 360</text>
+      </g>
+      <g id="timeDial" class="dial" transform="translate(1800 865)" data-control="time">
+        <circle r="82" fill="rgba(22,52,55,0.2)"/>
+        <circle class="dial-track" r="62"/>
+        <path id="timeArc" class="dial-progress"/>
+        <circle id="timeKnob" class="dial-knob" r="12"/>
+        <text id="timeValue" y="-6" text-anchor="middle" font-size="28" fill="#ffffff">Morning</text>
+        <text y="24" text-anchor="middle" font-size="15" fill="rgba(255,255,255,0.78)">time 360</text>
+      </g>
+      <g id="weatherControl" transform="translate(1375 972)">
+        <g id="weatherClear" class="weather-button active" data-weather="clear" transform="translate(0 0)">
+          <rect width="112" height="48" rx="8"/>
+          <text x="56" y="30" text-anchor="middle">clear</text>
+        </g>
+        <g id="weatherRain" class="weather-button" data-weather="rain" transform="translate(124 0)">
+          <rect width="112" height="48" rx="8"/>
+          <text x="56" y="30" text-anchor="middle">rain</text>
+        </g>
+        <g id="weatherSnow" class="weather-button" data-weather="snow" transform="translate(248 0)">
+          <rect width="112" height="48" rx="8"/>
+          <text x="56" y="30" text-anchor="middle">snow</text>
+        </g>
+        <g id="weatherCloudy" class="weather-button" data-weather="cloudy" transform="translate(372 0)">
+          <rect width="112" height="48" rx="8"/>
+          <text x="56" y="30" text-anchor="middle">cloudy</text>
+        </g>
+      </g>
+    </g>
+  </g>
+
+  <script><![CDATA[
+    (function () {
+      var seasonAngle = 40;
+      var timeAngle = 105;
+      var activeDial = null;
+      var currentWeather = "clear";
+      var svg = document.documentElement;
+
+      var ids = [
+        "skyTop", "skyMid", "skyBottom", "farHillTop", "farHillBottom",
+        "nearHillTop", "nearHillBottom", "lakeTop", "lakeMid", "lakeBottom",
+        "foregroundTop", "foregroundBottom", "sideMountain", "mainMountain",
+        "sunCore", "sunHalo", "sunHalo1", "sunHalo2", "sunHalo3", "sunHalo4",
+        "clouds", "waterFlow", "horizonMist", "ripples", "snowCap",
+        "seasonDots", "weatherDim", "weatherLayer", "seasonKnob", "timeKnob", "seasonArc", "timeArc",
+        "seasonValue", "timeValue"
+      ].reduce(function (acc, id) {
+        acc[id] = document.getElementById(id);
+        return acc;
+      }, {});
+
+      var seasons = [
+        {
+          name: "Spring",
+          skyTop: "#d9f0e6", skyMid: "#f3dfcf", skyBottom: "#eec2a7",
+          farTop: "#a8c9b3", farBottom: "#80aa9c",
+          side: "#6f9e90", nearTop: "#4f7770", nearBottom: "#31595a",
+          lakeTop: "#b8d7cf", lakeMid: "#9dc8bf", lakeBottom: "#6f9997",
+          foreTop: "#2d5850", foreBottom: "#173a38",
+          dots: 0.72, snow: 0
+        },
+        {
+          name: "Summer",
+          skyTop: "#b8e6ea", skyMid: "#e6ecd0", skyBottom: "#f0d0a4",
+          farTop: "#8fb8a2", farBottom: "#689d8d",
+          side: "#5d8d80", nearTop: "#426f67", nearBottom: "#284f51",
+          lakeTop: "#a9d7d2", lakeMid: "#83bdb7", lakeBottom: "#5f9698",
+          foreTop: "#23534a", foreBottom: "#153c37",
+          dots: 0.25, snow: 0
+        },
+        {
+          name: "Autumn",
+          skyTop: "#f0b07f", skyMid: "#e8b37a", skyBottom: "#bf735d",
+          farTop: "#d6a35f", farBottom: "#b67f4a",
+          side: "#a96343", nearTop: "#795638", nearBottom: "#483a2c",
+          lakeTop: "#cfb98c", lakeMid: "#b69d75", lakeBottom: "#887661",
+          foreTop: "#5a3f29", foreBottom: "#2f2b23",
+          dots: 0.65, snow: 0
+        },
+        {
+          name: "Winter",
+          skyTop: "#d4e3e9", skyMid: "#d7dce4", skyBottom: "#c5b6ba",
+          farTop: "#bacbd0", farBottom: "#95adb5",
+          side: "#849aa3", nearTop: "#5e727b", nearBottom: "#334951",
+          lakeTop: "#bfd4d8", lakeMid: "#a8bec6", lakeBottom: "#829da8",
+          foreTop: "#2b454d", foreBottom: "#182f38",
+          dots: 0, snow: 0.82
+        }
+      ];
+
+      var times = [
+        { name: "Night", top: "#15203a", mid: "#293651", bottom: "#566075", sun: "#dbeaff", halo: "#8fb0d8", flow: "#cfe8ff", cloud: 0.18 },
+        { name: "Dawn", top: "#c8e6ea", mid: "#f3d7c7", bottom: "#e4af95", sun: "#ffe0a0", halo: "#f1a985", flow: "#e8f5ef", cloud: 0.3 },
+        { name: "Noon", top: "#9bd5e5", mid: "#d8f0ed", bottom: "#f1dfc0", sun: "#fff1b8", halo: "#f7d894", flow: "#f4fffb", cloud: 0.24 },
+        { name: "Dusk", top: "#e39b84", mid: "#c0787b", bottom: "#5a4569", sun: "#ffbd82", halo: "#e98176", flow: "#ffe7d5", cloud: 0.2 },
+        { name: "Night", top: "#15203a", mid: "#293651", bottom: "#566075", sun: "#dbeaff", halo: "#8fb0d8", flow: "#cfe8ff", cloud: 0.18 }
+      ];
+
+      var weathers = {
+        clear: { dim: 0, cloudBoost: 0, sunScale: 1, flowBoost: 0 },
+        rain: { dim: 0.16, cloudBoost: 0.34, sunScale: 0.58, flowBoost: 0.2 },
+        snow: { dim: 0.12, cloudBoost: 0.28, sunScale: 0.68, flowBoost: 0.08 },
+        cloudy: { dim: 0.18, cloudBoost: 0.42, sunScale: 0.48, flowBoost: 0.02 }
+      };
+
+      function hexToRgb(hex) {
+        var value = hex.replace("#", "");
+        return [
+          parseInt(value.slice(0, 2), 16),
+          parseInt(value.slice(2, 4), 16),
+          parseInt(value.slice(4, 6), 16)
+        ];
+      }
+
+      function rgbToHex(rgb) {
+        return "#" + rgb.map(function (value) {
+          var part = Math.max(0, Math.min(255, Math.round(value))).toString(16);
+          return part.length === 1 ? "0" + part : part;
+        }).join("");
+      }
+
+      function mix(a, b, t) {
+        var ca = hexToRgb(a);
+        var cb = hexToRgb(b);
+        return rgbToHex(ca.map(function (value, index) {
+          return value + (cb[index] - value) * t;
+        }));
+      }
+
+      function pick(list, angle) {
+        var position = (angle % 360) / 360 * (list.length - 1);
+        var index = Math.floor(position);
+        var next = Math.min(index + 1, list.length - 1);
+        return { a: list[index], b: list[next], t: position - index };
+      }
+
+      function blendSeason(angle) {
+        var chosen = pick(seasons.concat([seasons[0]]), angle);
+        var result = { name: chosen.t < 0.5 ? chosen.a.name : chosen.b.name };
+        Object.keys(chosen.a).forEach(function (key) {
+          if (key === "name") return;
+          result[key] = typeof chosen.a[key] === "number"
+            ? chosen.a[key] + (chosen.b[key] - chosen.a[key]) * chosen.t
+            : mix(chosen.a[key], chosen.b[key], chosen.t);
+        });
+        return result;
+      }
+
+      function blendTime(angle) {
+        var chosen = pick(times, angle);
+        var result = { name: chosen.t < 0.5 ? chosen.a.name : chosen.b.name };
+        ["top", "mid", "bottom", "sun", "halo", "flow"].forEach(function (key) {
+          result[key] = mix(chosen.a[key], chosen.b[key], chosen.t);
+        });
+        result.cloud = chosen.a.cloud + (chosen.b.cloud - chosen.a.cloud) * chosen.t;
+        return result;
+      }
+
+      function setStop(id, color) {
+        if (ids[id]) ids[id].setAttribute("stop-color", color);
+      }
+
+      function setSunPosition(angle, sunScale) {
+        var rad = (angle - 180) * Math.PI / 180;
+        var x = 960 + 560 * Math.sin(rad);
+        var y = 650 - 300 * Math.cos(rad);
+        var day = Math.max(0, Math.cos(rad));
+        var opacity = (0.16 + day * 0.8) * sunScale;
+        ["sunCore", "sunHalo1", "sunHalo2", "sunHalo3", "sunHalo4"].forEach(function (id) {
+          ids[id].setAttribute("cx", x.toFixed(1));
+          ids[id].setAttribute("cy", y.toFixed(1));
+        });
+        ids.sunCore.setAttribute("opacity", opacity.toFixed(2));
+        ids.sunHalo.setAttribute && ids.sunHalo.setAttribute("opacity", ((0.22 + day * 0.5) * sunScale).toFixed(2));
+      }
+
+      function makeSvg(name) {
+        return document.createElementNS("http://www.w3.org/2000/svg", name);
+      }
+
+      function randomBetween(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function createClouds() {
+        while (ids.clouds.firstChild) {
+          ids.clouds.removeChild(ids.clouds.firstChild);
+        }
+
+        var count = currentWeather === "cloudy" ? 8 : currentWeather === "clear" ? 6 : 7;
+        var segmentWidth = 1920 / count;
+        for (var i = 0; i < count; i += 1) {
+          var cloud = makeSvg("g");
+          var y = randomBetween(145, 325) + (i % 2) * randomBetween(12, 34);
+          var segmentCenter = segmentWidth * (i + 0.5);
+          var startX = segmentCenter + randomBetween(-segmentWidth * 0.22, segmentWidth * 0.22);
+          var drift = randomBetween(80, 210) * (Math.random() > 0.5 ? 1 : -1);
+          var lift = randomBetween(-12, 12);
+          var scale = randomBetween(0.58, 1.26);
+          var duration = randomBetween(34, 68).toFixed(1) + "s";
+
+          cloud.setAttribute("opacity", randomBetween(0.45, currentWeather === "clear" ? 0.85 : 0.98).toFixed(2));
+
+          var motion = makeSvg("animateTransform");
+          motion.setAttribute("attributeName", "transform");
+          motion.setAttribute("type", "translate");
+          motion.setAttribute("dur", duration);
+          motion.setAttribute("repeatCount", "indefinite");
+          motion.setAttribute("values", [
+            startX.toFixed(1) + " " + y.toFixed(1),
+            (startX + drift * 0.45).toFixed(1) + " " + (y + lift).toFixed(1),
+            (startX + drift).toFixed(1) + " " + (y - lift * 0.35).toFixed(1),
+            (startX + drift * 0.45).toFixed(1) + " " + (y + lift * 0.45).toFixed(1),
+            startX.toFixed(1) + " " + y.toFixed(1)
+          ].join(";"));
+          cloud.appendChild(motion);
+
+          [
+            [-70, 5, 145, 26],
+            [20, -6, 185, 34],
+            [118, 8, 108, 24],
+            [-158, 14, 78, 18]
+          ].forEach(function (blob) {
+            var ellipse = makeSvg("ellipse");
+            ellipse.setAttribute("cx", (blob[0] * scale).toFixed(1));
+            ellipse.setAttribute("cy", (blob[1] * scale).toFixed(1));
+            ellipse.setAttribute("rx", (blob[2] * scale).toFixed(1));
+            ellipse.setAttribute("ry", (blob[3] * scale).toFixed(1));
+            ellipse.setAttribute("fill", "#ffffff");
+            cloud.appendChild(ellipse);
+          });
+
+          ids.clouds.appendChild(cloud);
+        }
+      }
+
+      function createWeather() {
+        while (ids.weatherLayer.firstChild) {
+          ids.weatherLayer.removeChild(ids.weatherLayer.firstChild);
+        }
+
+        if (currentWeather === "rain") {
+          var rain = makeSvg("g");
+          rain.setAttribute("stroke", "#d7edf5");
+          rain.setAttribute("stroke-linecap", "round");
+          rain.setAttribute("opacity", "0.58");
+          for (var i = 0; i < 95; i += 1) {
+            var x = (i / 95) * 2040 + randomBetween(-60, 60) - 80;
+            var y = randomBetween(-220, 1060);
+            var length = randomBetween(42, 78);
+            var drop = makeSvg("line");
+            drop.setAttribute("x1", x.toFixed(1));
+            drop.setAttribute("y1", y.toFixed(1));
+            drop.setAttribute("x2", (x - length * 0.28).toFixed(1));
+            drop.setAttribute("y2", (y + length).toFixed(1));
+            drop.setAttribute("stroke-width", randomBetween(1.4, 2.7).toFixed(1));
+
+            var fall = makeSvg("animateTransform");
+            fall.setAttribute("attributeName", "transform");
+            fall.setAttribute("type", "translate");
+            fall.setAttribute("from", "0 -160");
+            fall.setAttribute("to", "0 1180");
+            fall.setAttribute("dur", randomBetween(1.0, 1.9).toFixed(2) + "s");
+            fall.setAttribute("begin", "-" + randomBetween(0, 1.9).toFixed(2) + "s");
+            fall.setAttribute("repeatCount", "indefinite");
+            drop.appendChild(fall);
+            rain.appendChild(drop);
+          }
+          ids.weatherLayer.appendChild(rain);
+        }
+
+        if (currentWeather === "snow") {
+          var snow = makeSvg("g");
+          snow.setAttribute("fill", "#f8fcff");
+          snow.setAttribute("opacity", "0.76");
+          for (var j = 0; j < 120; j += 1) {
+            var flake = makeSvg("circle");
+            var fx = (j / 120) * 2040 + randomBetween(-80, 80) - 60;
+            var fy = randomBetween(-260, 1060);
+            var drift = randomBetween(-90, 90);
+            flake.setAttribute("cx", fx.toFixed(1));
+            flake.setAttribute("cy", fy.toFixed(1));
+            flake.setAttribute("r", randomBetween(2.0, 5.2).toFixed(1));
+            flake.setAttribute("opacity", randomBetween(0.32, 0.88).toFixed(2));
+
+            var snowFall = makeSvg("animateTransform");
+            snowFall.setAttribute("attributeName", "transform");
+            snowFall.setAttribute("type", "translate");
+            snowFall.setAttribute("values", "0 -180;" + drift.toFixed(1) + " 1120;0 -180");
+            snowFall.setAttribute("dur", randomBetween(8, 16).toFixed(1) + "s");
+            snowFall.setAttribute("begin", "-" + randomBetween(0, 12).toFixed(1) + "s");
+            snowFall.setAttribute("repeatCount", "indefinite");
+            flake.appendChild(snowFall);
+            snow.appendChild(flake);
+          }
+          ids.weatherLayer.appendChild(snow);
+        }
+      }
+
+      function arcPath(radius, angle) {
+        var end = polar(radius, angle);
+        var large = angle > 180 ? 1 : 0;
+        return "M 0 " + -radius + " A " + radius + " " + radius + " 0 " + large + " 1 " + end.x + " " + end.y;
+      }
+
+      function polar(radius, angle) {
+        var rad = (angle - 90) * Math.PI / 180;
+        return { x: radius * Math.cos(rad), y: radius * Math.sin(rad) };
+      }
+
+      function updateDial(name, angle, label) {
+        var point = polar(62, angle);
+        ids[name + "Knob"].setAttribute("cx", point.x.toFixed(1));
+        ids[name + "Knob"].setAttribute("cy", point.y.toFixed(1));
+        ids[name + "Arc"].setAttribute("d", angle < 0.5 ? "" : arcPath(62, angle));
+        ids[name + "Value"].textContent = label;
+      }
+
+      function applyScene() {
+        var s = blendSeason(seasonAngle);
+        var t = blendTime(timeAngle);
+        var w = weathers[currentWeather];
+        var rad = (timeAngle - 180) * Math.PI / 180;
+        var day = Math.max(0, Math.cos(rad));
+        var nightMix = Math.min(0.72, (1 - day) * 0.44 + w.dim * 0.42);
+
+        var skySeasonStrength = 0.08 + day * 0.14;
+        setStop("skyTop", mix(t.top, s.skyTop, skySeasonStrength));
+        setStop("skyMid", mix(t.mid, s.skyMid, skySeasonStrength));
+        setStop("skyBottom", mix(t.bottom, s.skyBottom, skySeasonStrength));
+        setStop("farHillTop", mix(s.farTop, "#17263a", nightMix));
+        setStop("farHillBottom", mix(s.farBottom, "#182d38", nightMix));
+        setStop("nearHillTop", mix(s.nearTop, "#111f2d", nightMix));
+        setStop("nearHillBottom", mix(s.nearBottom, "#0d1b24", nightMix));
+        setStop("lakeTop", mix(s.lakeTop, t.top, 0.18 + nightMix * 0.4));
+        setStop("lakeMid", mix(s.lakeMid, t.mid, 0.16 + nightMix * 0.36));
+        setStop("lakeBottom", mix(s.lakeBottom, "#172b36", nightMix));
+        setStop("foregroundTop", mix(s.foreTop, "#0d1c24", nightMix));
+        setStop("foregroundBottom", mix(s.foreBottom, "#071219", nightMix));
+
+        ids.sideMountain.setAttribute("fill", mix(s.side, "#122633", nightMix));
+        ids.mainMountain.setAttribute("opacity", (0.94 - nightMix * 0.1).toFixed(2));
+        ids.sunCore.setAttribute("fill", t.sun);
+        ["sunHalo1", "sunHalo2", "sunHalo3", "sunHalo4"].forEach(function (id) {
+          ids[id].setAttribute("fill", t.halo);
+        });
+        ids.waterFlow.setAttribute("stroke", t.flow);
+        ids.waterFlow.setAttribute("opacity", (0.34 + w.flowBoost).toFixed(2));
+        ids.clouds.setAttribute("opacity", Math.min(0.84, t.cloud + w.cloudBoost).toFixed(2));
+        ids.horizonMist.setAttribute("fill", mix("#d7e4df", t.bottom, 0.2));
+        ids.ripples.setAttribute("opacity", (0.12 + day * 0.14).toFixed(2));
+        ids.weatherDim.setAttribute("opacity", w.dim.toFixed(2));
+        ids.snowCap.setAttribute("opacity", (Math.max(s.snow, currentWeather === "snow" ? 0.78 : 0) * (0.6 + day * 0.4)).toFixed(2));
+        ids.seasonDots.setAttribute("opacity", (s.dots * (0.35 + day * 0.65)).toFixed(2));
+
+        setSunPosition(timeAngle, w.sunScale);
+        updateDial("season", seasonAngle, s.name);
+        updateDial("time", timeAngle, t.name);
+      }
+
+      function updateWeatherButtons() {
+        Array.prototype.forEach.call(document.querySelectorAll(".weather-button"), function (button) {
+          if (button.getAttribute("data-weather") === currentWeather) {
+            button.classList.add("active");
+          } else {
+            button.classList.remove("active");
+          }
+        });
+      }
+
+      function setWeather(value) {
+        currentWeather = value;
+        createClouds();
+        createWeather();
+        updateWeatherButtons();
+        applyScene();
+      }
+
+      function angleFromEvent(evt, dial) {
+        var matrix = dial.getScreenCTM();
+        var point = svg.createSVGPoint();
+        point.x = evt.clientX;
+        point.y = evt.clientY;
+        point = point.matrixTransform(matrix.inverse());
+        var angle = Math.atan2(point.y, point.x) * 180 / Math.PI + 90;
+        return (angle + 360) % 360;
+      }
+
+      function start(evt) {
+        var dial = evt.target.closest(".dial");
+        if (!dial) return;
+        activeDial = dial;
+        evt.preventDefault();
+        move(evt);
+      }
+
+      function move(evt) {
+        if (!activeDial) return;
+        var value = angleFromEvent(evt, activeDial);
+        if (activeDial.getAttribute("data-control") === "season") {
+          seasonAngle = value;
+        } else {
+          timeAngle = value;
+        }
+        applyScene();
+      }
+
+      function end() {
+        activeDial = null;
+      }
+
+      svg.addEventListener("pointerdown", start);
+      svg.addEventListener("pointermove", move);
+      svg.addEventListener("pointerup", end);
+      svg.addEventListener("pointerleave", end);
+      Array.prototype.forEach.call(document.querySelectorAll(".weather-button"), function (button) {
+        button.addEventListener("pointerdown", function (evt) {
+          evt.preventDefault();
+          evt.stopPropagation();
+          setWeather(button.getAttribute("data-weather"));
+        });
+      });
+      createClouds();
+      createWeather();
+      updateWeatherButtons();
+      applyScene();
+    }());
+  ]]></script>
+</svg>
