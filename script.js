@@ -171,10 +171,8 @@ lDebugMode=false;lDebugHour=undefined;lDebugWeather=undefined;
 if(scene)scene.classList.toggle('on',isLandscape&&settings.showBgImage&&!settings.bgImage);
 var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
-document.querySelector('.bg-img-dark').src=activeTheme.bgDark;
-document.querySelector('.bg-img-light').src=activeTheme.bgLight;
-document.querySelector('.bg-img-dark').className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');
-document.querySelector('.bg-img-light').className='bg-img bg-img-light'+(activeTheme.id==='landscape'?' bg-img-landscape':'');
+var bgDark=document.querySelector('.bg-img-dark');if(bgDark){bgDark.src=activeTheme.bgDark;bgDark.className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
+var bgLight=document.querySelector('.bg-img-light');if(bgLight){bgLight.src=activeTheme.bgLight;bgLight.className='bg-img bg-img-light'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
 updateLandscapeFilter();
 applyLandscapeScene();
 }
@@ -194,7 +192,7 @@ var r=parseInt(h.substring(0,2),16),g=parseInt(h.substring(2,4),16),b=parseInt(h
 return'rgba('+r+','+g+','+b+','+a+')';}
 
 function updateClock(){var n=new Date();var h=n.getHours(),m=n.getMinutes();
-document.getElementById('clockTime').textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
+var ct=document.getElementById('clockTime');if(!ct)return;ct.textContent=(h<10?'0':'')+h+':'+(m<10?'0':'')+m;
 var days=settings.language==='en'?['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']:
 settings.language==='ja'?['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日']:
 ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
@@ -206,16 +204,16 @@ dateStr=days[n.getDay()]+', '+(n.getMonth()+1)+'/'+n.getDate()+'/'+n.getFullYear
 }else{
 dateStr=n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 '+days[n.getDay()];
 }
-document.getElementById('clockDate').textContent=dateStr;}
+var cd=document.getElementById('clockDate');if(cd)cd.textContent=dateStr;}
 function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();setInterval(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();},60000);},s*1000);}
 
 function updateEngineDisplay(){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
 var favurl=getFaviconUrl('https://'+eng.domain,64);
-var engIcon=document.getElementById('engineIconSvg');
+var engIcon=document.getElementById('engineIconSvg');if(!engIcon)return;
 engIcon.innerHTML='';
 engIcon.appendChild(createFaviconImgElement(favurl,18));
-document.getElementById('engineName').textContent=engineDisplayName(eng);
+var engName=document.getElementById('engineName');if(engName)engName.textContent=engineDisplayName(eng);
 renderEngineDropdown();
 }
 
@@ -223,7 +221,7 @@ function engineDisplayName(eng){var key='engine'+eng.id.charAt(0).toUpperCase()+
 
 
 function renderEngineDropdown(){
-var dd=document.getElementById('engineDropdown');
+var dd=document.getElementById('engineDropdown');if(!dd)return;
 dd.innerHTML=SEARCH_ENGINES.map(function(e){var active=e.id===settings.searchEngine?' active':'';
 return'<div class="engine-option'+active+'" data-engine="'+e.id+'"><span class="eng-favicon-box"></span> '+engineDisplayName(e)+'</div>';}).join('');
 dd.querySelectorAll('.engine-option').forEach(function(el){
@@ -235,12 +233,12 @@ if(box)box.appendChild(createFaviconImgElement(favurl,16));
 }
 el.addEventListener('click',function(e){
 e.stopPropagation();settings.searchEngine=el.dataset.engine;saveSettings();updateEngineDisplay();dd.classList.remove('open');
-document.getElementById('searchEngineBtn').classList.remove('open');
+var seb=document.getElementById('searchEngineBtn');if(seb)seb.classList.remove('open');
 });
 });
 }
 
-function doSearch(){var q=document.getElementById('searchInput').value.trim();if(!q)return;
+function doSearch(){var q=document.getElementById('searchInput');if(!q)return;q=q.value.trim();if(!q)return;
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
 window.location.href=eng.url+encodeURIComponent(q);}
 
@@ -261,7 +259,7 @@ else g.classList.remove('single-col');
 }
 
 function renderQuickLinks(){
-var container=document.getElementById('linksContainer');
+var container=document.getElementById('linksContainer');if(!container)return;
 var html='';
 settings.links.forEach(function(link,idx){
 html+='<div class="link-card" draggable="true" data-idx="'+idx+'" data-url="'+escapeAttr(link.url)+'">'+
@@ -319,13 +317,13 @@ settings.links.splice(parseInt(btn.dataset.del),1);saveSettings();renderQuickLin
 function openLinkModal(idx){linkEditIdx=(idx!==undefined)?idx:null;
 var link=linkEditIdx!==null?settings.links[linkEditIdx]:null;
 translateDOM();
-document.getElementById('linkModalTitle').textContent=t(linkEditIdx!==null?'editLink':'addLinkTitle');
-document.getElementById('linkNameInput').value=link?link.name:'';
-document.getElementById('linkUrlInput').value=link?link.url:'';
+var lmt=document.getElementById('linkModalTitle');if(lmt)lmt.textContent=t(linkEditIdx!==null?'editLink':'addLinkTitle');
+var lni=document.getElementById('linkNameInput');if(lni)lni.value=link?link.name:'';
+var lui=document.getElementById('linkUrlInput');if(lui)lui.value=link?link.url:'';
 renderIconPicker(link?link.icon:null,link?link.url:'',link?link.useFavicon:undefined);
-document.getElementById('linkModalOverlay').classList.add('open');}
+var lmo=document.getElementById('linkModalOverlay');if(lmo)lmo.classList.add('open');}
 
-function closeLinkModal(){document.getElementById('linkModalOverlay').classList.remove('open');linkEditIdx=null;}
+function closeLinkModal(){var lmo=document.getElementById('linkModalOverlay');if(lmo)lmo.classList.remove('open');linkEditIdx=null;}
 
 function renderIconPicker(selected,url,useFavicon){var picker=document.getElementById('linkIconPicker');if(!picker)return;
 var curUseFav=useFavicon!==false?'favicon':(selected||'web');
@@ -357,8 +355,8 @@ if(btn.classList.contains('fav-failed'))return;
 picker.querySelectorAll('button').forEach(function(b){b.classList.remove('selected');});
 btn.classList.add('selected');});});}
 
-function saveLinkFromModal(){var name=document.getElementById('linkNameInput').value.trim();
-var url=document.getElementById('linkUrlInput').value.trim();if(!name||!url)return;
+function saveLinkFromModal(){var name=document.getElementById('linkNameInput');if(!name)return;name=name.value.trim();
+var url=document.getElementById('linkUrlInput');if(!url)return;url=url.value.trim();if(!name||!url)return;
 var sel=document.querySelector('#linkIconPicker .selected');
 var icon=sel?sel.dataset.icon||'favicon':'favicon';
 var useFavicon=icon==='favicon';
@@ -378,13 +376,13 @@ var idx=parseInt(item.dataset.idx);settings.todos[idx].done=!settings.todos[idx]
 list.querySelectorAll('.todo-del').forEach(function(btn){btn.addEventListener('click',function(e){
 e.stopPropagation();settings.todos.splice(parseInt(btn.dataset.del),1);saveSettings();renderTodoList();});});}
 
-function addTodo(){var input=document.getElementById('todoInput');var text=input.value.trim();if(!text)return;
+function addTodo(){var input=document.getElementById('todoInput');if(!input)return;var text=input.value.trim();if(!text)return;
 if(settings.todos.some(function(t){return t.text===text;})){input.value='';return;}
 settings.todos.unshift({text:text,done:false});saveSettings();renderTodoList();input.value='';}
 
 var weatherPending=false,weatherLoaded=false,lastWeather=null;
 function renderWeatherFromCache(){if(!lastWeather||!settings.showWeather||!weatherLoaded)return;
-var wc=document.getElementById('weatherContent');var d=lastWeather;
+var wc=document.getElementById('weatherContent');if(!wc)return;var d=lastWeather;
 var desc=d.src==='wttr'?((settings.language==='zh')?wwDesc(d.code,'zh'):(settings.language==='ja')?wwDesc(d.code,'ja'):d.descEn):(({zh:WMO_DESC_ZH,en:WMO_DESC_EN,ja:WMO_DESC_JA})[settings.language]||WMO_DESC_EN)[d.code]||d.descEn;
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(d.icon)+'</div><div>'+
 '<div class="weather-temp">'+d.temp+'&deg;</div>'+
@@ -393,7 +391,7 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 '</div></div>';}
 function fetchWeather(){if(!settings.showWeather||weatherPending)return;
 weatherPending=true;
-var wc=document.getElementById('weatherContent');
+var wc=document.getElementById('weatherContent');if(!wc){weatherPending=false;return;}
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg('w-cloudy')+'</div><div>'+
 '<div class="weather-temp">--&deg;</div><div class="weather-details">'+t('loadingWeather')+'</div></div></div>';
 if(!navigator.geolocation){wc.innerHTML='<div class="weather-details">'+t('locationUnavailable')+'</div>';weatherPending=false;return;}
@@ -406,6 +404,7 @@ else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+escape
 weatherPending=false;},{maximumAge:300000,enableHighAccuracy:false});}
 
 function tryWW(lat,lon,wc){
+if(!wc)return;
 var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();tryOM(lat,lon,wc);},8000);
 fetch('https://wttr.in/'+lat+','+lon+'?format=j1',{signal:ctrl.signal})
 .then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
@@ -427,6 +426,7 @@ updateLandscapeFilter();applyLandscapeScene();
 }
 
 function tryOM(lat,lon,wc){
+if(!wc)return;
 var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();showWFail(wc);},10000);
 fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current_weather=true',{signal:ctrl.signal})
 .then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
@@ -446,7 +446,7 @@ updateLandscapeFilter();applyLandscapeScene();
 }).catch(function(e){clearTimeout(to);showWFail(wc);});
 }
 
-function showWFail(wc){weatherPending=false;try{var cached=JSON.parse(localStorage.getItem('weatherCache'));if(cached&&cached.temp!==undefined){lastWeather=cached;weatherLoaded=true;renderWeatherFromCache();return;}}catch(e){}wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+'</div>';}
+function showWFail(wc){weatherPending=false;if(!wc)return;try{var cached=JSON.parse(localStorage.getItem('weatherCache'));if(cached&&cached.temp!==undefined){lastWeather=cached;weatherLoaded=true;renderWeatherFromCache();return;}}catch(e){}wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+'</div>';}
 
 function wIconSvg(name){
 if(name==='cloud-sun')return'<svg viewBox="0 0 24 24"><defs><mask id="cs-mask"><rect width="24" height="24" fill="white"/><path d="M 7.5 17 H 16.5 C 19.5 17 21 15.5 21 12.5 C 21 10.5 19.8 8.8 18.2 8.2 C 17.5 5 15 3 12 3 C 9 3 6.5 5 5.8 8.2 C 4.2 8.8 3 10.5 3 12.5 C 3 15.5 4.5 17 7.5 17 Z" fill="black" stroke="black" stroke-width="1.8" stroke-linejoin="round"/></mask></defs><g mask="url(#cs-mask)"><circle cx="18" cy="6" r="3.5" fill="currentColor" opacity="0.15"/><circle cx="18" cy="6" r="3.5" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 1V0M18 11v1M13 6h-1M23 6h1M14.5 2.5l-.7-.7M21.5 9.5l.7.7M14.5 9.5l-.7.7M21.5 2.5l.7-.7" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></g><path d="M 7.5 17 H 16.5 C 19.5 17 21 15.5 21 12.5 C 21 10.5 19.8 8.8 18.2 8.2 C 17.5 5 15 3 12 3 C 9 3 6.5 5 5.8 8.2 C 4.2 8.8 3 10.5 3 12.5 C 3 15.5 4.5 17 7.5 17 Z" fill="currentColor" opacity="0.15"/><path d="M 7.5 17 H 16.5 C 19.5 17 21 15.5 21 12.5 C 21 10.5 19.8 8.8 18.2 8.2 C 17.5 5 15 3 12 3 C 9 3 6.5 5 5.8 8.2 C 4.2 8.8 3 10.5 3 12.5 C 3 15.5 4.5 17 7.5 17 Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -457,11 +457,11 @@ function showQuote(){var dq=initDailyQuotes();var q=dq[settings.language]||dq.zh
 function refreshQuote(){var dq=initDailyQuotes();var arr=QUOTES[settings.language]||QUOTES.zh;dq[settings.language]=arr[Math.floor(Math.random()*arr.length)];localStorage.setItem('dailyQuotes',JSON.stringify(dq));var qc=document.getElementById('quoteContent');if(!qc)return;var q=dq[settings.language];qc.classList.remove('bounce');void qc.offsetWidth;qc.classList.add('bounce');qc.innerHTML='<div class="quote-text">'+escapeHtml(q.text)+'</div><div class="quote-author">— '+escapeHtml(q.author)+'</div>';}
 
 function updateSettingsUI(){
-document.getElementById('setGlassOpacity').value=settings.glassOpacity;
-document.getElementById('setBlur').value=settings.blur;
-document.getElementById('setRadius').value=settings.radius;
-document.getElementById('setAccent').value=settings.accent;
-document.getElementById('setBgImage').value=settings.bgImage||'';
+var el=document.getElementById('setGlassOpacity');if(el)el.value=settings.glassOpacity;
+el=document.getElementById('setBlur');if(el)el.value=settings.blur;
+el=document.getElementById('setRadius');if(el)el.value=settings.radius;
+el=document.getElementById('setAccent');if(el)el.value=settings.accent;
+el=document.getElementById('setBgImage');if(el)el.value=settings.bgImage||'';
 document.querySelectorAll('#bgPresetBtns .btn').forEach(function(b){b.classList.toggle('active',b.dataset.preset===settings.bgPreset);});
 updateToggle('toggleWeather',settings.showWeather);
 updateToggle('toggleTodo',settings.showTodo);
@@ -594,7 +594,7 @@ setTimeout(function(){updateSettingsUI();},100);
 }
 
 // Native fetch-based search suggestions for all engines (no JSONP)
-function renderSuggest(list){if(!list||!list.length){suggestDropdown.classList.remove('open');return;}
+function renderSuggest(list){if(!suggestDropdown)return;if(!list||!list.length){suggestDropdown.classList.remove('open');return;}
 var sb=document.getElementById('searchBox');
 var sr=sb.getBoundingClientRect();
 suggestDropdown.style.top=sr.bottom+'px';
@@ -628,45 +628,46 @@ loadSettings();applyAll();renderQuickLinks();
 updateClock();scheduleClock();
 showQuote();
 var qc=document.getElementById('quoteWidget');if(qc){qc.addEventListener('mousedown',function(e){if(e.detail>1){e.preventDefault();window.getSelection().removeAllRanges();}qc._ts=Date.now();});qc.addEventListener('mouseup',function(){if(qc._ts&&Date.now()-qc._ts<300&&!window.getSelection().toString().trim())refreshQuote();});}
-document.getElementById('searchInput').addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
+var si=document.getElementById('searchInput');if(si)si.addEventListener('keydown',function(e){if(e.key==='Enter')doSearch();});
 suggestTimer=null;suggestDropdown=document.getElementById('suggestDropdown');
-document.getElementById('searchInput').addEventListener('input',function(){
-var q=this.value.trim();clearTimeout(suggestTimer);suggestDropdown.classList.remove('open');
+if(si)si.addEventListener('input',function(){
+var q=this.value.trim();clearTimeout(suggestTimer);if(suggestDropdown)suggestDropdown.classList.remove('open');
 if(q.length<2)return;suggestTimer=setTimeout(function(){fetchSuggest(q);},250);});
-document.addEventListener('click',function(e){if(!e.target.closest('#searchInput')&&!e.target.closest('#suggestDropdown')){suggestDropdown.classList.remove('open');}});
-document.getElementById('searchBox').addEventListener('click',function(e){
+document.addEventListener('click',function(e){if(!e.target.closest('#searchInput')&&!e.target.closest('#suggestDropdown')){if(suggestDropdown)suggestDropdown.classList.remove('open');}});
+var sb=document.getElementById('searchBox');if(sb)sb.addEventListener('click',function(e){
 if(e.target.closest('.search-engine')||e.target.closest('.engine-dropdown'))return;
-document.getElementById('searchInput').focus();});
+var si2=document.getElementById('searchInput');if(si2)si2.focus();});
 var engBtn=document.getElementById('searchEngineBtn');
 var engDropdown=document.getElementById('engineDropdown');
 function repositionDropdown(){
+if(!engBtn||!engDropdown)return;
 var rect=engBtn.getBoundingClientRect();
 engDropdown.style.top=(rect.bottom+8)+'px';
 engDropdown.style.right=(window.innerWidth-rect.right)+'px';
 engDropdown.style.left='auto';
 }
-engBtn.addEventListener('click',function(e){e.stopPropagation();e.preventDefault();
+if(engBtn)engBtn.addEventListener('click',function(e){e.stopPropagation();e.preventDefault();
 if(engDropdown.classList.contains('open')){engDropdown.classList.remove('open');engBtn.classList.remove('open');}
 else{repositionDropdown();engDropdown.classList.add('open');engBtn.classList.add('open');}});
-engDropdown.addEventListener('click',function(e){e.stopPropagation();});
-window.addEventListener('resize',function(){if(engDropdown.classList.contains('open'))repositionDropdown();});
-window.addEventListener('scroll',function(){if(engDropdown.classList.contains('open'))repositionDropdown();});
+if(engDropdown)engDropdown.addEventListener('click',function(e){e.stopPropagation();});
+window.addEventListener('resize',function(){if(engDropdown&&engDropdown.classList.contains('open'))repositionDropdown();});
+window.addEventListener('scroll',function(){if(engDropdown&&engDropdown.classList.contains('open'))repositionDropdown();});
 document.addEventListener('click',function(e){
 if(!e.target.closest('#searchEngineBtn')&&!e.target.closest('#engineDropdown')){
-engDropdown.classList.remove('open');engBtn.classList.remove('open');}});
-document.getElementById('todoInput').addEventListener('keydown',function(e){if(e.key==='Enter')addTodo();});
-document.getElementById('themeBtn').addEventListener('click',cycleTheme);
-document.getElementById('langBtn').addEventListener('click',cycleLanguage);
-document.getElementById('settingsBtn').addEventListener('click',function(){
-document.getElementById('settingsOverlay').classList.add('open');
-document.getElementById('settingsPanel').classList.add('open');
+if(engDropdown)engDropdown.classList.remove('open');if(engBtn)engBtn.classList.remove('open');}});
+var ti=document.getElementById('todoInput');if(ti)ti.addEventListener('keydown',function(e){if(e.key==='Enter')addTodo();});
+var tb=document.getElementById('themeBtn');if(tb)tb.addEventListener('click',cycleTheme);
+var lb=document.getElementById('langBtn');if(lb)lb.addEventListener('click',cycleLanguage);
+var stb=document.getElementById('settingsBtn');if(stb)stb.addEventListener('click',function(){
+var so=document.getElementById('settingsOverlay');if(so)so.classList.add('open');
+var sp=document.getElementById('settingsPanel');if(sp)sp.classList.add('open');
 renderLinkEditList();updateSettingsUI();translateDOM();});
-document.getElementById('settingsClose').addEventListener('click',closeSettings);
-document.getElementById('settingsOverlay').addEventListener('click',closeSettings);
+var sc=document.getElementById('settingsClose');if(sc)sc.addEventListener('click',closeSettings);
+var so2=document.getElementById('settingsOverlay');if(so2)so2.addEventListener('click',closeSettings);
 document.querySelectorAll('.settings-tab').forEach(function(tab){tab.addEventListener('click',function(){
 document.querySelectorAll('.settings-tab').forEach(function(t){t.classList.remove('active');});
 document.querySelectorAll('.settings-section').forEach(function(s){s.classList.remove('active');});
-tab.classList.add('active');document.getElementById('sec-'+tab.dataset.tab).classList.add('active');
+tab.classList.add('active');var sec=document.getElementById('sec-'+tab.dataset.tab);if(sec)sec.classList.add('active');
 var slider=document.querySelector('.tab-slider');
 if(slider){var tabs=document.querySelector('.settings-tabs');var rect=tabs.getBoundingClientRect();var tr=tab.getBoundingClientRect();slider.style.left=(tr.left-rect.left)+'px';slider.style.width=tr.width+'px';}
 });});
@@ -674,44 +675,44 @@ if(slider){var tabs=document.querySelector('.settings-tabs');var rect=tabs.getBo
 (function initRadioSliders(){document.querySelectorAll('.radio-group').forEach(function(g){moveRadioSlider(g);});})();
 var debounceTimer=null;
 function debounceApply(){clearTimeout(debounceTimer);debounceTimer=setTimeout(function(){saveSettings();applyAll();},80);}
-document.getElementById('setGlassOpacity').addEventListener('input',function(){settings.glassOpacity=parseInt(this.value);debounceApply();});
-document.getElementById('setBlur').addEventListener('input',function(){settings.blur=parseInt(this.value);debounceApply();});
-document.getElementById('setRadius').addEventListener('input',function(){settings.radius=parseInt(this.value);debounceApply();});
-document.getElementById('setAccent').addEventListener('input',function(){settings.accent=this.value;debounceApply();});
+var sgo=document.getElementById('setGlassOpacity');if(sgo)sgo.addEventListener('input',function(){settings.glassOpacity=parseInt(this.value);debounceApply();});
+var sbl=document.getElementById('setBlur');if(sbl)sbl.addEventListener('input',function(){settings.blur=parseInt(this.value);debounceApply();});
+var sr=document.getElementById('setRadius');if(sr)sr.addEventListener('input',function(){settings.radius=parseInt(this.value);debounceApply();});
+var sa=document.getElementById('setAccent');if(sa)sa.addEventListener('input',function(){settings.accent=this.value;debounceApply();});
 document.querySelectorAll('#bgPresetBtns .btn').forEach(function(btn){btn.addEventListener('click',function(){
 settings.bgPreset=btn.dataset.preset;saveSettings();applyAll();});});
-var bgInput=document.getElementById('setBgImage');bgInput.addEventListener('blur',function(){var v=this.value.trim();settings.bgImage=v;if(v)settings.bgTheme='';saveSettings();applyAll();});bgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){this.blur();}});
-document.getElementById('bgUploadBtn').addEventListener('click',function(){document.getElementById('bgFileInput').click();});
-document.getElementById('bgFileInput').addEventListener('change',function(){var f=this.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(){settings.bgImage=reader.result;settings.bgTheme='';saveSettings();applyAll();document.getElementById('setBgImage').value='[已上传: '+f.name+']';};reader.readAsDataURL(f);});
-document.getElementById('toggleWeather').addEventListener('click',function(){settings.showWeather=!settings.showWeather;saveSettings();applyAll();if(settings.showWeather)fetchWeather();});
-document.getElementById('toggleTodo').addEventListener('click',function(){settings.showTodo=!settings.showTodo;saveSettings();applyAll();});
-document.getElementById('toggleQuote').addEventListener('click',function(){settings.showQuote=!settings.showQuote;saveSettings();applyAll();});
-document.getElementById('toggleLinks').addEventListener('click',function(){settings.showLinks=!settings.showLinks;saveSettings();applyAll();});
-document.getElementById('toggleDynamicBg').addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
-document.getElementById('toggleShowBgImage').addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;if(settings.showBgImage&&!settings.bgTheme)settings.bgTheme='horizon';saveSettings();applyAll();});
-document.getElementById('toggleCheckUpdate').addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
-function moveRadioSlider(groupEl){var slider=groupEl.querySelector('.radio-slider');var active=groupEl.querySelector('.radio-option.active');if(!slider||!active)return;var r0=groupEl.getBoundingClientRect();var r1=active.getBoundingClientRect();slider.style.left=(r1.left-r0.left)+'px';slider.style.width=r1.width+'px';}
+var bgInput=document.getElementById('setBgImage');if(bgInput){bgInput.addEventListener('blur',function(){var v=this.value.trim();settings.bgImage=v;if(v)settings.bgTheme='';saveSettings();applyAll();});bgInput.addEventListener('keydown',function(e){if(e.key==='Enter'){this.blur();}});}
+var buBtn=document.getElementById('bgUploadBtn');if(buBtn)buBtn.addEventListener('click',function(){var bfi=document.getElementById('bgFileInput');if(bfi)bfi.click();});
+var bfi=document.getElementById('bgFileInput');if(bfi)bfi.addEventListener('change',function(){var f=this.files[0];if(!f)return;var reader=new FileReader();reader.onload=function(){settings.bgImage=reader.result;settings.bgTheme='';saveSettings();applyAll();var bi=document.getElementById('setBgImage');if(bi)bi.value='[已上传: '+f.name+']';};reader.readAsDataURL(f);});
+var tw=document.getElementById('toggleWeather');if(tw)tw.addEventListener('click',function(){settings.showWeather=!settings.showWeather;saveSettings();applyAll();if(settings.showWeather)fetchWeather();});
+var ttd=document.getElementById('toggleTodo');if(ttd)ttd.addEventListener('click',function(){settings.showTodo=!settings.showTodo;saveSettings();applyAll();});
+var tq=document.getElementById('toggleQuote');if(tq)tq.addEventListener('click',function(){settings.showQuote=!settings.showQuote;saveSettings();applyAll();});
+var tl=document.getElementById('toggleLinks');if(tl)tl.addEventListener('click',function(){settings.showLinks=!settings.showLinks;saveSettings();applyAll();});
+var tdb=document.getElementById('toggleDynamicBg');if(tdb)tdb.addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
+var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;if(settings.showBgImage&&!settings.bgTheme)settings.bgTheme='horizon';saveSettings();applyAll();});
+var tcu=document.getElementById('toggleCheckUpdate');if(tcu)tcu.addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
+function moveRadioSlider(groupEl){if(!groupEl)return;var slider=groupEl.querySelector('.radio-slider');var active=groupEl.querySelector('.radio-option.active');if(!slider||!active)return;var r0=groupEl.getBoundingClientRect();var r1=active.getBoundingClientRect();slider.style.left=(r1.left-r0.left)+'px';slider.style.width=r1.width+'px';}
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
 settings.theme=btn.dataset.themeVal;saveSettings();applyAll();moveRadioSlider(this.parentNode);});});
 document.querySelectorAll('#langRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
 settings.language=btn.dataset.langVal;saveSettings();applyAll();updateClock();showQuote();renderWeatherFromCache();moveRadioSlider(this.parentNode);});});
-document.getElementById('addLinkBtn').addEventListener('click',function(){openLinkModal();});
-document.getElementById('linkModalCancel').addEventListener('click',closeLinkModal);
-document.getElementById('linkModalOverlay').addEventListener('click',function(e){if(e.target===this)closeLinkModal();});
-document.getElementById('linkModalSave').addEventListener('click',saveLinkFromModal);
-document.getElementById('resetBtn').addEventListener('click',resetSettings);
-var donateLink=document.getElementById('donateLink');if(donateLink)donateLink.addEventListener('click',function(e){e.preventDefault();var qr=document.getElementById('donateQr');if(qr&&!qr.src){qr.src=qr.getAttribute('data-src');}document.getElementById('donateModalOverlay').classList.add('open');});
-var donateClose=document.getElementById('donateModalClose');if(donateClose)donateClose.addEventListener('click',function(){document.getElementById('donateModalOverlay').classList.remove('open');});
+var alb=document.getElementById('addLinkBtn');if(alb)alb.addEventListener('click',function(){openLinkModal();});
+var lmc=document.getElementById('linkModalCancel');if(lmc)lmc.addEventListener('click',closeLinkModal);
+var lmo2=document.getElementById('linkModalOverlay');if(lmo2)lmo2.addEventListener('click',function(e){if(e.target===this)closeLinkModal();});
+var lms=document.getElementById('linkModalSave');if(lms)lms.addEventListener('click',saveLinkFromModal);
+var rb=document.getElementById('resetBtn');if(rb)rb.addEventListener('click',resetSettings);
+var donateLink=document.getElementById('donateLink');if(donateLink)donateLink.addEventListener('click',function(e){e.preventDefault();var qr=document.getElementById('donateQr');if(qr&&!qr.src){qr.src=qr.getAttribute('data-src');}var dmo=document.getElementById('donateModalOverlay');if(dmo)dmo.classList.add('open');});
+var donateClose=document.getElementById('donateModalClose');if(donateClose)donateClose.addEventListener('click',function(){var dmo=document.getElementById('donateModalOverlay');if(dmo)dmo.classList.remove('open');});
 var donateOverlay=document.getElementById('donateModalOverlay');if(donateOverlay)donateOverlay.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
-var donateQr=document.getElementById('donateQr');if(donateQr){donateQr.addEventListener('click',function(){var z=document.getElementById('qrZoomOverlay');var zi=document.getElementById('qrZoomImg');zi.src=this.src;z.classList.add('open');});donateQr.addEventListener('error',function(){this.parentElement.innerHTML='<p style=color:var(--text-dim)>'+t('qrFailed')+'</p>';});}
+var donateQr=document.getElementById('donateQr');if(donateQr){donateQr.addEventListener('click',function(){var z=document.getElementById('qrZoomOverlay');var zi=document.getElementById('qrZoomImg');if(z&&zi){zi.src=this.src;z.classList.add('open');}});donateQr.addEventListener('error',function(){this.parentElement.innerHTML='<p style=color:var(--text-dim)>'+t('qrFailed')+'</p>';});}
 var qrZoom=document.getElementById('qrZoomOverlay');if(qrZoom)qrZoom.addEventListener('click',function(){this.classList.remove('open');});
-document.getElementById('linkNameInput').addEventListener('keydown',function(e){if(e.key==='Enter'){document.getElementById('linkUrlInput').focus();e.preventDefault();}});
-document.getElementById('linkUrlInput').addEventListener('keydown',function(e){if(e.key==='Enter'){saveLinkFromModal();}});
-document.getElementById('linkUrlInput').addEventListener('input',function(){
-var url=this.value.trim();updateFaviconBtn(url);});
+var lni2=document.getElementById('linkNameInput');if(lni2)lni2.addEventListener('keydown',function(e){if(e.key==='Enter'){var lui2=document.getElementById('linkUrlInput');if(lui2)lui2.focus();e.preventDefault();}});
+var lui2=document.getElementById('linkUrlInput');if(lui2){lui2.addEventListener('keydown',function(e){if(e.key==='Enter'){saveLinkFromModal();}});
+lui2.addEventListener('input',function(){
+var url=this.value.trim();updateFaviconBtn(url);});}
 document.addEventListener('keydown',function(e){
-if(e.key==='Escape'){closeSettings();suggestDropdown.classList.remove('open');}
-if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();document.getElementById('searchInput').focus();}});
+if(e.key==='Escape'){closeSettings();if(suggestDropdown)suggestDropdown.classList.remove('open');}
+if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();var si3=document.getElementById('searchInput');if(si3)si3.focus();}});
 window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',function(){if(settings.theme==='auto')applyAll();});
 fetchWeather();window.fetchWeather=fetchWeather;
 if(navigator.permissions&&navigator.permissions.query){
@@ -722,7 +723,7 @@ status.onchange=function(){if(this.state==='granted'&&!weatherLoaded)fetchWeathe
 }
 checkUpdate();
 }
-function closeSettings(){document.getElementById('settingsOverlay').classList.remove('open');document.getElementById('settingsPanel').classList.remove('open');}
+function closeSettings(){var ov=document.getElementById('settingsOverlay');if(ov)ov.classList.remove('open');var pn=document.getElementById('settingsPanel');if(pn)pn.classList.remove('open');}
 function checkUpdate(){if(!settings.checkUpdate)return;
 var today=new Date().toISOString().slice(0,10);
 var last;try{last=localStorage.getItem('lastUpdateCheck');}catch(e){}
@@ -739,7 +740,7 @@ if(compareVersion(latest,cur)>0){showUpdateBadge(d.tag_name,d.assets[0].browser_
 function compareVersion(a,b){var ap=a.split('.'),bp=b.split('.');
 for(var i=0;i<Math.max(ap.length,bp.length);i++){var an=parseInt(ap[i])||0,bn=parseInt(bp[i])||0;if(an>bn)return 1;if(an<bn)return -1;}return 0;}
 function showUpdateBadge(tag,url){
-var btn=document.getElementById('settingsBtn');
+var btn=document.getElementById('settingsBtn');if(!btn)return;
 var badge=document.createElement('span');
 badge.style.cssText='position:absolute;top:-4px;right:-4px;width:10px;height:10px;background:var(--accent);border-radius:50%;box-shadow:0 0 8px var(--accent-glow);z-index:2';
 badge.title=t('updateAvailable')+tag;
@@ -749,11 +750,11 @@ bar.className='update-bar';
 bar.innerHTML='<span>'+t('updateAvailable').replace(/ $/,'')+' '+escapeHtml(tag)+'</span><button class="btn sm accent" id="updateNow">'+t('updateNow')+'</button><button class="btn sm" id="updateDismiss">&times;</button>';
 document.body.appendChild(bar);
 setTimeout(function(){bar.classList.add('show');},500);
-document.getElementById('updateNow').addEventListener('click',function(){
+var un=document.getElementById('updateNow');if(un)un.addEventListener('click',function(){
 bar.innerHTML='<span>'+t('downloading')+'</span>';
 window.open(url,'_blank','noopener');bar.remove();
 });
-document.getElementById('updateDismiss').addEventListener('click',function(){bar.remove();});
+var ud=document.getElementById('updateDismiss');if(ud)ud.addEventListener('click',function(){bar.remove();});
 }
 document.addEventListener('DOMContentLoaded',init);
 })();
