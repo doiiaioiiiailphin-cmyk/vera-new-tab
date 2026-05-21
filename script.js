@@ -165,6 +165,9 @@ document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('st
   applyTheme();
 var bgBase=document.querySelector('.bg-base');
 var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES[0];
+var isLandscape=activeTheme.id==='landscape';
+var scene=document.getElementById('landscapeScene');
+if(scene)scene.style.display=isLandscape&&settings.showBgImage&&!settings.bgImage?'':'none';
 var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 document.querySelector('.bg-img-dark').src=activeTheme.bgDark;
@@ -172,6 +175,7 @@ document.querySelector('.bg-img-light').src=activeTheme.bgLight;
 document.querySelector('.bg-img-dark').className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');
 document.querySelector('.bg-img-light').className='bg-img bg-img-light'+(activeTheme.id==='landscape'?' bg-img-landscape':'');
 updateLandscapeFilter();
+applyLandscapeScene();
 }
 else if(settings.showBgImage&&settings.bgImage){bgBase.classList.add('has-image','custom-bg');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
 else{bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';}
@@ -202,7 +206,7 @@ dateStr=days[n.getDay()]+', '+(n.getMonth()+1)+'/'+n.getDate()+'/'+n.getFullYear
 dateStr=n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 '+days[n.getDay()];
 }
 document.getElementById('clockDate').textContent=dateStr;}
-function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();updateLandscapeFilter();setInterval(function(){updateClock();updateLandscapeFilter();},60000);},s*1000);}
+function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();setInterval(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();},60000);},s*1000);}
 
 function updateEngineDisplay(){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
@@ -417,7 +421,7 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 '</div></div>';
 weatherLoaded=true;weatherPending=false;
 try{localStorage.setItem('weatherCache',JSON.stringify(lastWeather));}catch(e){}
-updateLandscapeFilter();
+updateLandscapeFilter();applyLandscapeScene();
 }).catch(function(e){clearTimeout(to);if(e.name!=='AbortError')tryOM(lat,lon,wc);});
 }
 
@@ -437,7 +441,7 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 '<div class="weather-loc">'+t('windSpeed')+': '+escapeHtml(''+w.windspeed)+' km/h</div></div></div>';
 weatherLoaded=true;weatherPending=false;
 try{localStorage.setItem('weatherCache',JSON.stringify(lastWeather));}catch(e){}
-updateLandscapeFilter();
+updateLandscapeFilter();applyLandscapeScene();
 }).catch(function(e){clearTimeout(to);showWFail(wc);});
 }
 
@@ -488,6 +492,48 @@ if(!imgs.length)return;var h=new Date().getHours();var f='';
 if(h>=6&&h<9)f='brightness(1.0) saturate(1.2) sepia(0.25)';else if(h>=9&&h<16)f='brightness(1.0) saturate(1.0)';else if(h>=16&&h<19)f='brightness(0.9) saturate(1.3) sepia(0.35)';else f='brightness(0.35) saturate(0.5) hue-rotate(-25deg)';
 if(lastWeather){var c=lastWeather.code;if(c>=119&&c<=122||c>=2&&c<=3||c===45||c===48)f+=' saturate(0.5)';if(c>=263&&c<=311||c===182||c===185||c>=51&&c<=67||c>=80&&c<=82)f+=' brightness(0.8) saturate(0.3)';if(c>=314&&c<=395||c>=71&&c<=77||c>=85&&c<=86)f+=' brightness(1.1) saturate(0.4) hue-rotate(10deg)';}
 imgs.forEach(function(img){img.style.filter=f;});}
+
+var LSEASONS=[{skyTop:'#d9f0e6',skyMid:'#f3dfcf',skyBottom:'#eec2a7',farTop:'#a8c9b3',farBottom:'#80aa9c',side:'#6f9e90',nearTop:'#4f7770',nearBottom:'#31595a',lakeTop:'#b8d7cf',lakeMid:'#9dc8bf',lakeBottom:'#6f9997',foreTop:'#2d5850',foreBottom:'#173a38',dots:0.72,snow:0},
+{skyTop:'#b8e6ea',skyMid:'#e6ecd0',skyBottom:'#f0d0a4',farTop:'#8fb8a2',farBottom:'#689d8d',side:'#5d8d80',nearTop:'#426f67',nearBottom:'#284f51',lakeTop:'#a9d7d2',lakeMid:'#83bdb7',lakeBottom:'#5f9698',foreTop:'#23534a',foreBottom:'#153c37',dots:0.25,snow:0},
+{skyTop:'#f0b07f',skyMid:'#e8b37a',skyBottom:'#bf735d',farTop:'#d6a35f',farBottom:'#b67f4a',side:'#a96343',nearTop:'#795638',nearBottom:'#483a2c',lakeTop:'#cfb98c',lakeMid:'#b69d75',lakeBottom:'#887661',foreTop:'#5a3f29',foreBottom:'#2f2b23',dots:0.65,snow:0},
+{skyTop:'#d4e3e9',skyMid:'#d7dce4',skyBottom:'#c5b6ba',farTop:'#bacbd0',farBottom:'#95adb5',side:'#849aa3',nearTop:'#5e727b',nearBottom:'#334951',lakeTop:'#bfd4d8',lakeMid:'#a8bec6',lakeBottom:'#829da8',foreTop:'#2b454d',foreBottom:'#182f38',dots:0,snow:0.82}];
+var LTIMES=[{top:'#15203a',mid:'#293651',bottom:'#566075',sun:'#dbeaff',halo:'#8fb0d8',flow:'#cfe8ff',cloud:0.18},{top:'#c8e6ea',mid:'#f3d7c7',bottom:'#e4af95',sun:'#ffe0a0',halo:'#f1a985',flow:'#e8f5ef',cloud:0.3},{top:'#9bd5e5',mid:'#d8f0ed',bottom:'#f1dfc0',sun:'#fff1b8',halo:'#f7d894',flow:'#f4fffb',cloud:0.24},{top:'#e39b84',mid:'#c0787b',bottom:'#5a4569',sun:'#ffbd82',halo:'#e98176',flow:'#ffe7d5',cloud:0.2},{top:'#15203a',mid:'#293651',bottom:'#566075',sun:'#dbeaff',halo:'#8fb0d8',flow:'#cfe8ff',cloud:0.18}];
+var LWEATHERS={clear:{dim:0,cloudBoost:0,sunScale:1,flowBoost:0},rain:{dim:0.16,cloudBoost:0.34,sunScale:0.58,flowBoost:0.2},snow:{dim:0.12,cloudBoost:0.28,sunScale:0.68,flowBoost:0.08},cloudy:{dim:0.18,cloudBoost:0.42,sunScale:0.48,flowBoost:0.02}};
+
+function lsHexToRgb(h){var v=h.replace('#','');return[parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)];}
+function lsRgbToHex(r){return'#'+r.map(function(v){var p=Math.max(0,Math.min(255,Math.round(v))).toString(16);return p.length===1?'0'+p:p;}).join('');}
+function lsMix(a,b,t){var ca=lsHexToRgb(a),cb=lsHexToRgb(b);return lsRgbToHex(ca.map(function(v,i){return v+(cb[i]-v)*t;}));}
+function lsPick(list,angle){var pos=(angle%360)/360*(list.length-1),idx=Math.floor(pos),next=Math.min(idx+1,list.length-1);return{a:list[idx],b:list[next],t:pos-idx};}
+function lsBlendSeason(angle){var c=lsPick(LSEASONS.concat([LSEASONS[0]]),angle),r={};Object.keys(c.a).forEach(function(k){if(k==='name')return;r[k]=typeof c.a[k]==='number'?c.a[k]+(c.b[k]-c.a[k])*c.t:lsMix(c.a[k],c.b[k],c.t);});return r;}
+function lsBlendTime(angle){var c=lsPick(LTIMES,angle),r={};['top','mid','bottom','sun','halo','flow'].forEach(function(k){r[k]=lsMix(c.a[k],c.b[k],c.t);});r.cloud=c.a.cloud+(c.b.cloud-c.a.cloud)*c.t;return r;}
+function lsSetStop(id,color){var el=document.getElementById(id);if(el)el.setAttribute('stop-color',color);}
+function lsSetSun(angle,sunScale){var rad=(angle-180)*Math.PI/180,x=960+560*Math.sin(rad),y=650-300*Math.cos(rad),day=Math.max(0,Math.cos(rad)),op=(0.16+day*0.8)*sunScale;['ls-sunCore','ls-sunHalo1','ls-sunHalo2','ls-sunHalo3','ls-sunHalo4'].forEach(function(id){var el=document.getElementById(id);if(el){el.setAttribute('cx',x.toFixed(1));el.setAttribute('cy',y.toFixed(1));}});var sc=document.getElementById('ls-sunCore');if(sc)sc.setAttribute('opacity',op.toFixed(2));var sh=document.getElementById('ls-sunHalo');if(sh)sh.setAttribute('opacity',((0.22+day*0.5)*sunScale).toFixed(2));}
+
+function applyLandscapeScene(){
+var scene=document.getElementById('landscapeScene');if(!scene||scene.style.display==='none')return;
+var h=new Date().getHours(),m=new Date().getMonth();
+var timeAngle=(h*60+new Date().getMinutes())/1440*360,seasonAngle=(m/12)*360;
+var s=lsBlendSeason(seasonAngle),t=lsBlendTime(timeAngle);
+var wKey='clear';if(lastWeather){var c=lastWeather.code;if(c>=119&&c<=122||c>=2&&c<=3||c===45||c===48)wKey='cloudy';else if(c>=263&&c<=311||c===182||c===185||c>=51&&c<=67||c>=80&&c<=82)wKey='rain';else if(c>=314&&c<=395||c>=71&&c<=77||c>=85&&c<=86)wKey='snow';}
+var w=LWEATHERS[wKey],rad=(timeAngle-180)*Math.PI/180,day=Math.max(0,Math.cos(rad)),nightMix=Math.min(0.72,(1-day)*0.44+w.dim*0.42),skySS=0.08+day*0.14;
+lsSetStop('ls-skyTop',lsMix(t.top,s.skyTop,skySS));lsSetStop('ls-skyMid',lsMix(t.mid,s.skyMid,skySS));lsSetStop('ls-skyBottom',lsMix(t.bottom,s.skyBottom,skySS));
+lsSetStop('ls-farHillTop',lsMix(s.farTop,'#17263a',nightMix));lsSetStop('ls-farHillBottom',lsMix(s.farBottom,'#182d38',nightMix));
+lsSetStop('ls-nearHillTop',lsMix(s.nearTop,'#111f2d',nightMix));lsSetStop('ls-nearHillBottom',lsMix(s.nearBottom,'#0d1b24',nightMix));
+lsSetStop('ls-lakeTop',lsMix(s.lakeTop,t.top,0.18+nightMix*0.4));lsSetStop('ls-lakeMid',lsMix(s.lakeMid,t.mid,0.16+nightMix*0.36));lsSetStop('ls-lakeBottom',lsMix(s.lakeBottom,'#172b36',nightMix));
+lsSetStop('ls-foregroundTop',lsMix(s.foreTop,'#0d1c24',nightMix));lsSetStop('ls-foregroundBottom',lsMix(s.foreBottom,'#071219',nightMix));
+var sm=document.getElementById('ls-sideMountain');if(sm)sm.setAttribute('fill',lsMix(s.side,'#122633',nightMix));
+var mm=document.getElementById('ls-mainMountain');if(mm)mm.setAttribute('opacity',(0.94-nightMix*0.1).toFixed(2));
+var sc=document.getElementById('ls-sunCore');if(sc)sc.setAttribute('fill',t.sun);
+['ls-sunHalo1','ls-sunHalo2','ls-sunHalo3','ls-sunHalo4'].forEach(function(id){var el=document.getElementById(id);if(el)el.setAttribute('fill',t.halo);});
+var wf=document.getElementById('ls-waterFlow');if(wf){wf.setAttribute('stroke',t.flow);wf.setAttribute('opacity',(0.34+w.flowBoost).toFixed(2));}
+var cl=document.getElementById('ls-clouds');if(cl)cl.setAttribute('opacity',Math.min(0.84,t.cloud+w.cloudBoost).toFixed(2));
+var hm=document.getElementById('ls-horizonMist');if(hm)hm.setAttribute('fill',lsMix('#d7e4df',t.bottom,0.2));
+var rip=document.getElementById('ls-ripples');if(rip)rip.setAttribute('opacity',(0.12+day*0.14).toFixed(2));
+var wd=document.getElementById('ls-weatherDim');if(wd)wd.setAttribute('opacity',w.dim.toFixed(2));
+var sn=document.getElementById('ls-snowCap');if(sn)sn.setAttribute('opacity',(Math.max(s.snow,wKey==='snow'?0.78:0)*(0.6+day*0.4)).toFixed(2));
+var sd=document.getElementById('ls-seasonDots');if(sd)sd.setAttribute('opacity',(s.dots*(0.35+day*0.65)).toFixed(2));
+lsSetSun(timeAngle,w.sunScale);
+}
 function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
