@@ -406,7 +406,7 @@ outline:none;transition:all var(--transition);}
 #qrZoomOverlay.open{opacity:1;visibility:visible;}
 #qrZoomOverlay img{width:90vw;max-height:90vh;object-fit:contain;border-radius:var(--radius);box-shadow:0 0 60px rgba(0,0,0,0.5);cursor:pointer;}
 
-.icon-picker{display:flex;flex-wrap:wrap;gap:6px;max-height:140px;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;}
+.icon-picker{display:flex;flex-wrap:wrap;gap:5px;max-height:140px;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;}
 .icon-picker::-webkit-scrollbar{display:none}
 .icon-picker button{width:40px;height:40px;border-radius:10px;background:transparent;
 border:1px solid transparent;cursor:pointer;transition:all var(--transition-fast);
