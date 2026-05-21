@@ -510,7 +510,7 @@ function lsSetStop(id,color){var el=document.getElementById(id);if(el)el.setAttr
 function lsSetSun(angle,sunScale){var rad=(angle-180)*Math.PI/180,x=960+560*Math.sin(rad),y=650-300*Math.cos(rad),day=Math.max(0,Math.cos(rad)),op=(0.16+day*0.8)*sunScale;['ls-sunCore','ls-sunHalo1','ls-sunHalo2','ls-sunHalo3','ls-sunHalo4'].forEach(function(id){var el=document.getElementById(id);if(el){el.setAttribute('cx',x.toFixed(1));el.setAttribute('cy',y.toFixed(1));}});var sc=document.getElementById('ls-sunCore');if(sc)sc.setAttribute('opacity',op.toFixed(2));var sh=document.getElementById('ls-sunHalo');if(sh)sh.setAttribute('opacity',((0.22+day*0.5)*sunScale).toFixed(2));}
 
 function applyLandscapeScene(){
-var scene=document.getElementById('landscapeScene');if(!scene||!scene.classList.contains('on'))return;
+var scene=document.getElementById('landscapeScene');if(!scene||(!scene.classList.contains('on')&&!lDebugMode))return;
 var h=lDebugHour!==undefined?lDebugHour:new Date().getHours(),m=new Date().getMonth();
 var timeAngle=(h*60+new Date().getMinutes())/1440*360,seasonAngle=(m/12)*360;
 var s=lsBlendSeason(seasonAngle),t=lsBlendTime(timeAngle);
@@ -566,16 +566,15 @@ layer.appendChild(sg);}
 }
 
 window.__vera={
-scene:function(h,w){if(h!==undefined)lDebugHour=h;if(w!==undefined)lDebugWeather=w;var t=lastWeather;try{lastWeather=lDebugWeather?{code:lDebugWeather}:t;}catch(e){}var now=new Date();var orig=now.getHours();if(lDebugHour!==undefined){now.getHours=function(){return lDebugHour;};now.getMinutes=function(){return 0;};}
+scene:function(h,w){if(h!==undefined)lDebugHour=h;if(w!==undefined)lDebugWeather=w;lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene)scene.classList.add('on');if(lDebugWeather){lastWeather={code:lDebugWeather};}else if(!lastWeather){lastWeather={code:113};}
 applyLandscapeScene();
-try{lastWeather=t;}catch(e){}
 },
-weather:function(w){lastWeather={code:w};createWeatherEffect(w==71||w==314?'snow':w>=51||w>=263?'rain':w>=119||w>=2?'cloudy':'clear');applyLandscapeScene();},
-time:function(h){lDebugHour=h;applyLandscapeScene();},
-reset:function(){lDebugHour=undefined;lDebugWeather=undefined;applyLandscapeScene();},
-status:function(){console.log('debugHour:',lDebugHour,'debugWeather:',lDebugWeather,'realHour:',new Date().getHours(),'lastWeather:',lastWeather?lastWeather.code:'none','scene:',document.getElementById('landscapeScene')?document.getElementById('landscapeScene').style.display:'N/A');}
+weather:function(w){lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene)scene.classList.add('on');lastWeather={code:w};createWeatherEffect(w==71||w==314?'snow':w>=51||w>=263?'rain':w>=119||w>=2?'cloudy':'clear');applyLandscapeScene();},
+time:function(h){lDebugHour=h;lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene)scene.classList.add('on');applyLandscapeScene();},
+reset:function(){lDebugHour=undefined;lDebugWeather=undefined;lDebugMode=false;var scene=document.getElementById('landscapeScene');var isLandscape=settings.bgTheme==='landscape'&&settings.showBgImage&&!settings.bgImage;if(scene)scene.classList.toggle('on',isLandscape);applyLandscapeScene();},
+status:function(){console.log('debugHour:',lDebugHour,'debugWeather:',lDebugWeather,'debugMode:',lDebugMode,'scene on:',document.getElementById('landscapeScene')?document.getElementById('landscapeScene').classList.contains('on'):'N/A');}
 };
-var lDebugHour,lDebugWeather;
+var lDebugHour,lDebugWeather,lDebugMode;
 function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
