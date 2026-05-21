@@ -464,6 +464,7 @@ updateThemeRadio();
 }
 function updateToggle(id,val){var btn=document.getElementById(id);if(btn)btn.classList.toggle('on',val);}
 function renderThemePicker(){var tp=document.getElementById('themePicker');if(!tp)return;
+if(!THEMES||!THEMES.length)return;
 tp.innerHTML=THEMES.map(function(th){var active=th.id===settings.bgTheme?' active':'';
 return'<div class="theme-card'+active+'" data-theme="'+th.id+'"><img src="'+th.bgDark+'" alt="" class="theme-thumb-dark"><img src="'+th.bgLight+'" alt="" class="theme-thumb-light"><span>'+t(th.nameKey)+'</span></div>';}).join('');
 tp.querySelectorAll('.theme-card').forEach(function(card){card.addEventListener('click',function(){
