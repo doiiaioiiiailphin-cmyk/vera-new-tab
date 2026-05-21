@@ -590,7 +590,7 @@ settings.language=langs[(idx+1)%langs.length];saveSettings();renderQuickLinks();
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
 settings=JSON.parse(JSON.stringify(DEFAULTS));delete settings._showBgAuto;delete settings.bgThemeSaved;saveSettings();renderQuickLinks();applyAll();updateClock();
-setTimeout(function(){updateSettingsUI();},100);
+setTimeout(function(){updateSettingsUI();renderThemePicker();},100);
 }
 
 // Native fetch-based search suggestions for all engines (no JSONP)
