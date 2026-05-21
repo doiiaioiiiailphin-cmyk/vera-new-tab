@@ -205,7 +205,7 @@ dateStr=days[n.getDay()]+', '+(n.getMonth()+1)+'/'+n.getDate()+'/'+n.getFullYear
 dateStr=n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 '+days[n.getDay()];
 }
 var cd=document.getElementById('clockDate');if(cd)cd.textContent=dateStr;}
-function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();setInterval(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();},60000);setInterval(function(){applyLandscapeScene();},10000);},s*1000);}
+function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();setInterval(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();},60000);},s*1000);}
 
 function updateEngineDisplay(){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
