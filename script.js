@@ -484,7 +484,6 @@ if(!imgs.length)return;var h=new Date().getHours();var f='';
 if(h>=6&&h<9)f='brightness(1.0) saturate(1.2) sepia(0.25)';else if(h>=9&&h<16)f='brightness(1.0) saturate(1.0)';else if(h>=16&&h<19)f='brightness(0.9) saturate(1.3) sepia(0.35)';else f='brightness(0.35) saturate(0.5) hue-rotate(-25deg)';
 if(lastWeather&&lastWeather.src==='wttr'){var c=lastWeather.code;if(c>=119&&c<=122)f+=' saturate(0.5)';if(c>=263&&c<=311||c===182||c===185)f+=' brightness(0.8) saturate(0.3)';if(c>=314&&c<=395)f+=' brightness(1.1) saturate(0.4) hue-rotate(10deg)';}
 imgs.forEach(function(img){img.style.filter=f;});}
-);});}
 function escapeHtml(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
