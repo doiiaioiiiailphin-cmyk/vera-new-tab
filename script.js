@@ -468,6 +468,7 @@ if(!THEMES||!THEMES.length)return;
 tp.innerHTML=THEMES.map(function(th){var active=th.id===settings.bgTheme?' active':'';
 return'<div class="theme-card'+active+'" data-theme="'+th.id+'"><img src="'+th.bgDark+'" alt="" class="theme-thumb-dark"><img src="'+th.bgLight+'" alt="" class="theme-thumb-light"><span>'+t(th.nameKey)+'</span></div>';}).join('');
 tp.querySelectorAll('.theme-card').forEach(function(card){card.addEventListener('click',function(){
+if(this.dataset.theme===settings.bgTheme&&settings.showBgImage){settings.showBgImage=false;settings.bgTheme='';saveSettings();applyAll();renderThemePicker();return;}
 settings.bgTheme=this.dataset.theme;settings.showBgImage=true;
 var th=THEMES.find(function(t){return t.id===settings.bgTheme;});
 if(th){if(th.preset)settings.bgPreset=th.preset;if(th.accent)settings.accent=th.accent;}
