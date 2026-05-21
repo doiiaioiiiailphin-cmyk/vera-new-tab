@@ -478,7 +478,7 @@ updateThemeRadio();
 function updateToggle(id,val){var btn=document.getElementById(id);if(btn)btn.classList.toggle('on',val);}
 function renderThemePicker(){var tp=document.getElementById('themePicker');if(!tp)return;
 if(!THEMES||!THEMES.length)return;
-tp.innerHTML=THEMES.map(function(th){var active=th.id===settings.bgTheme?' active':'';
+tp.innerHTML=THEMES.map(function(th){var active=(th.id===settings.bgTheme&&settings.showBgImage)?' active':'';
 return'<div class="theme-card'+active+'" data-theme="'+th.id+'"><img src="'+th.bgDark+'" alt="" class="theme-thumb-dark"><img src="'+th.bgLight+'" alt="" class="theme-thumb-light"><span>'+t(th.nameKey)+'</span></div>';}).join('');
 tp.querySelectorAll('.theme-card').forEach(function(card){card.addEventListener('click',function(){
 if(this.dataset.theme===settings.bgTheme&&settings.showBgImage){settings.showBgImage=false;settings.bgTheme='';saveSettings();applyAll();renderThemePicker();return;}
@@ -691,7 +691,7 @@ var ttd=document.getElementById('toggleTodo');if(ttd)ttd.addEventListener('click
 var tq=document.getElementById('toggleQuote');if(tq)tq.addEventListener('click',function(){settings.showQuote=!settings.showQuote;saveSettings();applyAll();});
 var tl=document.getElementById('toggleLinks');if(tl)tl.addEventListener('click',function(){settings.showLinks=!settings.showLinks;saveSettings();applyAll();});
 var tdb=document.getElementById('toggleDynamicBg');if(tdb)tdb.addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
-var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;settings._showBgAuto=undefined;if(settings.showBgImage&&!settings.bgTheme)settings.bgTheme='horizon';saveSettings();applyAll();});
+var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;settings._showBgAuto=undefined;if(settings.showBgImage&&(!settings.bgTheme||settings.bgTheme===''))settings.bgTheme='horizon';saveSettings();applyAll();});
 var tcu=document.getElementById('toggleCheckUpdate');if(tcu)tcu.addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
 function moveRadioSlider(groupEl){if(!groupEl)return;var slider=groupEl.querySelector('.radio-slider');var active=groupEl.querySelector('.radio-option.active');if(!slider||!active)return;var r0=groupEl.getBoundingClientRect();var r1=active.getBoundingClientRect();slider.style.left=(r1.left-r0.left)+'px';slider.style.width=r1.width+'px';}
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){
