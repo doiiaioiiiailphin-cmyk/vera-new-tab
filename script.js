@@ -168,7 +168,7 @@ var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES
 var isLandscape=activeTheme.id==='landscape';
 var scene=document.getElementById('landscapeScene');
 lDebugMode=false;lDebugHour=undefined;lDebugWeather=undefined;
-if(scene)scene.classList.toggle('on',isLandscape&&settings.showBgImage&&!settings.bgImage);
+if(scene){var showScene=isLandscape&&settings.showBgImage&&!settings.bgImage;scene.style.display=showScene?'':'none';scene.classList.toggle('on',showScene);}
 var builtinBg=settings.showBgImage&&!settings.bgImage;
 if(builtinBg){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 var bgDark=document.querySelector('.bg-img-dark');if(bgDark){bgDark.src=activeTheme.bgDark;bgDark.className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
@@ -204,7 +204,7 @@ dateStr=days[n.getDay()]+', '+(n.getMonth()+1)+'/'+n.getDate()+'/'+n.getFullYear
 dateStr=n.getFullYear()+'年'+(n.getMonth()+1)+'月'+n.getDate()+'日 '+days[n.getDay()];
 }
 var cd=document.getElementById('clockDate');if(cd)cd.textContent=dateStr;}
-function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();setInterval(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();},60000);},s*1000);}
+function scheduleClock(){var s=60-new Date().getSeconds();setTimeout(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();setInterval(function(){updateClock();updateLandscapeFilter();applyLandscapeScene();},60000);setInterval(function(){applyLandscapeScene();},10000);},s*1000);}
 
 function updateEngineDisplay(){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
@@ -566,12 +566,12 @@ layer.appendChild(sg);}
 }
 
 window.__vera={
-scene:function(h,w){if(h!==undefined)lDebugHour=h;if(w!==undefined)lDebugWeather=w;lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene)scene.classList.add('on');if(lDebugWeather){lastWeather={code:lDebugWeather};}else if(!lastWeather){lastWeather={code:113};}
+scene:function(h,w){if(h!==undefined)lDebugHour=h;if(w!==undefined)lDebugWeather=w;lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene){scene.style.display='';scene.classList.add('on');}if(lDebugWeather){lastWeather={code:lDebugWeather};}else if(!lastWeather){lastWeather={code:113};}
 applyLandscapeScene();
 },
-weather:function(w){lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene)scene.classList.add('on');lastWeather={code:w};createWeatherEffect(w==71||w==314?'snow':w>=51||w>=263?'rain':w>=119||w>=2?'cloudy':'clear');applyLandscapeScene();},
-time:function(h){lDebugHour=h;lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene)scene.classList.add('on');applyLandscapeScene();},
-reset:function(){lDebugHour=undefined;lDebugWeather=undefined;lDebugMode=false;var scene=document.getElementById('landscapeScene');var isLandscape=settings.bgTheme==='landscape'&&settings.showBgImage&&!settings.bgImage;if(scene)scene.classList.toggle('on',isLandscape);applyLandscapeScene();},
+weather:function(w){lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene){scene.style.display='';scene.classList.add('on');}lastWeather={code:w};createWeatherEffect(w==71||w==314?'snow':w>=51||w>=263?'rain':w>=119||w>=2?'cloudy':'clear');applyLandscapeScene();},
+time:function(h){lDebugHour=h;lDebugMode=true;var scene=document.getElementById('landscapeScene');if(scene){scene.style.display='';scene.classList.add('on');}applyLandscapeScene();},
+reset:function(){lDebugHour=undefined;lDebugWeather=undefined;lDebugMode=false;var scene=document.getElementById('landscapeScene');var isLandscape=settings.bgTheme==='landscape'&&settings.showBgImage&&!settings.bgImage;if(scene){scene.style.display=isLandscape?'':'none';scene.classList.toggle('on',isLandscape);}applyLandscapeScene();},
 status:function(){console.log('debugHour:',lDebugHour,'debugWeather:',lDebugWeather,'debugMode:',lDebugMode,'scene on:',document.getElementById('landscapeScene')?document.getElementById('landscapeScene').classList.contains('on'):'N/A');}
 };
 var lDebugHour,lDebugWeather,lDebugMode;
