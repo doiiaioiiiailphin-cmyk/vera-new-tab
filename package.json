@@ -1,0 +1,23 @@
+{
+  "name": "bfq",
+  "version": "1.0.0",
+  "description": "<p align=\"center\">\r   <img src=\"icons/icon128.png\" width=\"96\" alt=\"Vera\">\r </p>",
+  "main": "game.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab/issues"
+  },
+  "homepage": "https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab#readme",
+  "devDependencies": {
+    "acorn": "^8.16.0"
+  }
+}
