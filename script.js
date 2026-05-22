@@ -125,10 +125,10 @@ if(!raw||!raw.language){var bl=(navigator.language||'').split('-')[0];settings.l
 }
 function saveSettings(){try{localStorage.setItem('newtab_settings_v3',JSON.stringify(settings));}catch(e){}}
 // Fallback stubs — vip.js/game.js provide real implementations when bundled
-if(typeof bindVipEvents==='undefined')function bindVipEvents(){}
-if(typeof initAds==='undefined')function initAds(){}
-if(typeof toggleAds==='undefined')function toggleAds(){}
-if(typeof initGame==='undefined')function initGame(){}
+if(typeof bindVipEvents==='undefined')var bindVipEvents=function(){};
+if(typeof initAds==='undefined')var initAds=function(){};
+if(typeof toggleAds==='undefined')var toggleAds=function(){};
+if(typeof initGame==='undefined')var initGame=function(){};
 
 function applyTheme(){
 if(theme==='auto'){
