@@ -193,8 +193,8 @@ transition:transform var(--transition-spring),background var(--transition-fast);
 .link-icon-clip{display:inline-block;width:42px;height:26px;overflow:hidden;border-radius:6px;}
 .link-favicon{position:absolute;inset:0;width:100%;height:100%;
 border-radius:14px;object-fit:contain;z-index:1;padding:9px;transition:opacity var(--transition-fast);}
-img[src*="github.com"]{filter:invert(1);}
-img[src*="github.githubassets"]{filter:invert(1);}
+:root[data-theme=light] img[src*="github.com"],
+:root[data-theme=light] img[src*="github.githubassets"]{filter:invert(1);}
 .link-card:hover .link-icon{transform:scale(1.1) rotate(-5deg);background:var(--glass-active);}
 .link-card:hover .link-icon .icon-svg{color:var(--accent);}
 .link-name{font-size:12px;font-weight:500;color:var(--text-dim);text-align:center;line-height:1.3;transition:color var(--transition);word-break:break-word;}
