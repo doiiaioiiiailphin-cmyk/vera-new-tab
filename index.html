@@ -128,6 +128,11 @@
 <input class="todo-input" id="todoInput" type="text" data-i18n-placeholder="todoPlaceholder" placeholder="添加新任务...">
 <ul class="todo-list" id="todoList"></ul>
 </div>
+<div class="widget game-widget" id="gameWidget" style="display:none">
+<div class="widget-title" data-i18n="game">小游戏</div>
+<canvas id="gameCanvas" width="300" height="200" style="width:100%;height:auto;border-radius:var(--radius-xs);display:block"></canvas>
+<div id="gameScore" style="text-align:center;font-size:13px;color:var(--text-dim);margin-top:8px"></div>
+</div>
 </div>
 </div>
 
@@ -181,6 +186,7 @@
 <div class="settings-row"><label data-i18n="showTodo">待办组件</label><button class="toggle-switch on" id="toggleTodo"></button></div>
 <div class="settings-row"><label data-i18n="showQuote">名言组件</label><button class="toggle-switch on" id="toggleQuote"></button></div>
 <div class="settings-row"><label data-i18n="showLinks">快捷链接</label><button class="toggle-switch on" id="toggleLinks"></button></div>
+<div class="settings-row"><label data-i18n="showGame">小游戏</label><button class="toggle-switch" id="toggleGame"></button></div>
 <div class="settings-row"><label data-i18n="checkUpdate">检查更新</label><button class="toggle-switch on" id="toggleCheckUpdate"></button></div>
 </div>
 
@@ -246,6 +252,7 @@
 
 <script src="i18n.js"></script>
 <script src="quotes.js"></script>
+<script src="game.js"></script>
 <script src="vip.js"></script>
 <script src="script.js"></script>
 

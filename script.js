@@ -4,7 +4,7 @@
 var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','book','music','camera','phone','bulb','palette','chart','dollar','zap','fire','gamepad'];
 
 var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgTheme:'horizon',showBgImage:false,checkUpdate:true,
-showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
+showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,showGame:false,
 searchEngine:'google',theme:'auto',language:'zh',vip:false,
 links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false},
 {icon:'code',name:'GitHub',url:'https://github.com'},
@@ -124,10 +124,11 @@ for(var k in DEFAULTS){if(!(k in settings))settings[k]=DEFAULTS[k];}
 if(!raw||!raw.language){var bl=(navigator.language||'').split('-')[0];settings.language={'zh':'zh','ja':'ja'}[bl]||'en';saveSettings();}
 }
 function saveSettings(){try{localStorage.setItem('newtab_settings_v3',JSON.stringify(settings));}catch(e){}}
-// Fallback stubs — vip.js provides real implementations when bundled
+// Fallback stubs — vip.js/game.js provide real implementations when bundled
 if(typeof bindVipEvents==='undefined')function bindVipEvents(){}
 if(typeof initAds==='undefined')function initAds(){}
 if(typeof toggleAds==='undefined')function toggleAds(){}
+if(typeof initGame==='undefined')function initGame(){}
 
 function applyTheme(){
 if(theme==='auto'){
@@ -250,13 +251,15 @@ function updateWidgetVisibility(){
 var w=document.getElementById('weatherWidget');if(w)w.style.display=settings.showWeather?'':'none';
 var q=document.getElementById('quoteWidget');if(q)q.style.display=settings.showQuote?'':'none';
 var t=document.getElementById('todoWidget');if(t)t.style.display=settings.showTodo?'':'none';
+var gm=document.getElementById('gameWidget');if(gm)gm.style.display=settings.showGame?'':'none';
 var l=document.getElementById('linksContainer');if(l)l.style.display=settings.showLinks?'':'none';
 var g=document.getElementById('widgetsGrid');if(g){
-var anyVis=settings.showWeather||settings.showTodo||settings.showQuote;
+var anyVis=settings.showWeather||settings.showTodo||settings.showQuote||settings.showGame;
 g.style.display=anyVis?'':'none';
 var visibleWidgets=[];
 if(settings.showWeather)visibleWidgets.push(1);
 if(settings.showQuote)visibleWidgets.push(1);
+if(settings.showGame)visibleWidgets.push(1);
 if(visibleWidgets.length===1)g.classList.add('single-col');
 else g.classList.remove('single-col');
 }
@@ -471,6 +474,7 @@ updateToggle('toggleWeather',settings.showWeather);
 updateToggle('toggleTodo',settings.showTodo);
 updateToggle('toggleQuote',settings.showQuote);
 updateToggle('toggleLinks',settings.showLinks);
+updateToggle('toggleGame',settings.showGame);
 updateToggle('toggleDynamicBg',settings.dynamicBg);
 updateToggle('toggleCheckUpdate',settings.checkUpdate);
 renderThemePicker();
@@ -644,7 +648,7 @@ fetch('https://duckduckgo.com/ac/?q='+encodeURIComponent(q)+'&type=list')
 }else{renderSuggest([]);}}
 
 function init(){
-loadSettings();bindVipEvents();initAds();applyAll();renderQuickLinks();
+loadSettings();bindVipEvents();initAds();initGame();applyAll();renderQuickLinks();
 updateClock();scheduleClock();
 showQuote();
 var qc=document.getElementById('quoteWidget');if(qc){qc.addEventListener('mousedown',function(e){if(e.detail>1){e.preventDefault();window.getSelection().removeAllRanges();}qc._ts=Date.now();});qc.addEventListener('mouseup',function(){if(qc._ts&&Date.now()-qc._ts<300&&!window.getSelection().toString().trim())refreshQuote();});}
@@ -711,6 +715,7 @@ var tw=document.getElementById('toggleWeather');if(tw)tw.addEventListener('click
 var ttd=document.getElementById('toggleTodo');if(ttd)ttd.addEventListener('click',function(){settings.showTodo=!settings.showTodo;saveSettings();applyAll();});
 var tq=document.getElementById('toggleQuote');if(tq)tq.addEventListener('click',function(){settings.showQuote=!settings.showQuote;saveSettings();applyAll();});
 var tl=document.getElementById('toggleLinks');if(tl)tl.addEventListener('click',function(){settings.showLinks=!settings.showLinks;saveSettings();applyAll();});
+var tg=document.getElementById('toggleGame');if(tg)tg.addEventListener('click',function(){settings.showGame=!settings.showGame;saveSettings();applyAll();});
 var tdb=document.getElementById('toggleDynamicBg');if(tdb)tdb.addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
 var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;settings._showBgAuto=undefined;if(settings.showBgImage&&(!settings.bgTheme||settings.bgTheme===''))settings.bgTheme='horizon';saveSettings();applyAll();});
 var tcu=document.getElementById('toggleCheckUpdate');if(tcu)tcu.addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
