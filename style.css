@@ -486,3 +486,8 @@ transition:transform var(--transition-spring);font-size:13px;color:var(--text);}
 .update-bar.show{transform:translateX(-50%) translateY(0);}
 .update-bar #updateDismiss{width:28px;height:28px;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;font-size:16px;}
 .update-bar .btn.sm{padding:6px 16px;}
+
+/* Google AdSense slots — hidden by default until ADS_ENABLED */
+.ad-container{position:fixed;z-index:50;overflow:hidden;}
+#ad-sidebar{top:120px;right:16px;width:160px;min-height:600px;}
+#ad-bottom{bottom:0;left:50%;transform:translateX(-50%);width:728px;height:90px;}
