@@ -263,7 +263,7 @@ background:none;border:none;display:flex;align-items:center;line-height:1;paddin
 .todo-item:hover .todo-del{opacity:1;}
 .todo-del:hover{color:#ff6b6b;transform:scale(1.2);}
 
-.quote-content{display:flex;flex-direction:column;gap:8px;min-height:60px;justify-content:center;-webkit-font-smoothing:antialiased;}
+.quote-content{display:flex;flex-direction:column;gap:8px;min-height:60px;justify-content:center;-webkit-font-smoothing:antialiased;transform:translateZ(0);}
 .quote-content.bounce{animation:quoteBounce 0.4s ease}
 @keyframes quoteBounce{0%{transform:scale(0.94);opacity:0.4}50%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
 .quote-text{font-size:15px;line-height:1.65;color:var(--text);font-weight:300;}
