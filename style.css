@@ -265,9 +265,9 @@ background:none;border:none;display:flex;align-items:center;line-height:1;paddin
 
 .quote-content{display:flex;flex-direction:column;gap:8px;min-height:60px;justify-content:center;}
 .quote-content.bounce{animation:quoteBounce 0.4s ease}
-@keyframes quoteBounce{0%{transform:scale(0.94);opacity:0.4}50%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
-.quote-text{font-size:15px;line-height:1.65;color:var(--text);font-weight:300;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
-.quote-author{font-size:12px;color:var(--text-subtle);text-align:right;font-weight:500;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+@keyframes quoteBounce{0%{opacity:0.4;transform:translateY(6px)}60%{transform:translateY(-2px)}100%{opacity:1;transform:translateY(0)}}
+.quote-text{font-size:15px;line-height:1.65;color:var(--text);font-weight:300;}
+.quote-author{font-size:12px;color:var(--text-subtle);text-align:right;font-weight:500;}
 
 .settings-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);backdrop-filter:blur(6px);
 -webkit-backdrop-filter:blur(6px);z-index:200;
