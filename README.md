@@ -8,6 +8,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/manifest-v3-blue" alt="Manifest V3">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License">
 </p>
 
 <p align="center">
@@ -48,6 +49,10 @@ git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
 ```
 Open `chrome://extensions/` → Developer mode → Load unpacked → select folder.
 
+### License
+
+MIT © Vera
+
 ---
 
 <h2 id="chinese">简体中文</h2>
@@ -75,6 +80,10 @@ git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
 ```
 打开 `chrome://extensions/` → 开发者模式 → 加载已解压的扩展程序 → 选择项目文件夹。
 
+### 许可
+
+MIT © Vera
+
 ---
 
 <h2 id="japanese">日本語</h2>
@@ -101,3 +110,7 @@ git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
 git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
 ```
 `chrome://extensions/` を開く → デベロッパーモード → パッケージ化されていない拡張機能を読み込む → フォルダ選択。
+
+### ライセンス
+
+MIT © Vera
