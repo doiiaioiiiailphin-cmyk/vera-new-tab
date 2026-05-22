@@ -124,6 +124,10 @@ for(var k in DEFAULTS){if(!(k in settings))settings[k]=DEFAULTS[k];}
 if(!raw||!raw.language){var bl=(navigator.language||'').split('-')[0];settings.language={'zh':'zh','ja':'ja'}[bl]||'en';saveSettings();}
 }
 function saveSettings(){try{localStorage.setItem('newtab_settings_v3',JSON.stringify(settings));}catch(e){}}
+// Fallback stubs — vip.js provides real implementations when bundled
+if(typeof bindVipEvents==='undefined')function bindVipEvents(){}
+if(typeof initAds==='undefined')function initAds(){}
+if(typeof toggleAds==='undefined')function toggleAds(){}
 
 function applyTheme(){
 if(theme==='auto'){
