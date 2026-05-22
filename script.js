@@ -130,8 +130,13 @@ function isVip(){return settings.vip===true;}
 var LICENSE_CHECK_DISABLED=true;
 function verifyLicense(){if(LICENSE_CHECK_DISABLED)return true;var key=settings._licenseKey;if(!key)return false;return fetch('https://api.vera.example.com/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:key})}).then(function(r){return r.json();}).then(function(d){return d.valid===true;}).catch(function(){return false;});}
 
+// Google AdSense integration — disabled; set ADS_ENABLED=true and fill in your ad unit IDs
+var ADS_ENABLED=false;
+var AD_UNITS={sidebar:'',bottom:''};
+function initAds(){if(!ADS_ENABLED)return;var s=document.createElement('script');s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';s.async=true;s.crossOrigin='anonymous';document.head.appendChild(s);}
+function loadAdUnit(slotId){if(!ADS_ENABLED||!AD_UNITS[slotId])return;var el=document.getElementById('ad-'+slotId);if(!el)return;var ins=document.createElement('ins');ins.className='adsbygoogle';ins.style.display='block';ins.setAttribute('data-ad-client','ca-pub-XXXXXXXXXXXX');ins.setAttribute('data-ad-slot',AD_UNITS[slotId]);el.appendChild(ins);try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}}
+
 function applyTheme(){
-var theme=settings.theme;
 if(theme==='auto'){
 var prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
 document.documentElement.setAttribute('data-theme',prefersDark?'dark':'light');
