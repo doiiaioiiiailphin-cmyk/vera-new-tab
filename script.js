@@ -126,6 +126,9 @@ if(!raw||!raw.language){var bl=(navigator.language||'').split('-')[0];settings.l
 function saveSettings(){try{localStorage.setItem('newtab_settings_v3',JSON.stringify(settings));}catch(e){}}
 // VIP system — disabled by default; flip settings.vip to enable premium features
 function isVip(){return settings.vip===true;}
+// License verification — disabled; requires a backend endpoint to activate
+var LICENSE_CHECK_DISABLED=true;
+function verifyLicense(){if(LICENSE_CHECK_DISABLED)return true;var key=settings._licenseKey;if(!key)return false;return fetch('https://api.vera.example.com/verify',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({key:key})}).then(function(r){return r.json();}).then(function(d){return d.valid===true;}).catch(function(){return false;});}
 
 function applyTheme(){
 var theme=settings.theme;
