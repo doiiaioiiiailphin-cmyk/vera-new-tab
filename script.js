@@ -141,8 +141,8 @@ function toggleAds(){var show=shouldShowAds();var sb=document.getElementById('ad
 // VIP modal — disabled until VIP_PROMPT_ENABLED=true
 var VIP_PROMPT_ENABLED=false;
 function openVipModal(){var ov=document.getElementById('vipModalOverlay');if(ov)ov.style.display='flex';}
-function closeVipModal(){var ov=document.getElementById('vipModalOverlay');if(ov)ov.style.display='none';}
-function maybeShowVipPrompt(){if(!VIP_PROMPT_ENABLED||isVip())return;setTimeout(function(){openVipModal();setTimeout(closeVipModal,3000);},2000);}
+function closeVipModal(){var ov=document.getElementById('vipModalOverlay');if(ov&&!ov._vipLocked)ov.style.display='none';}
+function maybeShowVipPrompt(){if(!VIP_PROMPT_ENABLED||isVip())return;setTimeout(function(){openVipModal();var btn=document.getElementById('vipUpgradeBtn');var cls=document.getElementById('vipModalClose');var ov=document.getElementById('vipModalOverlay');if(btn)btn.disabled=true;if(cls)cls.style.pointerEvents='none';if(ov)ov._vipLocked=true;setTimeout(function(){if(btn)btn.disabled=false;if(cls)cls.style.pointerEvents='';if(ov)ov._vipLocked=false;},3000);},2000);}
 
 function applyTheme(){
 if(theme==='auto'){
@@ -744,7 +744,7 @@ var donateOverlay=document.getElementById('donateModalOverlay');if(donateOverlay
 var donateQr=document.getElementById('donateQr');if(donateQr){donateQr.addEventListener('click',function(){var z=document.getElementById('qrZoomOverlay');var zi=document.getElementById('qrZoomImg');if(z&&zi){zi.src=this.src;z.classList.add('open');}});donateQr.addEventListener('error',function(){this.parentElement.innerHTML='<p style=color:var(--text-dim)>'+t('qrFailed')+'</p>';});}
 var qrZoom=document.getElementById('qrZoomOverlay');if(qrZoom)qrZoom.addEventListener('click',function(){this.classList.remove('open');});
 var vipClose=document.getElementById('vipModalClose');if(vipClose)vipClose.addEventListener('click',closeVipModal);
-var vipOverlay=document.getElementById('vipModalOverlay');if(vipOverlay)vipOverlay.addEventListener('click',function(e){if(e.target===this)closeVipModal();});
+var vipOverlay=document.getElementById('vipModalOverlay');if(vipOverlay)vipOverlay.addEventListener('click',function(e){if(e.target===this&&!vipOverlay._vipLocked)closeVipModal();});
 var vipUpgrade=document.getElementById('vipUpgradeBtn');if(vipUpgrade)vipUpgrade.addEventListener('click',function(){closeVipModal();});
 var lni2=document.getElementById('linkNameInput');if(lni2)lni2.addEventListener('keydown',function(e){if(e.key==='Enter'){var lui2=document.getElementById('linkUrlInput');if(lui2)lui2.focus();e.preventDefault();}});
 var lui2=document.getElementById('linkUrlInput');if(lui2){lui2.addEventListener('keydown',function(e){if(e.key==='Enter'){saveLinkFromModal();}});
