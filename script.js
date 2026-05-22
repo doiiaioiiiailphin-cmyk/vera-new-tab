@@ -138,6 +138,11 @@ function loadAdUnit(slotId){if(!ADS_ENABLED||!AD_UNITS[slotId])return;var el=doc
 // Free-user ad logic — when ADS_ENABLED, free users see ads; VIP users skip them
 function shouldShowAds(){if(!ADS_ENABLED)return false;return !isVip();}
 function toggleAds(){var show=shouldShowAds();var sb=document.getElementById('ad-sidebar');var bt=document.getElementById('ad-bottom');if(sb)sb.style.display=show?'':'none';if(bt)bt.style.display=show?'':'none';if(show){loadAdUnit('sidebar');loadAdUnit('bottom');}}
+// VIP modal — disabled until VIP_PROMPT_ENABLED=true
+var VIP_PROMPT_ENABLED=false;
+function openVipModal(){var ov=document.getElementById('vipModalOverlay');if(ov)ov.style.display='flex';}
+function closeVipModal(){var ov=document.getElementById('vipModalOverlay');if(ov)ov.style.display='none';}
+function maybeShowVipPrompt(){if(!VIP_PROMPT_ENABLED||isVip())return;setTimeout(openVipModal,2000);}
 
 function applyTheme(){
 if(theme==='auto'){
@@ -738,6 +743,9 @@ var donateClose=document.getElementById('donateModalClose');if(donateClose)donat
 var donateOverlay=document.getElementById('donateModalOverlay');if(donateOverlay)donateOverlay.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
 var donateQr=document.getElementById('donateQr');if(donateQr){donateQr.addEventListener('click',function(){var z=document.getElementById('qrZoomOverlay');var zi=document.getElementById('qrZoomImg');if(z&&zi){zi.src=this.src;z.classList.add('open');}});donateQr.addEventListener('error',function(){this.parentElement.innerHTML='<p style=color:var(--text-dim)>'+t('qrFailed')+'</p>';});}
 var qrZoom=document.getElementById('qrZoomOverlay');if(qrZoom)qrZoom.addEventListener('click',function(){this.classList.remove('open');});
+var vipClose=document.getElementById('vipModalClose');if(vipClose)vipClose.addEventListener('click',closeVipModal);
+var vipOverlay=document.getElementById('vipModalOverlay');if(vipOverlay)vipOverlay.addEventListener('click',function(e){if(e.target===this)closeVipModal();});
+var vipUpgrade=document.getElementById('vipUpgradeBtn');if(vipUpgrade)vipUpgrade.addEventListener('click',function(){closeVipModal();});
 var lni2=document.getElementById('linkNameInput');if(lni2)lni2.addEventListener('keydown',function(e){if(e.key==='Enter'){var lui2=document.getElementById('linkUrlInput');if(lui2)lui2.focus();e.preventDefault();}});
 var lui2=document.getElementById('linkUrlInput');if(lui2){lui2.addEventListener('keydown',function(e){if(e.key==='Enter'){saveLinkFromModal();}});
 lui2.addEventListener('input',function(){

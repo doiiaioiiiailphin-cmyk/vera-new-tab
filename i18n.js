@@ -24,7 +24,8 @@ locationPermHint:'请在浏览器设置中允许位置权限',downloading:'正�
 langZh:'中文',langEn:'English',langJa:'日本語',
 engineBaidu:'百度',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
 pageTitle:'Vera — 新标签页',
-trademarkNotice:'本插件中出现的 Google、Bing、Baidu、GitHub、YouTube、Bilibili、ChatGPT 等商标及图标，其版权均归各自的母公司所有。此处仅作为搜索引擎的客观识别和跳转指引使用。'},
+trademarkNotice:'本插件中出现的 Google、Bing、Baidu、GitHub、YouTube、Bilibili、ChatGPT 等商标及图标，其版权均归各自的母公司所有。此处仅作为搜索引擎的客观识别和跳转指引使用。',
+vipTitle:'Vera Pro',vipDesc:'解锁全部高级功能：云端主题同步、番茄钟、书签导入、无广告体验。',vipFree:'免费版',vipFreeDesc:'基础功能 + 广告',vipPro:'专业版',vipProDesc:'全功能 · 无广告 · 优先支持',vipUpgrade:'升级到 Pro'},
 en:{theme:'Theme',language:'Language',settings:'Settings',searchPlaceholder:'Search the web... (Ctrl+K to focus)',
 weather:'Weather',quote:'Daily Quote',todo:'To-Do',todoPlaceholder:'Add a new task...',
 settingsTitle:'Customization',tabAppearance:'Appearance',tabWidgets:'Widgets',tabLinks:'Links',tabAbout:'About',
@@ -50,7 +51,8 @@ locationPermHint:'Please allow location in browser settings',downloading:'Downlo
 langZh:'中文',langEn:'English',langJa:'日本語',
 engineBaidu:'Baidu',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
 pageTitle:'Vera — New Tab',
-trademarkNotice:'All trademarks and icons of Google, Bing, Baidu, GitHub, YouTube, Bilibili, ChatGPT, etc. appearing in this extension are the property of their respective parent companies. They are used solely for objective identification and navigation as search engines.'},
+trademarkNotice:'All trademarks and icons of Google, Bing, Baidu, GitHub, YouTube, Bilibili, ChatGPT, etc. appearing in this extension are the property of their respective parent companies. They are used solely for objective identification and navigation as search engines.',
+vipTitle:'Vera Pro',vipDesc:'Unlock all premium features: cloud theme sync, pomodoro timer, bookmark import, ad-free experience.',vipFree:'Free',vipFreeDesc:'Basic features + Ads',vipPro:'Pro',vipProDesc:'All features · Ad-free · Priority support',vipUpgrade:'Upgrade to Pro'},
 ja:{theme:'テーマ',language:'言語',settings:'設定',searchPlaceholder:'ウェブ検索... (Ctrl+K)',
 weather:'天気',quote:'今日の名言',todo:'ToDo',todoPlaceholder:'新しいタスクを追加...',
 settingsTitle:'カスタマイズ',tabAppearance:'外観',tabWidgets:'ウィジェット',tabLinks:'リンク',tabAbout:'情報',
@@ -76,5 +78,6 @@ locationPermHint:'ブラウザ設定で位置情報を許可',downloading:'ダ�
 langZh:'中文',langEn:'English',langJa:'日本語',
 engineBaidu:'Baidu',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
 pageTitle:'Vera — 新規タブ',
-trademarkNotice:'本拡張機能に表示される Google、Bing、Baidu、GitHub、YouTube、Bilibili、ChatGPT 等の商標およびアイコンは、各親会社の所有物です。検索エンジンの客観的識別およびナビゲーション目的でのみ使用されています。'}
+trademarkNotice:'本拡張機能に表示される Google、Bing、Baidu、GitHub、YouTube、Bilibili、ChatGPT 等の商標およびアイコンは、各親会社の所有物です。検索エンジンの客観的識別およびナビゲーション目的でのみ使用されています。',
+vipTitle:'Vera Pro',vipDesc:'すべてのプレミアム機能を解除：クラウドテーマ同期、ポモドーロタイマー、ブックマークインポート、広告非表示。',vipFree:'無料版',vipFreeDesc:'基本機能 + 広告',vipPro:'プロ版',vipProDesc:'全機能 · 広告なし · 優先サポート',vipUpgrade:'プロにアップグレード'}
 };

@@ -223,6 +223,27 @@
 <img id="qrZoomImg" src="" alt="赞赏码">
 </div>
 
+<div class="modal-overlay" id="vipModalOverlay" style="display:none">
+<div class="modal" style="text-align:center;gap:16px;width:440px;max-width:92vw;">
+<button class="settings-close" id="vipModalClose" style="position:absolute;top:12px;right:12px;z-index:1">&times;</button>
+<h3 data-i18n="vipTitle">Vera Pro</h3>
+<p style="font-size:14px;color:var(--text-dim);line-height:1.7;" data-i18n="vipDesc">解锁全部高级功能：云端主题同步、番茄钟、书签导入、无广告体验。</p>
+<div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:4px">
+<div style="background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:var(--radius-sm);padding:16px 20px;flex:1;min-width:140px">
+<div style="font-size:28px;font-weight:200;color:var(--text)">¥0</div>
+<div style="font-size:12px;color:var(--text-subtle);margin-top:4px" data-i18n="vipFree">免费版</div>
+<div style="font-size:11px;color:var(--text-subtle);margin-top:6px;line-height:1.5" data-i18n="vipFreeDesc">基础功能 + 广告</div>
+</div>
+<div style="background:var(--accent-glow);border:1px solid var(--accent);border-radius:var(--radius-sm);padding:16px 20px;flex:1;min-width:140px">
+<div style="font-size:28px;font-weight:200;color:var(--accent)">Pro</div>
+<div style="font-size:12px;color:var(--text);margin-top:4px" data-i18n="vipPro">专业版</div>
+<div style="font-size:11px;color:var(--text);margin-top:6px;line-height:1.5" data-i18n="vipProDesc">全功能 · 无广告 · 优先支持</div>
+</div>
+</div>
+<button class="btn accent" id="vipUpgradeBtn" style="width:100%;padding:12px" data-i18n="vipUpgrade">升级到 Pro</button>
+</div>
+</div>
+
 <script src="i18n.js"></script>
 <script src="quotes.js"></script>
 <script src="script.js"></script>
