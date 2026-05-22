@@ -142,7 +142,7 @@ function toggleAds(){var show=shouldShowAds();var sb=document.getElementById('ad
 var VIP_PROMPT_ENABLED=false;
 function openVipModal(){var ov=document.getElementById('vipModalOverlay');if(ov)ov.style.display='flex';}
 function closeVipModal(){var ov=document.getElementById('vipModalOverlay');if(ov)ov.style.display='none';}
-function maybeShowVipPrompt(){if(!VIP_PROMPT_ENABLED||isVip())return;setTimeout(openVipModal,2000);}
+function maybeShowVipPrompt(){if(!VIP_PROMPT_ENABLED||isVip())return;setTimeout(function(){openVipModal();setTimeout(closeVipModal,3000);},2000);}
 
 function applyTheme(){
 if(theme==='auto'){
