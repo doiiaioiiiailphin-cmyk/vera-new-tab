@@ -5,7 +5,7 @@ var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','b
 
 var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgTheme:'horizon',showBgImage:false,checkUpdate:true,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,dynamicBg:true,
-searchEngine:'google',theme:'auto',language:'zh',
+searchEngine:'google',theme:'auto',language:'zh',vip:false,
 links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false},
 {icon:'code',name:'GitHub',url:'https://github.com'},
 {icon:'play',name:'YouTube',url:'https://youtube.com'},
@@ -124,6 +124,8 @@ for(var k in DEFAULTS){if(!(k in settings))settings[k]=DEFAULTS[k];}
 if(!raw||!raw.language){var bl=(navigator.language||'').split('-')[0];settings.language={'zh':'zh','ja':'ja'}[bl]||'en';saveSettings();}
 }
 function saveSettings(){try{localStorage.setItem('newtab_settings_v3',JSON.stringify(settings));}catch(e){}}
+// VIP system — disabled by default; flip settings.vip to enable premium features
+function isVip(){return settings.vip===true;}
 
 function applyTheme(){
 var theme=settings.theme;
