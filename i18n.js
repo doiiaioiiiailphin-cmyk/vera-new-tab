@@ -23,7 +23,8 @@ githubLink:'项目仓库 →',donate:'赞赏',donateTitle:'赞赏支持',qrFaile
 locationPermHint:'请在浏览器设置中允许位置权限',downloading:'正在下载...',
 langZh:'中文',langEn:'English',langJa:'日本語',
 engineBaidu:'百度',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
-pageTitle:'Vera — 新标签页'},
+pageTitle:'Vera — 新标签页',
+trademarkNotice:'本插件中出现的 Google、Bing、Baidu、GitHub、YouTube、Bilibili、ChatGPT 等商标及图标，其版权均归各自的母公司所有。此处仅作为搜索引擎的客观识别和跳转指引使用。'},
 en:{theme:'Theme',language:'Language',settings:'Settings',searchPlaceholder:'Search the web... (Ctrl+K to focus)',
 weather:'Weather',quote:'Daily Quote',todo:'To-Do',todoPlaceholder:'Add a new task...',
 settingsTitle:'Customization',tabAppearance:'Appearance',tabWidgets:'Widgets',tabLinks:'Links',tabAbout:'About',
@@ -48,7 +49,8 @@ githubLink:'GitHub →',donate:'Support',donateTitle:'Support Us',qrFailed:'QR c
 locationPermHint:'Please allow location in browser settings',downloading:'Downloading...',
 langZh:'中文',langEn:'English',langJa:'日本語',
 engineBaidu:'Baidu',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
-pageTitle:'Vera — New Tab'},
+pageTitle:'Vera — New Tab',
+trademarkNotice:'All trademarks and icons of Google, Bing, Baidu, GitHub, YouTube, Bilibili, ChatGPT, etc. appearing in this extension are the property of their respective parent companies. They are used solely for objective identification and navigation as search engines.'},
 ja:{theme:'テーマ',language:'言語',settings:'設定',searchPlaceholder:'ウェブ検索... (Ctrl+K)',
 weather:'天気',quote:'今日の名言',todo:'ToDo',todoPlaceholder:'新しいタスクを追加...',
 settingsTitle:'カスタマイズ',tabAppearance:'外観',tabWidgets:'ウィジェット',tabLinks:'リンク',tabAbout:'情報',
@@ -73,5 +75,6 @@ githubLink:'リポジトリ →',donate:'サポート',donateTitle:'サポート
 locationPermHint:'ブラウザ設定で位置情報を許可',downloading:'ダウンロード中...',
 langZh:'中文',langEn:'English',langJa:'日本語',
 engineBaidu:'Baidu',engineGoogle:'Google',engineBing:'Bing',engineDuckduckgo:'DuckDuckGo',engineGithub:'GitHub',
-pageTitle:'Vera — 新規タブ'}
+pageTitle:'Vera — 新規タブ',
+trademarkNotice:'本拡張機能に表示される Google、Bing、Baidu、GitHub、YouTube、Bilibili、ChatGPT 等の商標およびアイコンは、各親会社の所有物です。検索エンジンの客観的識別およびナビゲーション目的でのみ使用されています。'}
 };
