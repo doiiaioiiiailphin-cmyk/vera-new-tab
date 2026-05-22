@@ -52,8 +52,6 @@ var KNOWN_FAVICONS={'mail.google.com':'https://ssl.gstatic.com/ui/v1/icons/mail/
 'github.com':'https://github.githubassets.com/favicons/favicon-dark.svg',
 'youtube.com':'https://www.youtube.com/s/desktop/12d6b690/img/favicon_32x32.png',
 'bilibili.com':'https://www.bilibili.com/favicon.ico',
-'chat.openai.com':'https://chat.openai.com/favicon.ico',
-'chatgpt.com':'https://chatgpt.com/favicon.ico',
 'x.com':'https://x.com/favicon.ico',
 'twitter.com':'https://abs.twimg.com/favicons/twitter.2.ico',
 'bing.com':'https://www.bing.com/favicon.ico',
