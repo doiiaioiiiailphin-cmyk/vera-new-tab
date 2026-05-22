@@ -135,6 +135,9 @@ var ADS_ENABLED=false;
 var AD_UNITS={sidebar:'',bottom:''};
 function initAds(){if(!ADS_ENABLED)return;var s=document.createElement('script');s.src='https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js';s.async=true;s.crossOrigin='anonymous';document.head.appendChild(s);}
 function loadAdUnit(slotId){if(!ADS_ENABLED||!AD_UNITS[slotId])return;var el=document.getElementById('ad-'+slotId);if(!el)return;var ins=document.createElement('ins');ins.className='adsbygoogle';ins.style.display='block';ins.setAttribute('data-ad-client','ca-pub-XXXXXXXXXXXX');ins.setAttribute('data-ad-slot',AD_UNITS[slotId]);el.appendChild(ins);try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}}
+// Free-user ad logic — when ADS_ENABLED, free users see ads; VIP users skip them
+function shouldShowAds(){if(!ADS_ENABLED)return false;return !isVip();}
+function toggleAds(){var show=shouldShowAds();var sb=document.getElementById('ad-sidebar');var bt=document.getElementById('ad-bottom');if(sb)sb.style.display=show?'':'none';if(bt)bt.style.display=show?'':'none';if(show){loadAdUnit('sidebar');loadAdUnit('bottom');}}
 
 function applyTheme(){
 if(theme==='auto'){
@@ -190,6 +193,7 @@ updateLandscapeFilter();
 applyLandscapeScene();
 var builtinLight=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
 document.body.classList.toggle('builtin-bg-light',builtinLight);
+toggleAds();
 updateEngineDisplay();
 renderTodoList();
 updateWidgetVisibility();
@@ -650,7 +654,7 @@ fetch('https://duckduckgo.com/ac/?q='+encodeURIComponent(q)+'&type=list')
 }else{renderSuggest([]);}}
 
 function init(){
-loadSettings();applyAll();renderQuickLinks();
+loadSettings();initAds();applyAll();renderQuickLinks();
 updateClock();scheduleClock();
 showQuote();
 var qc=document.getElementById('quoteWidget');if(qc){qc.addEventListener('mousedown',function(e){if(e.detail>1){e.preventDefault();window.getSelection().removeAllRanges();}qc._ts=Date.now();});qc.addEventListener('mouseup',function(){if(qc._ts&&Date.now()-qc._ts<300&&!window.getSelection().toString().trim())refreshQuote();});}
