@@ -8,8 +8,13 @@ var GW=20,GH=13,CS=15,SCALE=2;
 function initGame(){
 var cv=document.getElementById('gameCanvas');if(!cv)return;
 cv.width=GW*CS*SCALE;cv.height=GH*CS*SCALE;
-cv.style.width='100%';cv.style.height='auto';cv.style.cursor='pointer';cv.style.display='block';
-cv.addEventListener('click',function(e){e.stopPropagation();e.preventDefault();startGame();});
+cv.style.width='100%';cv.style.cursor='pointer';cv.style.display='block';
+cv.addEventListener('click',function(e){
+e.stopPropagation();
+var sc=document.getElementById('gameScore');
+if(sc)sc.textContent='Clicked! Starting...';
+startGame();
+});
 document.addEventListener('keydown',handleKey);
 drawStartScreen();
 }
