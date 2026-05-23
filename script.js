@@ -250,7 +250,7 @@ function updateWidgetVisibility(){
 var w=document.getElementById('weatherWidget');if(w)w.style.display=settings.showWeather?'':'none';
 var q=document.getElementById('quoteWidget');if(q)q.style.display=settings.showQuote?'':'none';
 var t=document.getElementById('todoWidget');if(t)t.style.display=settings.showTodo?'':'none';
-var gm=document.getElementById('gameWidget');if(gm)gm.style.display=settings.showGame?'':'none';
+var gm=document.getElementById('gameWidget');if(gm){var wasHidden=gm.style.display==='none';gm.style.display=settings.showGame?'':'none';if(settings.showGame&&wasHidden)drawStartScreen();}
 var l=document.getElementById('linksContainer');if(l)l.style.display=settings.showLinks?'':'none';
 var g=document.getElementById('widgetsGrid');if(g){
 var anyVis=settings.showWeather||settings.showTodo||settings.showQuote||settings.showGame;
