@@ -14,7 +14,7 @@ var prev=document.getElementById('gamePrev');if(prev)prev.addEventListener('clic
 var next=document.getElementById('gameNext');if(next)next.addEventListener('click',function(e){e.stopPropagation();cycleGame(1);});
 updateGameLabel();
 cv.width=GW*CS*SCALE;cv.height=GH*CS*SCALE;
-cv.style.cursor='pointer';
+cv.style.width='100%';cv.style.height='auto';cv.style.cursor='pointer';cv.style.display='block';
 cv.addEventListener('click',function(e){
 e.stopPropagation();
 if(gameRunning){resetGame();}
@@ -42,6 +42,7 @@ if(e.key==='ArrowRight'&&gameDir.x===0){gameDir={x:1,y:0};e.preventDefault();}
 }
 
 function startGame(){
+resetGame();
 gameSnake=[{x:10,y:6},{x:9,y:6},{x:8,y:6}];
 gameDir={x:1,y:0};gameScore=0;
 spawnFood();gameRunning=true;
