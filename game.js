@@ -28,11 +28,11 @@ var bg=getComputedStyle(document.documentElement).getPropertyValue('--bg-base').
 ctx.fillStyle=bg;ctx.fillRect(0,0,cv.width,cv.height);
 ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text-dim').trim()||'#8aaccc';
 ctx.font='14px Lexend,sans-serif';ctx.textAlign='center';
-ctx.fillText(t('gameStart'),cv.width/2,cv.height/2+5);
+ctx.fillText('Click to start',cv.width/2,cv.height/2+5);
 var sc=document.getElementById('gameScore');if(sc)sc.textContent='';
 }
 function cycleGame(dir){gameIdx=(gameIdx+dir+GAME_LIST.length)%GAME_LIST.length;updateGameLabel();resetGame();drawStartScreen();}
-function updateGameLabel(){var lb=document.getElementById('gameName');if(lb)lb.textContent=t(GAME_LIST[gameIdx].nameKey);}
+function updateGameLabel(){var lb=document.getElementById('gameName');if(lb)lb.textContent='Snake';}
 function handleKey(e){
 if(!gameRunning)return;
 if(e.key==='ArrowUp'&&gameDir.y===0){gameDir={x:0,y:-1};e.preventDefault();}
@@ -45,7 +45,7 @@ function startGame(){
 gameSnake=[{x:10,y:6},{x:9,y:6},{x:8,y:6}];
 gameDir={x:1,y:0};gameScore=0;
 spawnFood();gameRunning=true;
-var sc=document.getElementById('gameScore');if(sc)sc.textContent=t('gameScore')+'0';
+var sc=document.getElementById('gameScore');if(sc)sc.textContent='Score: 0';
 tick();
 }
 function spawnFood(){
@@ -60,7 +60,7 @@ if(!gameRunning)return;
 var head={x:gameSnake[0].x+gameDir.x,y:gameSnake[0].y+gameDir.y};
 if(head.x<0||head.x>=GW||head.y<0||head.y>=GH||gameSnake.some(function(s){return s.x===head.x&&s.y===head.y;})){gameOver();return;}
 gameSnake.unshift(head);
-if(head.x===gameFood.x&&head.y===gameFood.y){gameScore++;var sc=document.getElementById('gameScore');if(sc)sc.textContent=t('gameScore')+gameScore;spawnFood();}
+if(head.x===gameFood.x&&head.y===gameFood.y){gameScore++;var sc=document.getElementById('gameScore');if(sc)sc.textContent='Score: '+gameScore;spawnFood();}
 else{gameSnake.pop();}
 draw();
 gameTimer=setTimeout(tick,120);
@@ -82,6 +82,6 @@ var ctx=cv.getContext('2d');
 ctx.fillStyle='rgba(0,0,0,0.4)';ctx.fillRect(0,0,cv.width,cv.height);
 ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text').trim()||'#e4f0fb';
 ctx.font='14px Lexend,sans-serif';ctx.textAlign='center';
-ctx.fillText(t('gameOver'),cv.width/2,cv.height/2+5);
+ctx.fillText('Game Over',cv.width/2,cv.height/2+5);
 }
 function resetGame(){gameRunning=false;clearTimeout(gameTimer);}
