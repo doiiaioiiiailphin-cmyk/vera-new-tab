@@ -16,6 +16,7 @@ updateGameLabel();
 cv.width=GW*CS*SCALE;cv.height=GH*CS*SCALE;
 cv.style.cursor='pointer';
 cv.addEventListener('click',function(e){
+e.stopPropagation();
 if(gameRunning){resetGame();}
 startGame();
 });
@@ -45,7 +46,8 @@ gameSnake=[{x:10,y:6},{x:9,y:6},{x:8,y:6}];
 gameDir={x:1,y:0};gameScore=0;
 spawnFood();gameRunning=true;
 var sc=document.getElementById('gameScore');if(sc)sc.textContent='Score: 0';
-tick();
+draw();
+gameTimer=setTimeout(tick,150);
 }
 function spawnFood(){
 var free=[];
