@@ -7,12 +7,13 @@ var GW=20,GH=13,CS=15,SCALE=2;
 
 function initGame(){
 var cv=document.getElementById('gameCanvas');if(!cv)return;
+var prev=document.getElementById('gamePrev');if(prev)prev.addEventListener('click',function(e){e.stopPropagation();cycleGame(-1);});
+var next=document.getElementById('gameNext');if(next)next.addEventListener('click',function(e){e.stopPropagation();cycleGame(1);});
+updateGameLabel();
 cv.width=GW*CS*SCALE;cv.height=GH*CS*SCALE;
-cv.style.width='100%';cv.style.cursor='pointer';cv.style.display='block';
+cv.style.cssText='width:100%;cursor:pointer;display:block;position:relative;z-index:1;transform:translateZ(0);';
 cv.addEventListener('click',function(e){
 e.stopPropagation();
-var sc=document.getElementById('gameScore');
-if(sc)sc.textContent='Clicked! Starting...';
 startGame();
 });
 document.addEventListener('keydown',handleKey);
@@ -86,4 +87,4 @@ ctx.fillText('Game Over',cv.width/2,cv.height/2+8);
 function resetGame(){gameRunning=false;clearTimeout(gameTimer);}
 
 function updateGameLabel(){var lb=document.getElementById('gameName');if(lb)lb.textContent='Snake';}
-function cycleGame(dir){resetGame();drawStartScreen();}
+function cycleGame(dir){gameIdx=(gameIdx+dir+GAME_LIST.length)%GAME_LIST.length;updateGameLabel();resetGame();drawStartScreen();}
