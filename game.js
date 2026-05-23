@@ -2,8 +2,7 @@
 // Set settings.showGame=true to enable
 
 var GAME_LIST=[
-{id:'snake',nameKey:'gameSnake'},
-{id:'snake',nameKey:'gameSnake'} // placeholder — add more games here
+{id:'snake',nameKey:'gameSnake'}
 ];
 var gameIdx=0,gameRunning=false,gameScore=0,gameTimer=null;
 var gameSnake=[],gameDir={x:1,y:0},gameFood={x:0,y:0};
@@ -20,10 +19,19 @@ cv.addEventListener('click',function(){
 if(!gameRunning){startGame();}else{resetGame();}
 });
 document.addEventListener('keydown',handleKey);
-startGame();
+drawStartScreen();
 }
-
-function cycleGame(dir){gameIdx=(gameIdx+dir+GAME_LIST.length)%GAME_LIST.length;updateGameLabel();resetGame();startGame();}
+function drawStartScreen(){
+var cv=document.getElementById('gameCanvas');if(!cv)return;
+var ctx=cv.getContext('2d');
+var bg=getComputedStyle(document.documentElement).getPropertyValue('--bg-base').trim()||'#060d1a';
+ctx.fillStyle=bg;ctx.fillRect(0,0,cv.width,cv.height);
+ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text-dim').trim()||'#8aaccc';
+ctx.font='14px Lexend,sans-serif';ctx.textAlign='center';
+ctx.fillText(t('gameStart'),cv.width/2,cv.height/2+5);
+var sc=document.getElementById('gameScore');if(sc)sc.textContent='';
+}
+function cycleGame(dir){gameIdx=(gameIdx+dir+GAME_LIST.length)%GAME_LIST.length;updateGameLabel();resetGame();drawStartScreen();}
 function updateGameLabel(){var lb=document.getElementById('gameName');if(lb)lb.textContent=t(GAME_LIST[gameIdx].nameKey);}
 function handleKey(e){
 if(!gameRunning)return;
