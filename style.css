@@ -222,6 +222,7 @@ background:var(--glass-hover);transform:scale(1.03);}
 .widgets-grid{display:grid;grid-template-columns:1fr 1.8fr;gap:16px;width:100%;max-width:720px;}
 .widgets-grid.single-col{grid-template-columns:1fr;}
 .widgets-grid .todo-widget,.widgets-grid .game-widget{grid-column:1/-1;}
+.game-widget{overflow:visible !important;}
 .game-badge{position:absolute;top:8px;right:10px;background:var(--accent);color:#000;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;letter-spacing:0.04em;pointer-events:none;z-index:2;}
 .game-carousel{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px;}
 .game-carousel-btn{width:28px;height:28px;border-radius:50%;background:var(--glass-bg);border:1px solid var(--glass-border);color:var(--text-dim);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;transition:all var(--transition-fast);}

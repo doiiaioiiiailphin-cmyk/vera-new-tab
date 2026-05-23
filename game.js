@@ -11,9 +11,13 @@ var prev=document.getElementById('gamePrev');if(prev)prev.addEventListener('clic
 var next=document.getElementById('gameNext');if(next)next.addEventListener('click',function(e){e.stopPropagation();cycleGame(1);});
 updateGameLabel();
 cv.width=GW*CS*SCALE;cv.height=GH*CS*SCALE;
-cv.style.cssText='width:100%;cursor:pointer;display:block;position:relative;z-index:1;transform:translateZ(0);';
+cv.style.cssText='width:100%;max-width:600px;cursor:pointer;display:block;border-radius:12px;position:relative;z-index:1;pointer-events:auto;';
+cv.addEventListener('pointerdown',function(e){
+e.stopPropagation();e.preventDefault();
+startGame();
+});
 cv.addEventListener('click',function(e){
-e.stopPropagation();
+e.stopPropagation();e.preventDefault();
 startGame();
 });
 document.addEventListener('keydown',handleKey);
