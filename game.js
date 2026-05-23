@@ -4,6 +4,7 @@
 var gameRunning=false,gameScore=0,gameTimer=null;
 var gameSnake=[],gameDir={x:1,y:0},gameFood={x:0,y:0};
 var GW=20,GH=13,CS=15,SCALE=2;
+var gameIdx=0,GAME_LIST=[{id:'snake',label:'Snake'}];
 
 function initGame(){
 var cv=document.getElementById('gameCanvas');if(!cv)return;
@@ -12,10 +13,6 @@ var next=document.getElementById('gameNext');if(next)next.addEventListener('clic
 updateGameLabel();
 cv.width=GW*CS*SCALE;cv.height=GH*CS*SCALE;
 cv.style.cssText='width:100%;max-width:600px;cursor:pointer;display:block;border-radius:12px;position:relative;z-index:1;pointer-events:auto;';
-cv.addEventListener('pointerdown',function(e){
-e.stopPropagation();e.preventDefault();
-startGame();
-});
 cv.addEventListener('click',function(e){
 e.stopPropagation();e.preventDefault();
 startGame();
@@ -26,7 +23,7 @@ drawStartScreen();
 
 function drawStartScreen(){
 var cv=document.getElementById('gameCanvas');if(!cv)return;
-var ctx=cv.getContext('2d');
+var ctx=cv.getContext('2d');if(!ctx)return;
 ctx.fillStyle='#0a1228';ctx.fillRect(0,0,cv.width,cv.height);
 ctx.fillStyle='#8aaccc';ctx.font='bold 20px Lexend,sans-serif';ctx.textAlign='center';
 ctx.fillText('Click to start',cv.width/2,cv.height/2+8);
@@ -72,7 +69,7 @@ gameTimer=setTimeout(tick,150);
 
 function draw(){
 var cv=document.getElementById('gameCanvas');if(!cv)return;
-var ctx=cv.getContext('2d');
+var ctx=cv.getContext('2d');if(!ctx)return;
 ctx.fillStyle='#0a1228';ctx.fillRect(0,0,cv.width,cv.height);
 ctx.fillStyle='#5eead4';
 gameSnake.forEach(function(s){ctx.fillRect(s.x*CS*SCALE+SCALE,s.y*CS*SCALE+SCALE,CS*SCALE-2*SCALE,CS*SCALE-2*SCALE);});
@@ -82,7 +79,7 @@ ctx.fillStyle='#ff6b6b';ctx.fillRect(gameFood.x*CS*SCALE+SCALE,gameFood.y*CS*SCA
 function gameOver(){
 gameRunning=false;clearTimeout(gameTimer);
 var cv=document.getElementById('gameCanvas');if(!cv)return;
-var ctx=cv.getContext('2d');
+var ctx=cv.getContext('2d');if(!ctx)return;
 ctx.fillStyle='rgba(0,0,0,0.4)';ctx.fillRect(0,0,cv.width,cv.height);
 ctx.fillStyle='#e4f0fb';ctx.font='bold 20px Lexend,sans-serif';ctx.textAlign='center';
 ctx.fillText('Game Over',cv.width/2,cv.height/2+8);
@@ -90,5 +87,5 @@ ctx.fillText('Game Over',cv.width/2,cv.height/2+8);
 
 function resetGame(){gameRunning=false;clearTimeout(gameTimer);}
 
-function updateGameLabel(){var lb=document.getElementById('gameName');if(lb)lb.textContent='Snake';}
+function updateGameLabel(){var lb=document.getElementById('gameName');if(lb)lb.textContent=GAME_LIST[gameIdx].label;}
 function cycleGame(dir){gameIdx=(gameIdx+dir+GAME_LIST.length)%GAME_LIST.length;updateGameLabel();resetGame();drawStartScreen();}

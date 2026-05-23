@@ -123,10 +123,10 @@ if(!raw||!raw.language){var bl=(navigator.language||'').split('-')[0];settings.l
 }
 function saveSettings(){try{localStorage.setItem('newtab_settings_v3',JSON.stringify(settings));}catch(e){}}
 // Fallback stubs — vip.js/game.js provide real implementations when bundled
-if(typeof bindVipEvents==='undefined')var bindVipEvents=function(){};
-if(typeof initAds==='undefined')var initAds=function(){};
-if(typeof toggleAds==='undefined')var toggleAds=function(){};
-if(typeof initGame==='undefined')var initGame=function(){};
+var _bindVipEvents = typeof bindVipEvents !== 'undefined' ? bindVipEvents : function(){};
+var _initAds = typeof initAds !== 'undefined' ? initAds : function(){};
+var _toggleAds = typeof toggleAds !== 'undefined' ? toggleAds : function(){};
+var _initGame = typeof initGame !== 'undefined' ? initGame : function(){};
 
 function applyTheme(){
 var theme=settings.theme;
@@ -183,7 +183,7 @@ updateLandscapeFilter();
 applyLandscapeScene();
 var builtinLight=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
 document.body.classList.toggle('builtin-bg-light',builtinLight);
-toggleAds();
+_toggleAds();
 updateEngineDisplay();
 renderTodoList();
 updateWidgetVisibility();
@@ -647,7 +647,7 @@ fetch('https://duckduckgo.com/ac/?q='+encodeURIComponent(q)+'&type=list')
 }else{renderSuggest([]);}}
 
 function init(){
-loadSettings();bindVipEvents();initAds();initGame();applyAll();renderQuickLinks();
+loadSettings();_bindVipEvents();_initAds();_initGame();applyAll();renderQuickLinks();
 updateClock();scheduleClock();
 showQuote();
 var qc=document.getElementById('quoteWidget');if(qc){qc.addEventListener('mousedown',function(e){if(e.detail>1){e.preventDefault();window.getSelection().removeAllRanges();}qc._ts=Date.now();});qc.addEventListener('mouseup',function(){if(qc._ts&&Date.now()-qc._ts<300&&!window.getSelection().toString().trim())refreshQuote();});}
