@@ -6,17 +6,18 @@ var GAME_LIST=[
 ];
 var gameIdx=0,gameRunning=false,gameScore=0,gameTimer=null;
 var gameSnake=[],gameDir={x:1,y:0},gameFood={x:0,y:0};
-var GW=20,GH=13,CS=15;
+var GW=20,GH=13,CS=15,SCALE=2;
 
 function initGame(){
 var cv=document.getElementById('gameCanvas');if(!cv)return;
 var prev=document.getElementById('gamePrev');if(prev)prev.addEventListener('click',function(e){e.stopPropagation();cycleGame(-1);});
 var next=document.getElementById('gameNext');if(next)next.addEventListener('click',function(e){e.stopPropagation();cycleGame(1);});
 updateGameLabel();
-cv.width=GW*CS;cv.height=GH*CS;
+cv.width=GW*CS*SCALE;cv.height=GH*CS*SCALE;
 cv.style.cursor='pointer';
-cv.addEventListener('click',function(){
-if(!gameRunning){startGame();}else{resetGame();}
+cv.addEventListener('click',function(e){
+if(gameRunning){resetGame();}
+startGame();
 });
 document.addEventListener('keydown',handleKey);
 drawStartScreen();
@@ -24,10 +25,8 @@ drawStartScreen();
 function drawStartScreen(){
 var cv=document.getElementById('gameCanvas');if(!cv)return;
 var ctx=cv.getContext('2d');
-var bg=getComputedStyle(document.documentElement).getPropertyValue('--bg-base').trim()||'#060d1a';
-ctx.fillStyle=bg;ctx.fillRect(0,0,cv.width,cv.height);
-ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text-dim').trim()||'#8aaccc';
-ctx.font='14px Lexend,sans-serif';ctx.textAlign='center';
+ctx.fillStyle='#0a1228';ctx.fillRect(0,0,cv.width,cv.height);
+ctx.fillStyle='#8aaccc';ctx.font='bold 16px Lexend,sans-serif';ctx.textAlign='center';
 ctx.fillText('Click to start',cv.width/2,cv.height/2+5);
 var sc=document.getElementById('gameScore');if(sc)sc.textContent='';
 }
@@ -68,20 +67,17 @@ gameTimer=setTimeout(tick,120);
 function draw(){
 var cv=document.getElementById('gameCanvas');if(!cv)return;
 var ctx=cv.getContext('2d');
-var bg=getComputedStyle(document.documentElement).getPropertyValue('--bg-base').trim()||'#060d1a';
-ctx.fillStyle=bg;ctx.fillRect(0,0,cv.width,cv.height);
-var accent=getComputedStyle(document.documentElement).getPropertyValue('--accent').trim()||'#5eead4';
-ctx.fillStyle=accent;
-gameSnake.forEach(function(s){ctx.fillRect(s.x*CS+1,s.y*CS+1,CS-2,CS-2);});
-ctx.fillStyle='#ff6b6b';ctx.fillRect(gameFood.x*CS+1,gameFood.y*CS+1,CS-2,CS-2);
+ctx.fillStyle='#0a1228';ctx.fillRect(0,0,cv.width,cv.height);
+ctx.fillStyle='#5eead4';
+gameSnake.forEach(function(s){ctx.fillRect(s.x*CS*SCALE+SCALE,s.y*CS*SCALE+SCALE,CS*SCALE-2*SCALE,CS*SCALE-2*SCALE);});
+ctx.fillStyle='#ff6b6b';ctx.fillRect(gameFood.x*CS*SCALE+SCALE,gameFood.y*CS*SCALE+SCALE,CS*SCALE-2*SCALE,CS*SCALE-2*SCALE);
 }
 function gameOver(){
 gameRunning=false;clearTimeout(gameTimer);
 var cv=document.getElementById('gameCanvas');if(!cv)return;
 var ctx=cv.getContext('2d');
 ctx.fillStyle='rgba(0,0,0,0.4)';ctx.fillRect(0,0,cv.width,cv.height);
-ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text').trim()||'#e4f0fb';
-ctx.font='14px Lexend,sans-serif';ctx.textAlign='center';
+ctx.fillStyle='#e4f0fb';ctx.font='bold 16px Lexend,sans-serif';ctx.textAlign='center';
 ctx.fillText('Game Over',cv.width/2,cv.height/2+5);
 }
 function resetGame(){gameRunning=false;clearTimeout(gameTimer);}
