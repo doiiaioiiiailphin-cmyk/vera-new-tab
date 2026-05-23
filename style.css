@@ -236,6 +236,7 @@ border:1px solid var(--glass-border);border-radius:var(--radius-sm);
 box-shadow:var(--shadow);padding:20px;transition:border-color var(--transition-fast),box-shadow var(--transition-fast),background var(--transition-fast);}
 .widget::before{content:'';position:absolute;inset:0;
 background:linear-gradient(135deg,var(--glass-highlight) 0%,transparent 60%);border-radius:var(--radius-sm);pointer-events:none;}
+.game-widget::before{display:none;}
 .widget:hover{border-color:rgba(180,220,255,0.2);box-shadow:var(--shadow),0 0 20px rgba(0,0,0,0.05);}
 .widget-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-subtle);margin-bottom:12px;}
 
