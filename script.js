@@ -807,12 +807,16 @@ function flashOnboardingHighlight(target){
 if(!target)return;
 document.querySelectorAll('.onboarding-highlight-ring').forEach(function(e){e.remove();});
 var r=target.getBoundingClientRect();
+var label=target.querySelector('label');
+var lr=label?label.getBoundingClientRect():r;
+var w=r.width+16,h=r.height+16;
+var centerY=lr.top+lr.height/2;
 var ring=document.createElement('div');
 ring.className='onboarding-highlight-ring';
 ring.style.left=(r.left-8)+'px';
-ring.style.top=(r.top-8)+'px';
-ring.style.width=(r.width+16)+'px';
-ring.style.height=(r.height+16)+'px';
+ring.style.top=(centerY-h/2)+'px';
+ring.style.width=w+'px';
+ring.style.height=h+'px';
 document.body.appendChild(ring);
 ring.addEventListener('animationend',function(){ring.remove();finishOnboarding();},{once:true});
 setTimeout(function(){if(ring.parentNode){ring.remove();finishOnboarding();}},1300);
@@ -826,7 +830,7 @@ if(wt){wt.style.position='relative';
 var td=document.createElement('span');td.className='onboarding-dot on-tab';td.id='onboardingTabDot';wt.appendChild(td);}
 }else if(step==='widgetsTab'){
 var td=document.getElementById('onboardingTabDot');if(td)td.remove();
-var gr=document.getElementById('toggleGame');if(gr){var row=gr.closest('.settings-row');setTimeout(function(){flashOnboardingHighlight(row);},80);}
+var gr=document.getElementById('toggleGame');if(gr){var row=gr.closest('.settings-row');setTimeout(function(){flashOnboardingHighlight(row);},380);}
 else finishOnboarding();
 }
 }
