@@ -90,6 +90,8 @@ return img;}
 function t(key){var lang=settings.language||'zh';return (I18N[lang]&&I18N[lang][key])||(I18N.zh[key])||key;}
 
 function translateDOM(){
+document.documentElement.setAttribute('lang',settings.language||'zh');
+document.dispatchEvent(new CustomEvent('vera:localechange',{detail:{language:settings.language||'zh'}}));
 document.title=t('pageTitle');
 document.querySelectorAll('[data-i18n]').forEach(function(el){
 var key=el.getAttribute('data-i18n');
@@ -189,6 +191,7 @@ renderTodoList();
 updateWidgetVisibility();
 updateSettingsUI();
 translateDOM();
+if(typeof updateGameLocale==='function')updateGameLocale();
 }
 
 function hexToRgba(hex,a){var h=hex.replace('#','');if(h.length===3)h=h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
@@ -612,6 +615,8 @@ updateThemeRadio();moveRadioSlider(document.getElementById('langRadio'));
 }
 function resetSettings(){
 if(!confirm(t('confirmReset')))return;
+if(typeof resetCubeDefaults==='function')resetCubeDefaults();
+else{try{localStorage.removeItem('vera_cube_state_v1');}catch(e){}}
 settings=JSON.parse(JSON.stringify(DEFAULTS));delete settings._showBgAuto;delete settings.bgThemeSaved;delete settings._savedPreset;delete settings._savedAccent;saveSettings();renderQuickLinks();applyAll();updateClock();
 setTimeout(function(){updateSettingsUI();renderThemePicker();},100);
 }
