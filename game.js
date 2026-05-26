@@ -601,6 +601,7 @@ return{x:(e.clientX-r.left)*cv.width/r.width,y:(e.clientY-r.top)*cv.height/r.hei
 }
 
 var CB=0.42,CUBE_FOV=7.2,CUBE_CELL=55;
+var CUBE_SCRAMBLE_LAYERS=[-1,1];
 var CUBE_FACES={
 '+x':{n:{x:1,y:0,z:0},c:[[CB,CB,CB],[CB,-CB,CB],[CB,-CB,-CB],[CB,CB,-CB]]},
 '-x':{n:{x:-1,y:0,z:0},c:[[-CB,CB,CB],[-CB,CB,-CB],[-CB,-CB,-CB],[-CB,-CB,CB]]},
@@ -819,7 +820,7 @@ for(var i=0;i<18;i++){
 var axis=axes[Math.floor(Math.random()*axes.length)];
 if(axis===lastAxis)axis=axes[(axes.indexOf(axis)+1+Math.floor(Math.random()*2))%3];
 lastAxis=axis;
-queueCubeTurn(axis,[-1,0,1][Math.floor(Math.random()*3)],Math.random()<0.5?-1:1);
+queueCubeTurn(axis,CUBE_SCRAMBLE_LAYERS[Math.floor(Math.random()*CUBE_SCRAMBLE_LAYERS.length)],Math.random()<0.5?-1:1);
 }
 }
 
