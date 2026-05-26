@@ -12,6 +12,10 @@
 </p>
 
 <p align="center">
+  <a href="https://microsoftedge.microsoft.com/addons/detail/knijdpgbnfgibfdjnkidpfapcjadehme"><strong>Install from Microsoft Edge Add-ons</strong></a>
+</p>
+
+<p align="center">
   <a href="#english">English</a> &nbsp;|&nbsp;
   <a href="#chinese">简体中文</a> &nbsp;|&nbsp;
   <a href="#japanese">日本語</a>
@@ -43,6 +47,8 @@
   - Individual widget visibility toggles
 
 ### Install
+
+[Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/knijdpgbnfgibfdjnkidpfapcjadehme)
 
 ```bash
 git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
