@@ -128,6 +128,32 @@
 <input class="todo-input" id="todoInput" type="text" data-i18n-placeholder="todoPlaceholder" placeholder="添加新任务...">
 <ul class="todo-list" id="todoList"></ul>
 </div>
+<div class="widget pomodoro-widget" id="pomodoroWidget">
+<div class="widget-title" data-i18n="pomodoro">番茄钟</div>
+<div class="pomodoro-main">
+<div class="pomodoro-ring" id="pomodoroRing" style="--pomodoro-progress:0deg">
+<div class="pomodoro-ring-inner">
+<div class="pomodoro-time" id="pomodoroTime">25:00</div>
+<div class="pomodoro-mode" id="pomodoroMode">专注</div>
+</div>
+</div>
+<div class="pomodoro-side">
+<div class="pomodoro-stats">
+<span id="pomodoroRound">0</span>
+<span class="pomodoro-stats-label"><span data-i18n="pomodoroRoundLabel">轮数</span><span data-i18n="pomodoroFocus">专注</span></span>
+</div>
+<div class="pomodoro-actions">
+<button class="pomodoro-btn primary" id="pomodoroStart">开始</button>
+<button class="pomodoro-btn" id="pomodoroReset" data-i18n="pomodoroReset">重置</button>
+</div>
+<div class="pomodoro-modes">
+<button class="pomodoro-chip active" data-pomodoro-mode="focus" data-i18n="pomodoroFocus">专注</button>
+<button class="pomodoro-chip" data-pomodoro-mode="short" data-i18n="pomodoroShort">短休息</button>
+<button class="pomodoro-chip" data-pomodoro-mode="long" data-i18n="pomodoroLong">长休息</button>
+</div>
+</div>
+</div>
+</div>
 <div class="widget game-widget" id="gameWidget" style="display:none">
 <div class="widget-title" data-i18n="game">小游戏</div>
 <span class="game-badge" data-i18n="gameNew">新</span>
@@ -192,6 +218,7 @@
 <div class="settings-row"><label data-i18n="showTodo">待办组件</label><button class="toggle-switch on" id="toggleTodo"></button></div>
 <div class="settings-row"><label data-i18n="showQuote">名言组件</label><button class="toggle-switch on" id="toggleQuote"></button></div>
 <div class="settings-row"><label data-i18n="showLinks">快捷链接</label><button class="toggle-switch on" id="toggleLinks"></button></div>
+<div class="settings-row"><label data-i18n="showPomodoro">番茄钟</label><button class="toggle-switch on" id="togglePomodoro"></button></div>
 <div class="settings-row"><label data-i18n="showGame">小游戏</label><button class="toggle-switch" id="toggleGame"></button></div>
 <div class="settings-row"><label data-i18n="checkUpdate">检查更新</label><button class="toggle-switch on" id="toggleCheckUpdate"></button></div>
 </div>

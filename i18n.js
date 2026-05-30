@@ -84,3 +84,15 @@ trademarkNotice:'本拡張機能に表示される Google、Bing、Baidu、GitHu
 vipTitle:'Vera Pro',vipDesc:'すべてのプレミアム機能を解除：クラウドテーマ同期、ポモドーロタイマー、ブックマークインポート、広告非表示。',vipFree:'無料版',vipFreeDesc:'基本機能 + 広告',vipPro:'プロ版',vipProDesc:'全機能 · 広告なし · 優先サポート',vipUpgrade:'プロにアップグレード',
 game:'ミニゲーム',gameStart:'クリックで開始',gameScore:'スコア: ',gameOver:'ゲームオーバー — クリックで再開',gameNew:'新',gameSnake:'スネーク'}
 };
+Object.assign(I18N.zh,{
+pomodoro:'番茄钟',showPomodoro:'番茄钟',pomodoroFocus:'专注',pomodoroShort:'短休息',pomodoroLong:'长休息',
+pomodoroStart:'开始',pomodoroPause:'暂停',pomodoroReset:'重置',pomodoroRoundLabel:'轮数',pomodoroRounds:'轮专注'
+});
+Object.assign(I18N.en,{
+pomodoro:'Pomodoro',showPomodoro:'Pomodoro Timer',pomodoroFocus:'Focus',pomodoroShort:'Short Break',pomodoroLong:'Long Break',
+pomodoroStart:'Start',pomodoroPause:'Pause',pomodoroReset:'Reset',pomodoroRoundLabel:'Rounds',pomodoroRounds:'focus rounds'
+});
+Object.assign(I18N.ja,{
+pomodoro:'ポモドーロ',showPomodoro:'ポモドーロタイマー',pomodoroFocus:'集中',pomodoroShort:'短い休憩',pomodoroLong:'長い休憩',
+pomodoroStart:'開始',pomodoroPause:'一時停止',pomodoroReset:'リセット',pomodoroRoundLabel:'ラウンド',pomodoroRounds:'集中ラウンド'
+});
