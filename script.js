@@ -556,16 +556,17 @@ function centeredFreeX(w){var grid=getFreeGrid();return Math.max(0,Math.round((g
 function defaultFreeWidgetCell(d,key,projected){
 var grid=getFreeGrid(),x=projected?projected.x:0,y=(projected?projected.y:0)+1;
 if(d.id==='clock')return nearestFreeCell(centeredFreeX(d.w),y,d.w,d.h,key);
-if(d.id==='search')return nearestFreeCell(x+1,y,d.w,d.h,key);
+if(d.id==='search')return nearestFreeCell(x+2,y,d.w,d.h,key);
 if(grid.cols>=15){
 var left=Math.max(0,Math.round((grid.cols-15)/2)),top=3;
-if(d.id==='game')return nearestFreeCell(left,top,d.w,d.h,key);
-if(d.id==='weather')return nearestFreeCell(left+5,top,d.w,d.h,key);
-if(d.id==='quote')return nearestFreeCell(left+7,top,d.w,d.h,key);
-if(d.id==='pomodoro')return nearestFreeCell(left+11,top,d.w,d.h,key);
-if(d.id==='todo')return nearestFreeCell(left+5,top+2,d.w,d.h,key);
+var todoY=top+2,todoBottom=todoY+2;
+if(d.id==='game')return nearestFreeCell(left+1,todoBottom-d.h,d.w,d.h,key);
+if(d.id==='weather')return nearestFreeCell(left+6,top,d.w,d.h,key);
+if(d.id==='quote')return nearestFreeCell(left+8,top,d.w,d.h,key);
+if(d.id==='pomodoro')return nearestFreeCell(left+11,todoBottom-d.h,d.w,d.h,key);
+if(d.id==='todo')return nearestFreeCell(left+6,todoY,d.w,d.h,key);
 }
-return nearestFreeCell(x,y,d.w,d.h,key);
+return nearestFreeCell(d.id==='pomodoro'?x:x+1,y,d.w,d.h,key);
 }
 function folderContainingLink(id){
 var folders=settings.freeLayout.folders||{};
