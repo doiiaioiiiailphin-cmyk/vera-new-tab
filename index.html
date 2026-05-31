@@ -133,13 +133,13 @@
 <div class="pomodoro-main">
 <div class="pomodoro-ring" id="pomodoroRing" style="--pomodoro-progress:0deg">
 <div class="pomodoro-ring-inner">
-<div class="pomodoro-time" id="pomodoroTime">25:00</div>
+<input class="pomodoro-time" id="pomodoroTime" type="text" inputmode="numeric" value="25:00" aria-label="Pomodoro time">
 <div class="pomodoro-mode" id="pomodoroMode">专注</div>
 </div>
 </div>
 <div class="pomodoro-side">
 <div class="pomodoro-stats">
-<span id="pomodoroRound">0</span>
+<span id="pomodoroRound" class="pomodoro-round-number"><span class="pomodoro-round-current">0</span></span>
 <span class="pomodoro-stats-label"><span data-i18n="pomodoroRoundLabel">轮数</span><span data-i18n="pomodoroFocus">专注</span></span>
 </div>
 <div class="pomodoro-actions">
@@ -211,6 +211,7 @@
 <div class="settings-row"><label data-i18n="dynamicBg">动态背景</label><button class="toggle-switch on" id="toggleDynamicBg"></button></div>
 <div class="theme-picker" id="themePicker"></div>
 <div class="settings-group"><span class="settings-label" data-i18n="customBg">自定义背景图URL</span><input class="todo-input" id="setBgImage" type="text" data-i18n-placeholder="bgPlaceholder" placeholder="输入图片URL (留空使用默认)"><input type="file" id="bgFileInput" accept="image/*" style="display:none"><button class="btn sm" id="bgUploadBtn" style="margin-top:6px" data-i18n="bgUpload">上传图片</button></div>
+<div class="settings-row"><label data-i18n="freeLayout">自由摆放布局</label><button class="toggle-switch" id="toggleFreeLayout"></button></div>
 </div>
 
 <div class="settings-section" id="sec-widgets">
@@ -218,7 +219,7 @@
 <div class="settings-row"><label data-i18n="showTodo">待办组件</label><button class="toggle-switch on" id="toggleTodo"></button></div>
 <div class="settings-row"><label data-i18n="showQuote">名言组件</label><button class="toggle-switch on" id="toggleQuote"></button></div>
 <div class="settings-row"><label data-i18n="showLinks">快捷链接</label><button class="toggle-switch on" id="toggleLinks"></button></div>
-<div class="settings-row"><label data-i18n="showPomodoro">番茄钟</label><button class="toggle-switch on" id="togglePomodoro"></button></div>
+<div class="settings-row"><label data-i18n="showPomodoro">番茄钟</label><button class="toggle-switch" id="togglePomodoro"></button></div>
 <div class="settings-row"><label data-i18n="showGame">小游戏</label><button class="toggle-switch" id="toggleGame"></button></div>
 <div class="settings-row"><label data-i18n="checkUpdate">检查更新</label><button class="toggle-switch on" id="toggleCheckUpdate"></button></div>
 </div>
