@@ -224,7 +224,7 @@ background:var(--glass-hover);transform:scale(1.03);}
 .add-link-card .add-label{font-size:11px;font-weight:500;color:var(--text-subtle);}
 .add-link-card:hover .add-label{color:var(--accent);}
 
-.free-layout-surface{position:fixed;left:50%;right:auto;top:86px;bottom:24px;width:min(calc(100vw - 48px),1740px);transform:translateX(-50%);z-index:4;display:none;
+.free-layout-surface{position:fixed;left:50%;right:auto;top:86px;bottom:24px;width:calc(100vw - 48px);transform:translateX(-50%);z-index:4;display:none;
 --free-cell-w:114px;--free-cell-h:122px;--free-gap:14px;pointer-events:auto;touch-action:none;}
 .free-layout-enabled .main-container{min-height:calc(100vh - 110px);}
 .free-layout-item{position:absolute;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-sm);
