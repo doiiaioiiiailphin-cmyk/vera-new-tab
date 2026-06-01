@@ -60,7 +60,7 @@ while(points.length<target&&idx<target*8){
     points.push({
       x:p.x,y:p.y,z:p.z,
       land:land,
-      size:land?(1.05+rnd*1.65):(0.42+rnd*0.78),
+      size:land?(0.82+rnd*1.28):(0.34+rnd*0.62),
       alpha:land?(0.56+rnd*0.34):(0.08+rnd*0.13),
       tint:land?(0.58+rnd*0.38):(0.08+rnd*0.18)
     });
@@ -280,8 +280,8 @@ if(active){
 if(!dragging||!lastPointer)return;
 e.preventDefault();
 var dx=e.clientX-lastPointer.x,dy=e.clientY-lastPointer.y,dt=Math.max(16,e.timeStamp-lastPointer.t);
-rotation.y+=dx*0.0048;rotation.x+=dy*0.0032;rotation.x=clamp(rotation.x,-0.82,0.82);
-velocity.x=dx/dt*4.2;velocity.y=dy/dt*2.8;
+rotation.y+=dx*0.0048;rotation.x-=dy*0.0032;rotation.x=clamp(rotation.x,-0.82,0.82);
+velocity.x=dx/dt*4.2;velocity.y=-dy/dt*2.8;
 lastPointer={x:e.clientX,y:e.clientY,t:e.timeStamp};
 render();
 }
@@ -294,7 +294,7 @@ container.classList.add('dragging');document.body.classList.add('earth-dragging'
 function onPointerUp(){endDrag();}
 function endDrag(){if(!dragging)return;dragging=false;lastPointer=null;if(container)container.classList.remove('dragging');document.body.classList.remove('earth-dragging');}
 function canStartDrag(target){return !(target&&target.closest&&(target.closest(interactiveSelector)||target.closest('.main-container,.settings-panel,.modal,.side-panel,#ad-sidebar')));}
-function getParticleCount(){var mobile=window.innerWidth<700,cores=navigator.hardwareConcurrency||4;return mobile?(cores>=6?1600:1200):(cores>=8?4300:3300);}
+function getParticleCount(){var mobile=window.innerWidth<700,cores=navigator.hardwareConcurrency||4;return mobile?(cores>=6?2600:2000):(cores>=8?7200:5600);}
 function fract(n){return n-Math.floor(n);}
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 function wrapLon(lon){return ((lon+540)%360)-180;}
