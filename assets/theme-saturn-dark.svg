@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 88">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#020714"/>
+      <stop offset=".56" stop-color="#081a2f"/>
+      <stop offset="1" stop-color="#060d1a"/>
+    </linearGradient>
+    <clipPath id="bodyClip"><circle cx="72" cy="47" r="19"/></clipPath>
+  </defs>
+  <rect width="144" height="88" fill="url(#sky)"/>
+  <g fill="#dffcff" opacity=".42">
+    <circle cx="19" cy="15" r=".55"/><circle cx="31" cy="63" r=".45"/><circle cx="119" cy="22" r=".55"/><circle cx="111" cy="70" r=".5"/>
+  </g>
+  <ellipse cx="72" cy="47" rx="48" ry="13" fill="none" stroke="#8cf4ff" stroke-opacity=".18"/>
+  <ellipse cx="72" cy="47" rx="42" ry="10" fill="none" stroke="#dffcff" stroke-opacity=".28"/>
+  <circle cx="72" cy="47" r="24" fill="none" stroke="#5ee7f7" stroke-opacity=".12" stroke-width="5"/>
+  <circle cx="72" cy="47" r="19" fill="none" stroke="#9ff7ff" stroke-opacity=".5" stroke-width="1.1"/>
+  <g clip-path="url(#bodyClip)">
+    <circle cx="72" cy="47" r="19" fill="#12324a" opacity=".2"/>
+    <g fill="none" stroke="#8cf4ff" stroke-opacity=".18" stroke-width=".8">
+      <ellipse cx="72" cy="47" rx="19" ry="6"/>
+      <ellipse cx="72" cy="47" rx="8" ry="19"/>
+      <path d="M54 39c12 4 25 4 36 0M54 55c12-4 25-4 36 0"/>
+    </g>
+    <g fill="#dffcff" opacity=".9">
+      <circle cx="62" cy="36" r=".8"/><circle cx="69" cy="31" r=".7"/><circle cx="80" cy="35" r=".8"/>
+      <circle cx="58" cy="47" r=".7"/><circle cx="72" cy="45" r="1"/><circle cx="85" cy="50" r=".75"/>
+      <circle cx="64" cy="57" r=".7"/><circle cx="77" cy="61" r=".8"/>
+    </g>
+  </g>
+  <path d="M28 53C48 44 94 38 116 42" fill="none" stroke="#8cf4ff" stroke-opacity=".22"/>
+  <path d="M30 57C54 49 94 44 114 47" fill="none" stroke="#dffcff" stroke-opacity=".24"/>
+</svg>

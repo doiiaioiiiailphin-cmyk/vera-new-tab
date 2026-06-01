@@ -14,7 +14,7 @@ links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false
 {icon:'chat',name:'ChatGPT',url:'https://chat.openai.com'}],
 todos:[],freeLayout:{enabled:false,editMode:false,items:{},folders:{},initialized:false,layoutVersion:6},pomodoro:{mode:'focus',remaining:1500,running:false,endsAt:null,rounds:0,focus:25,short:5,long:15}};
 
-var THEMES=[{id:'horizon',nameKey:'themeHorizon',bgDark:'assets/bg-dark.webp',bgLight:'assets/bg-light.webp',preset:'ice',accent:'#5eead4'},{id:'landscape',nameKey:'themeLandscape',bgDark:'assets/theme-landscape.svg',bgLight:'assets/theme-landscape.svg',preset:'ocean',accent:'#547a7b'},{id:'earth',nameKey:'themeEarth',bgDark:'assets/theme-earth-dark.svg',bgLight:'assets/theme-earth-light.svg',preset:'ice',accent:'#38dff2'}];
+var THEMES=[{id:'horizon',nameKey:'themeHorizon',bgDark:'assets/bg-dark.webp',bgLight:'assets/bg-light.webp',preset:'ice',accent:'#5eead4'},{id:'landscape',nameKey:'themeLandscape',bgDark:'assets/theme-landscape.svg',bgLight:'assets/theme-landscape.svg',preset:'ocean',accent:'#547a7b'},{id:'earth',nameKey:'themeEarth',bgDark:'assets/theme-earth-dark.svg',bgLight:'assets/theme-earth-light.svg',preset:'ice',accent:'#38dff2'},{id:'saturn',nameKey:'themeSaturn',bgDark:'assets/theme-saturn-dark.svg',bgLight:'assets/theme-saturn-light.svg',preset:'ice',accent:'#56f4ff'},{id:'moon',nameKey:'themeMoon',bgDark:'assets/theme-moon-dark.svg',bgLight:'assets/theme-moon-light.svg',preset:'ice',accent:'#9ff7ff'}];
 
 var SEARCH_ENGINES=[{id:'google',name:'Google',domain:'google.com',url:'https://www.google.com/search?q='},
 {id:'bing',name:'Bing',domain:'bing.com',url:'https://www.bing.com/search?q='},
@@ -199,16 +199,16 @@ document.querySelectorAll('.bg-blob').forEach(function(b){b.classList.toggle('st
 var bgBase=document.querySelector('.bg-base');
 var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES[0];
 var isLandscape=activeTheme.id==='landscape';
-var isEarth=activeTheme.id==='earth';
+var isHologram=hologramThemeActive();
 var scene=document.getElementById('landscapeScene');
 lDebugMode=false;lDebugHour=undefined;lDebugWeather=undefined;
 if(scene){var showScene=isLandscape&&settings.showBgImage&&!settings.bgImage;if(showScene){scene.style.display='';if(scene._teHide){scene.removeEventListener('transitionend',scene._teHide);scene._teHide=null;}requestAnimationFrame(function(){scene.classList.add('on');applyLandscapeScene();});}else{scene.classList.remove('on');if(scene._teHide)scene.removeEventListener('transitionend',scene._teHide);scene._teHide=function(){scene.style.display='none';scene.removeEventListener('transitionend',scene._teHide);scene._teHide=null;};scene.addEventListener('transitionend',scene._teHide);}}
-updateEarthScene(isEarth&&settings.showBgImage&&!settings.bgImage);
+updateEarthScene(isHologram);
 var builtinBg=settings.showBgImage&&!settings.bgImage;
-if(builtinBg&&!isLandscape&&!isEarth){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
+if(builtinBg&&!isLandscape&&!isHologram){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 var bgDark=document.querySelector('.bg-img-dark');if(bgDark){bgDark.src=activeTheme.bgDark;bgDark.className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
 var bgLight=document.querySelector('.bg-img-light');if(bgLight){bgLight.src=activeTheme.bgLight;bgLight.className='bg-img bg-img-light'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
-}else if(builtinBg&&(isLandscape||isEarth)){bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';
+}else if(builtinBg&&(isLandscape||isHologram)){bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';
 }else if(settings.showBgImage&&settings.bgImage){bgBase.classList.add('has-image','custom-bg');bgBase.style.backgroundImage='url('+settings.bgImage+')';}
 else{bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';}
 updateLandscapeFilter();
@@ -1232,10 +1232,11 @@ function saveThemeAccentPreset(themeId){
   var pk=themeId?'_preset_'+themeId:'_presetNone';
   settings[ak]=settings.accent;settings[pk]=settings.bgPreset;
 }
-function earthThemeActive(){return settings.bgTheme==='earth'&&settings.showBgImage&&!settings.bgImage;}
+function hologramThemeActive(){return ['earth','saturn','moon'].indexOf(settings.bgTheme)>=0&&settings.showBgImage&&!settings.bgImage;}
+function earthThemeActive(){return hologramThemeActive();}
 function updateEarthScene(active){
 var api=window.VeraEarthScene;
-if(api&&typeof api.setActive==='function')api.setActive({active:!!active,dynamic:settings.dynamicBg,performance:settings.earthPerformance});
+if(api&&typeof api.setActive==='function')api.setActive({active:!!active,dynamic:settings.dynamicBg,performance:settings.earthPerformance,body:settings.bgTheme});
 }
 document.addEventListener('vera:earth-ready',function(){updateEarthScene(earthThemeActive());});
 

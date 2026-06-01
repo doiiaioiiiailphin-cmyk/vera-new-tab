@@ -1,7 +1,7 @@
 (function(){
 'use strict';
 
-var container=null,canvas=null,ctx=null,active=false,dynamic=true,performanceMode=false,raf=0,lastTime=0;
+var container=null,canvas=null,ctx=null,active=false,dynamic=true,performanceMode=false,bodyMode='earth',raf=0,lastTime=0;
 var points=[],stars=[],latLines=[],lonLines=[],moonParticles=[],moonAngle=-0.42,initialRotation={x:-0.12,y:-0.18,z:-0.18};
 var orientation=quatFromEuler(initialRotation.x,initialRotation.y,initialRotation.z);
 var velocity={x:0,y:0},dragging=false,lastPointer=null;
@@ -16,10 +16,14 @@ opts=opts||{};
 active=!!opts.active;
 dynamic=opts.dynamic!==false;
 var perf=!!opts.performance,perfChanged=perf!==performanceMode;
+var nextBody=['earth','saturn','moon'].indexOf(opts.body)>=0?opts.body:'earth';
+var bodyChanged=nextBody!==bodyMode;
 performanceMode=perf;
+bodyMode=nextBody;
 ensure();
 if(!container)return;
 if(perfChanged)rebuildGeometry();
+if(bodyChanged)resetOrientation();
 container.style.display=active?'':'none';
 container.classList.toggle('on',active);
 document.body.classList.toggle('earth-bg',active);
@@ -135,9 +139,9 @@ for(var i=0;i<count;i++){
 function refreshTheme(){
 var dark=document.documentElement.getAttribute('data-theme')!=='light';
 palette=dark?{
-  bg1:'#010813',bg2:'#061f34',land:'#d7feff',landAlt:'#56f4ff',ocean:'#2a8db4',line:'rgba(125,245,255,.30)',moon:'#e8eef5',star:'rgba(223,252,255,.32)',shadow:'rgba(43,226,255,.16)',scan:'rgba(142,252,255,.18)',rim:'rgba(86,244,255,.72)',accent:'rgba(255,120,222,.42)'
+  bg1:'#020714',bg2:'#081a2f',land:'#b9fbff',landAlt:'#38dff2',ocean:'#215f82',line:'rgba(137,245,255,.12)',moon:'#e8eef5',star:'rgba(223,252,255,.32)',shadow:'rgba(40,210,245,.10)'
 }:{
-  bg1:'#eefaff',bg2:'#d9f0f8',land:'#0d668a',landAlt:'#22a9c7',ocean:'#99cfdf',line:'rgba(30,116,148,.28)',moon:'#ffffff',star:'rgba(63,131,168,.18)',shadow:'rgba(50,152,190,.11)',scan:'rgba(34,169,199,.15)',rim:'rgba(16,125,160,.54)',accent:'rgba(190,80,170,.24)'
+  bg1:'#eef8ff',bg2:'#d8edf8',land:'#236f96',landAlt:'#5daed2',ocean:'#9bc9dd',line:'rgba(63,131,168,.12)',moon:'#ffffff',star:'rgba(63,131,168,.18)',shadow:'rgba(70,140,175,.07)'
 };
 if(container){
   container.style.setProperty('--earth-bg-1',palette.bg1);
@@ -186,12 +190,13 @@ function render(){
 if(!ctx||!active||document.hidden)return;
 ctx.clearRect(0,0,width,height);
 drawStars();
+if(bodyMode==='saturn'){drawSaturn();return;}
+if(bodyMode==='moon'){drawMainMoon();return;}
 if(moonDepth()<0)drawMoon(true);
 drawAtmosphere();
 drawGrid(latLines,0.24);
 drawGrid(lonLines,0.18);
 drawPoints();
-drawHologramSweep();
 if(moonDepth()>=0)drawMoon(false);
 }
 
@@ -212,39 +217,13 @@ g.addColorStop(0.64,palette.shadow||'rgba(70,230,255,.08)');
 g.addColorStop(1,'rgba(255,255,255,0)');
 ctx.fillStyle=g;
 ctx.beginPath();ctx.arc(center.x,center.y,earthRadius*1.22,0,Math.PI*2);ctx.fill();
-ctx.save();
-ctx.shadowColor=palette.rim||'rgba(86,244,255,.65)';
-ctx.shadowBlur=performanceMode?8:18;
-ctx.strokeStyle=palette.rim||palette.line;ctx.lineWidth=1.15;
+ctx.strokeStyle=palette.line;ctx.lineWidth=0.9;
 ctx.beginPath();ctx.arc(center.x,center.y,earthRadius*1.01,0,Math.PI*2);ctx.stroke();
-ctx.shadowBlur=0;
-ctx.strokeStyle=palette.line;ctx.lineWidth=0.7;ctx.globalAlpha=0.45;
-ctx.beginPath();ctx.arc(center.x,center.y,earthRadius*0.86,0,Math.PI*2);ctx.stroke();
-ctx.globalAlpha=0.22;
-ctx.beginPath();ctx.ellipse(center.x,center.y,earthRadius*1.2,earthRadius*0.36,0,0,Math.PI*2);ctx.stroke();
-drawScanlines();
-ctx.restore();
-}
-
-function drawScanlines(){
-var step=performanceMode?12:8;
-ctx.save();
-ctx.beginPath();ctx.arc(center.x,center.y,earthRadius*1.005,0,Math.PI*2);ctx.clip();
-ctx.strokeStyle=palette.scan||'rgba(142,252,255,.16)';
-ctx.lineWidth=0.65;
-for(var y=center.y-earthRadius;y<=center.y+earthRadius;y+=step){
-  var dy=(y-center.y)/earthRadius,w=Math.sqrt(Math.max(0,1-dy*dy))*earthRadius;
-  ctx.globalAlpha=0.18+0.12*Math.cos(dy*Math.PI);
-  ctx.beginPath();ctx.moveTo(center.x-w,y);ctx.lineTo(center.x+w,y);ctx.stroke();
-}
-ctx.restore();
 }
 
 function drawGrid(lines,alpha){
 ctx.save();
-ctx.strokeStyle=palette.line;ctx.lineWidth=0.9;ctx.globalAlpha=alpha*1.45;
-ctx.shadowColor=palette.rim||'rgba(86,244,255,.55)';
-ctx.shadowBlur=performanceMode?0:5;
+ctx.strokeStyle=palette.line;ctx.lineWidth=0.8;ctx.globalAlpha=alpha;
 lines.forEach(function(line){
   var started=false;ctx.beginPath();
   line.forEach(function(p){var q=project(p);if(q.z<-.04){started=false;return;}if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);});
@@ -256,41 +235,127 @@ ctx.restore();
 function drawPoints(){
 var projected=points.map(function(p){var q=project(p);q.size=p.size;q.land=p.land;q.alpha=p.alpha;q.tint=p.tint;return q;}).filter(function(p){return p.z>-0.12;});
 projected.sort(function(a,b){return a.z-b.z;});
-ctx.save();
-ctx.shadowColor=palette.rim||'rgba(86,244,255,.55)';
-ctx.shadowBlur=performanceMode?0:4;
 projected.forEach(function(p){
   var front=clamp((p.z+0.12)/1.12,0,1),base=p.land?palette.land:palette.ocean,alt=p.land?palette.landAlt:palette.ocean;
-  ctx.globalAlpha=(p.land?p.alpha*0.82:p.alpha*0.42)*(0.16+front*0.9);
+  ctx.globalAlpha=p.alpha*(0.2+front*0.82);
   ctx.fillStyle=mixColor(base,alt,p.tint*front);
-  if(p.land){
-    var s=p.size*(0.52+front*0.66);
-    ctx.fillRect(p.x-s*0.5,p.y-s*0.5,s,s);
-  }else{
-    ctx.beginPath();ctx.arc(p.x,p.y,p.size*(0.34+front*0.45),0,Math.PI*2);ctx.fill();
-  }
+  ctx.beginPath();ctx.arc(p.x,p.y,p.size*(0.5+front*0.58),0,Math.PI*2);ctx.fill();
 });
+ctx.globalAlpha=1;
+}
+
+function drawSaturn(){
+var r=earthRadius*0.72;
+drawSaturnRings(r,false);
+drawBodyAtmosphere(r);
+drawBodyGrid(r,0.2);
+drawBodyPoints(r,0.78);
+drawSaturnRings(r,true);
+}
+
+function drawBodyAtmosphere(r){
+var g=ctx.createRadialGradient(center.x,center.y,r*0.35,center.x,center.y,r*1.22);
+g.addColorStop(0,'rgba(255,255,255,0)');
+g.addColorStop(0.64,palette.shadow||'rgba(70,230,255,.08)');
+g.addColorStop(1,'rgba(255,255,255,0)');
+ctx.fillStyle=g;
+ctx.beginPath();ctx.arc(center.x,center.y,r*1.22,0,Math.PI*2);ctx.fill();
+ctx.strokeStyle=palette.line;ctx.lineWidth=0.9;
+ctx.beginPath();ctx.arc(center.x,center.y,r*1.01,0,Math.PI*2);ctx.stroke();
+}
+
+function drawBodyGrid(r,alpha){
+drawGridScaled(latLines,alpha,r);
+drawGridScaled(lonLines,alpha*0.78,r);
+}
+
+function drawGridScaled(lines,alpha,r){
+ctx.save();
+ctx.strokeStyle=palette.line;ctx.lineWidth=0.8;ctx.globalAlpha=alpha;
+lines.forEach(function(line){
+  var started=false;ctx.beginPath();
+  line.forEach(function(p){var q=projectScaled(p,r);if(q.z<-.04){started=false;return;}if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);});
+  ctx.stroke();
+});
+ctx.restore();
+}
+
+function drawBodyPoints(r,density){
+var projected=points.map(function(p){var q=projectScaled(p,r);q.size=p.size;q.land=p.land;q.alpha=p.alpha;q.tint=p.tint;return q;}).filter(function(p){return p.z>-0.12;});
+projected.sort(function(a,b){return a.z-b.z;});
+var step=performanceMode?2:1;
+projected.forEach(function(p,i){
+  if(i%step)return;
+  var front=clamp((p.z+0.12)/1.12,0,1),base=p.land?palette.land:palette.ocean,alt=p.land?palette.landAlt:palette.ocean;
+  ctx.globalAlpha=p.alpha*density*(0.2+front*0.82);
+  ctx.fillStyle=mixColor(base,alt,p.tint*front);
+  ctx.beginPath();ctx.arc(p.x,p.y,p.size*(0.46+front*0.52),0,Math.PI*2);ctx.fill();
+});
+ctx.globalAlpha=1;
+}
+
+function drawSaturnRings(r,front){
+var steps=performanceMode?112:190;
+var rings=performanceMode?3:5;
+ctx.save();
+ctx.strokeStyle=palette.line;ctx.lineWidth=front?1.1:0.8;
+for(var ring=0;ring<rings;ring++){
+  var a=1.42+ring*0.11,b=0.36+ring*0.035;
+  ctx.globalAlpha=(front?0.42:0.18)*(1-ring*0.08);
+  var started=false;ctx.beginPath();
+  for(var i=0;i<=steps;i++){
+    var t=i/steps*Math.PI*2,p=saturnRingPoint(t,a,b),q=projectScaled(p,r);
+    if((q.z>=0)!==front){started=false;continue;}
+    if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);
+  }
+  ctx.stroke();
+}
 ctx.restore();
 ctx.globalAlpha=1;
 }
 
-function drawHologramSweep(){
-var phase=dynamic?(performance.now()/1700)%1:0.38;
-var y=center.y-earthRadius+phase*earthRadius*2;
+function saturnRingPoint(t,a,b){
+var tilt=0.48,sn=Math.sin(t);
+return{x:Math.cos(t)*a,y:sn*b*Math.sin(tilt),z:sn*b*Math.cos(tilt)};
+}
+
+function drawMainMoon(){
+var r=earthRadius*0.86;
+drawBodyAtmosphere(r);
+drawBodyGrid(r,0.14);
+drawMainMoonParticles(r);
+drawMoonCraters(r);
+}
+
+function drawMainMoonParticles(r){
 ctx.save();
-ctx.beginPath();ctx.arc(center.x,center.y,earthRadius*1.01,0,Math.PI*2);ctx.clip();
-var g=ctx.createLinearGradient(center.x-earthRadius,y-18,center.x+earthRadius,y+18);
-g.addColorStop(0,'rgba(255,255,255,0)');
-g.addColorStop(0.42,palette.accent||'rgba(255,120,222,.28)');
-g.addColorStop(0.5,palette.rim||'rgba(86,244,255,.55)');
-g.addColorStop(0.58,palette.accent||'rgba(255,120,222,.28)');
-g.addColorStop(1,'rgba(255,255,255,0)');
-ctx.globalAlpha=performanceMode?0.22:0.34;
-ctx.fillStyle=g;
-ctx.fillRect(center.x-earthRadius*1.1,y-12,earthRadius*2.2,24);
-ctx.strokeStyle=palette.rim||palette.line;ctx.lineWidth=1;
-ctx.globalAlpha=performanceMode?0.28:0.48;
-ctx.beginPath();ctx.moveTo(center.x-earthRadius*0.94,y);ctx.lineTo(center.x+earthRadius*0.94,y);ctx.stroke();
+moonParticles.forEach(function(p,i){
+  if(performanceMode&&i%2)return;
+  var q=projectScaled(p,r);
+  if(q.z<-.08)return;
+  var front=clamp((q.z+0.08)/1.08,0,1);
+  ctx.globalAlpha=p.alpha*(0.28+front*0.75);
+  ctx.fillStyle='rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';
+  ctx.beginPath();ctx.arc(q.x,q.y,p.size*(0.45+front*0.55),0,Math.PI*2);ctx.fill();
+});
+ctx.globalAlpha=0.22;
+ctx.strokeStyle=moonTextureReady?'rgba(210,220,230,.85)':'rgba(210,220,230,.55)';
+ctx.beginPath();ctx.arc(center.x,center.y,r*1.02,0,Math.PI*2);ctx.stroke();
+ctx.restore();
+ctx.globalAlpha=1;
+}
+
+function drawMoonCraters(r){
+var craters=[{lat:18,lon:-42,r:.1},{lat:-8,lon:18,r:.13},{lat:32,lon:42,r:.07},{lat:-28,lon:-10,r:.085},{lat:4,lon:70,r:.055}];
+ctx.save();
+ctx.strokeStyle=palette.line;ctx.lineWidth=0.8;
+craters.forEach(function(c){
+  var q=projectScaled(spherePoint(c.lat,c.lon),r);
+  if(q.z<-.05)return;
+  var front=clamp((q.z+0.05)/1.05,0,1),rr=r*c.r*(0.65+front*0.35);
+  ctx.globalAlpha=0.16+front*0.26;
+  ctx.beginPath();ctx.ellipse(q.x,q.y,rr,rr*0.48,0.25,0,Math.PI*2);ctx.stroke();
+});
 ctx.restore();
 ctx.globalAlpha=1;
 }
@@ -303,7 +368,7 @@ var orbitY=-earthRadius*0.54+Math.sin(moonAngle)*earthRadius*0.22;
 var mx=center.x+orbitX,my=center.y+orbitY;
 var r=earthRadius*(0.075+0.012*(orbitZ+1));
 ctx.save();
-ctx.globalAlpha=0.12;
+ctx.globalAlpha=0.08;
 ctx.strokeStyle=palette.line;ctx.lineWidth=0.8;
 ctx.beginPath();ctx.ellipse(center.x,center.y-earthRadius*0.54,earthRadius*1.62,earthRadius*0.22,0,0,Math.PI*2);ctx.stroke();
 ctx.globalAlpha=orbitZ<-.35?0.36:0.88;
@@ -319,28 +384,26 @@ ctx.restore();
 
 function drawMoonParticles(mx,my,r,spin){
 var c=Math.cos(spin),s=Math.sin(spin);
-ctx.save();
-ctx.shadowColor=palette.rim||'rgba(86,244,255,.55)';
-ctx.shadowBlur=performanceMode?0:5;
 moonParticles.forEach(function(p){
   var x=p.x*c+p.z*s,z=-p.x*s+p.z*c,y=p.y;
   if(z<-.08)return;
   var front=clamp((z+0.08)/1.08,0,1);
-  ctx.globalAlpha=p.alpha*(0.22+front*0.58);
-  ctx.fillStyle=palette.moon||'rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';
+  ctx.globalAlpha=p.alpha*(0.28+front*0.75);
+  ctx.fillStyle='rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';
   ctx.beginPath();ctx.arc(mx+x*r,my+y*r,p.size*(0.45+front*0.55),0,Math.PI*2);ctx.fill();
 });
-ctx.shadowBlur=0;
-ctx.globalAlpha=0.44;
-ctx.strokeStyle=palette.rim||'rgba(210,220,230,.85)';
+ctx.globalAlpha=0.18;
+ctx.strokeStyle=moonTextureReady?'rgba(210,220,230,.85)':'rgba(210,220,230,.55)';
 ctx.beginPath();ctx.arc(mx,my,r*1.02,0,Math.PI*2);ctx.stroke();
-ctx.restore();
 }
 
 function project(p){
+return projectScaled(p,earthRadius);
+}
+function projectScaled(p,r){
 var q=rotatePoint(p,orientation);
 var depth=2.8/(2.8-q.z*0.42);
-return{x:center.x+q.x*earthRadius*depth,y:center.y+q.y*earthRadius*depth,z:q.z};
+return{x:center.x+q.x*r*depth,y:center.y+q.y*r*depth,z:q.z};
 }
 
 function onPointerMove(e){
@@ -366,6 +429,7 @@ function getParticleCount(){var mobile=window.innerWidth<700,cores=navigator.har
 function getMoonParticleCount(){return performanceMode?220:520;}
 function rebuildGeometry(){createGeometry();if(moonImage)sampleMoonTexture(moonImage);else createFallbackMoonParticles();}
 function shouldAnimate(){return active&&!document.hidden&&(dynamic||dragging||Math.abs(velocity.x)>0.0008||Math.abs(velocity.y)>0.0008);}
+function resetOrientation(){orientation=quatFromEuler(initialRotation.x,initialRotation.y,initialRotation.z);velocity.x=0;velocity.y=0;}
 function applyScreenRotation(yaw,pitch){
 if(!yaw&&!pitch)return;
 var q=orientation;

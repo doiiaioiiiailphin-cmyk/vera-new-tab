@@ -1,41 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 88">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#eefaff"/>
-      <stop offset=".58" stop-color="#d9f0f8"/>
+      <stop offset="0" stop-color="#eef8ff"/>
+      <stop offset=".58" stop-color="#d8edf8"/>
       <stop offset="1" stop-color="#eef2f7"/>
     </linearGradient>
-    <radialGradient id="rim" cx="50%" cy="54%" r="50%">
-      <stop offset=".62" stop-color="#22a9c7" stop-opacity="0"/>
-      <stop offset=".82" stop-color="#22a9c7" stop-opacity=".13"/>
-      <stop offset="1" stop-color="#22a9c7" stop-opacity=".26"/>
-    </radialGradient>
-    <clipPath id="earthClip"><circle cx="72" cy="47" r="25"/></clipPath>
+    <clipPath id="earthClip"><circle cx="72" cy="47" r="24"/></clipPath>
   </defs>
   <rect width="144" height="88" fill="url(#sky)"/>
-  <g fill="#1e7494" opacity=".18">
-    <circle cx="18" cy="16" r=".55"/><circle cx="31" cy="63" r=".42"/><circle cx="119" cy="22" r=".55"/><circle cx="112" cy="70" r=".46"/><circle cx="130" cy="47" r=".38"/>
+  <g fill="#3f83a8" opacity=".18">
+    <circle cx="19" cy="15" r=".55"/><circle cx="31" cy="63" r=".45"/><circle cx="119" cy="22" r=".55"/><circle cx="111" cy="70" r=".5"/><circle cx="130" cy="47" r=".4"/>
   </g>
-  <ellipse cx="72" cy="47" rx="42" ry="14" fill="none" stroke="#1e7494" stroke-opacity=".12"/>
-  <circle cx="96" cy="34" r="6" fill="none" stroke="#107da0" stroke-opacity=".52"/>
-  <circle cx="96" cy="34" r="2.2" fill="#107da0" opacity=".3"/>
-  <circle cx="72" cy="47" r="31" fill="url(#rim)"/>
-  <circle cx="72" cy="47" r="25" fill="none" stroke="#107da0" stroke-opacity=".62" stroke-width="1.1"/>
+  <ellipse cx="72" cy="47" rx="42" ry="14" fill="none" stroke="#3f83a8" stroke-opacity=".08"/>
+  <circle cx="96" cy="34" r="6" fill="#fbfdff" stroke="#a8bac9" stroke-opacity=".55"/>
+  <circle cx="72" cy="47" r="30" fill="none" stroke="#70b9d7" stroke-opacity=".11" stroke-width="5"/>
+  <circle cx="72" cy="47" r="24" fill="none" stroke="#236f96" stroke-opacity=".42" stroke-width="1.2"/>
   <g clip-path="url(#earthClip)">
-    <rect x="47" y="22" width="50" height="50" fill="#cfe5ef" opacity=".12"/>
-    <g fill="none" stroke="#107da0" stroke-width=".75">
-      <ellipse cx="72" cy="47" rx="25" ry="7.8" opacity=".36"/>
-      <ellipse cx="72" cy="47" rx="10" ry="25" opacity=".32"/>
-      <path d="M48 38c15 5 33 5 48 0M48 56c15-5 33-5 48 0" opacity=".28"/>
-      <path d="M47 43h50M47 50h50M50 31h44M50 64h44" opacity=".16"/>
+    <circle cx="72" cy="47" r="24" fill="#cfe5ef" opacity=".28"/>
+    <g fill="none" stroke="#236f96" stroke-opacity=".16" stroke-width=".8">
+      <ellipse cx="72" cy="47" rx="24" ry="7.5"/>
+      <ellipse cx="72" cy="47" rx="10" ry="24"/>
+      <path d="M49 38c14 5 31 5 46 0M49 56c14-5 31-5 46 0"/>
     </g>
-    <rect x="48" y="48" width="48" height="5" fill="#be50aa" opacity=".12"/>
-    <path d="M48 50.5h48" stroke="#22a9c7" stroke-opacity=".64" stroke-width=".8"/>
-    <g fill="#0d668a">
-      <rect x="56" y="32" width="1.5" height="1.5"/><rect x="59" y="35" width="1.6" height="1.6"/><rect x="62" y="38" width="1.4" height="1.4"/><rect x="64" y="42" width="1.3" height="1.3"/>
-      <rect x="70" y="30" width="1.2" height="1.2"/><rect x="74" y="29" width="1.5" height="1.5"/><rect x="80" y="32" width="1.4" height="1.4"/><rect x="85" y="36" width="1.3" height="1.3"/>
-      <rect x="77" y="41" width="1.5" height="1.5"/><rect x="82" y="44" width="1.7" height="1.7"/><rect x="89" y="47" width="1.2" height="1.2"/>
-      <rect x="66" y="51" width="1.3" height="1.3"/><rect x="62" y="55" width="1.1" height="1.1"/><rect x="70" y="59" width="1.2" height="1.2"/><rect x="77" y="62" width="1.4" height="1.4"/><rect x="86" y="55" width="1.2" height="1.2"/>
+    <g fill="#236f96">
+      <circle cx="56" cy="32" r=".9"/><circle cx="59" cy="35" r="1"/><circle cx="62" cy="38" r=".9"/><circle cx="56" cy="40" r=".7"/><circle cx="64" cy="42" r=".8"/>
+      <circle cx="69" cy="30" r=".7"/><circle cx="73" cy="29" r=".9"/><circle cx="78" cy="31" r=".8"/><circle cx="83" cy="34" r=".9"/><circle cx="87" cy="37" r=".8"/>
+      <circle cx="75" cy="39" r=".9"/><circle cx="80" cy="42" r="1.1"/><circle cx="86" cy="45" r=".8"/><circle cx="92" cy="47" r=".7"/>
+      <circle cx="66" cy="50" r=".8"/><circle cx="62" cy="54" r=".7"/><circle cx="68" cy="58" r=".8"/><circle cx="75" cy="61" r=".9"/><circle cx="82" cy="58" r=".7"/>
+      <circle cx="86" cy="55" r=".75"/><circle cx="90" cy="52" r=".65"/><circle cx="58" cy="48" r=".6"/><circle cx="53" cy="45" r=".55"/>
+    </g>
+    <g fill="#5daed2" opacity=".48">
+      <circle cx="51" cy="53" r=".45"/><circle cx="60" cy="61" r=".38"/><circle cx="70" cy="42" r=".42"/><circle cx="94" cy="40" r=".4"/><circle cx="79" cy="52" r=".36"/>
     </g>
   </g>
 </svg>
