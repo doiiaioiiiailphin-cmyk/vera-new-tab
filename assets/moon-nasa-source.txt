@@ -1,0 +1,12 @@
+Moon color map source:
+NASA Scientific Visualization Studio CGI Moon Kit
+https://svs.gsfc.nasa.gov/4720
+
+Local file:
+moon-nasa-2k.jpg
+
+Original NASA download:
+lroc_color_2k.jpg (2048x1024)
+
+Credit:
+NASA's Scientific Visualization Studio

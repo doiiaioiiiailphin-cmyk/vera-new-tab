@@ -78,17 +78,18 @@ background-size:200px 200px;pointer-events:none;}
 .bg-landscape.on{opacity:1;}
 .bg-landscape svg{width:100%;height:100%;}
 .bg-earth{position:fixed;inset:0;z-index:0;overflow:hidden;opacity:0;pointer-events:none;
-background:radial-gradient(circle at var(--earth-glow-x,50%) var(--earth-glow-y,42%),color-mix(in srgb,var(--earth-glow-color,#46e6ff) 24%,transparent) 0%,transparent 34%),
+background:radial-gradient(circle at var(--earth-glow-x,50%) var(--earth-glow-y,42%),color-mix(in srgb,var(--earth-glow-color,#46e6ff) 12%,transparent) 0%,transparent 19%),
 linear-gradient(145deg,var(--earth-bg-1,#020714) 0%,var(--earth-bg-2,#081a2f) 52%,var(--bg-base) 100%);
 transition:opacity .8s ease,background var(--transition-slow);transform:translateZ(0);backface-visibility:hidden;}
 .bg-earth.on{opacity:1;}
 .earth-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;}
-.earth-glow{position:absolute;inset:-20%;pointer-events:none;opacity:.62;mix-blend-mode:screen;
-background:radial-gradient(circle at var(--earth-glow-x,50%) var(--earth-glow-y,42%),color-mix(in srgb,var(--earth-glow-color,#46e6ff) 55%,white) 0%,color-mix(in srgb,var(--earth-glow-color,#46e6ff) 28%,transparent) 18%,transparent 42%);
-filter:blur(28px);transition:opacity var(--transition-slow);}
-.bg-earth.dragging .earth-glow{opacity:.78;}
-:root[data-theme=light] .earth-glow{opacity:.46;mix-blend-mode:multiply;filter:blur(34px);}
+.earth-glow{position:absolute;inset:-6%;pointer-events:none;opacity:.34;mix-blend-mode:screen;
+background:radial-gradient(circle at var(--earth-glow-x,50%) var(--earth-glow-y,42%),color-mix(in srgb,var(--earth-glow-color,#46e6ff) 42%,white) 0%,color-mix(in srgb,var(--earth-glow-color,#46e6ff) 18%,transparent) 10%,transparent 25%);
+filter:blur(18px);transition:opacity var(--transition-slow);}
+.bg-earth.dragging .earth-glow{opacity:.42;}
+:root[data-theme=light] .earth-glow{opacity:.25;mix-blend-mode:multiply;filter:blur(22px);}
 body.earth-bg .bg-noise{opacity:.04;}
+body.earth-dragging,body.earth-dragging *{user-select:none!important;-webkit-user-select:none!important;}
 
 .main-container{position:relative;z-index:1;width:100%;max-width:920px;padding:40px 24px;display:flex;flex-direction:column;align-items:center;gap:28px;transform:translateZ(0);}
 
