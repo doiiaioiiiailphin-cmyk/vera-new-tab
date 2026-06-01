@@ -212,6 +212,7 @@ else{bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundIma
 updateLandscapeFilter();
 applyLandscapeScene();
 var builtinLight=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
+document.body.classList.toggle('builtin-bg',builtinBg);
 document.body.classList.toggle('builtin-bg-light',builtinLight);
 _toggleAds();
 updateEngineDisplay();
