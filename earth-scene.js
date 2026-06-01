@@ -2,7 +2,8 @@
 'use strict';
 
 var container=null,canvas=null,ctx=null,active=false,dynamic=true,raf=0,lastTime=0;
-var points=[],stars=[],latLines=[],lonLines=[],moonParticles=[],moonAngle=-0.42,rotation={x:-0.12,y:-0.18,z:-0.18};
+var points=[],stars=[],latLines=[],lonLines=[],moonParticles=[],moonAngle=-0.42,initialRotation={x:-0.12,y:-0.18,z:-0.18};
+var orientation=quatFromEuler(initialRotation.x,initialRotation.y,initialRotation.z);
 var velocity={x:0,y:0},dragging=false,lastPointer=null;
 var palette={},pixelRatio=1,width=1,height=1,earthRadius=1,center={x:0,y:0},moonTextureReady=false;
 var interactiveSelector='a,button,input,textarea,select,canvas,.top-bar,.settings-overlay,.settings-panel,.modal-overlay,#freeContextMenu,.free-context-menu,.free-layout-item,.free-folder-panel,.link-card,.add-link-card,.widget,.search-box,.engine-dropdown,.suggest-dropdown,.theme-card,.radio-option,.btn,.toggle-switch,.pomodoro-time,.pomodoro-chip,.pomodoro-btn,.todo-item,.todo-input,.game-carousel,.game-stage,.clock-wrap,.clock-time,.clock-date';
@@ -150,11 +151,10 @@ var dt=Math.min(0.05,(now-lastTime)/1000||0.016);
 lastTime=now;
 if(dynamic){
   moonAngle=wrapAngle(moonAngle+dt*0.075);
-  if(!dragging)rotation.y=wrapAngle(rotation.y+dt*0.085);
+  if(!dragging)applyScreenRotation(dt*0.085,0);
 }
 if(!dragging){
-  rotation.y=wrapAngle(rotation.y+velocity.x*dt);
-  rotation.x=wrapAngle(rotation.x+velocity.y*dt);
+  applyScreenRotation(velocity.x*dt,velocity.y*dt);
   velocity.x*=Math.pow(0.03,dt);
   velocity.y*=Math.pow(0.03,dt);
   if(Math.abs(velocity.x)<0.0008)velocity.x=0;
@@ -264,18 +264,16 @@ ctx.beginPath();ctx.arc(mx,my,r*1.02,0,Math.PI*2);ctx.stroke();
 }
 
 function project(p){
-var cx=Math.cos(rotation.x),sx=Math.sin(rotation.x),cy=Math.cos(rotation.y),sy=Math.sin(rotation.y),cz=Math.cos(rotation.z),sz=Math.sin(rotation.z);
-var x=p.x,y=p.y,z=p.z;
-var x1=x*cy+z*sy,z1=-x*sy+z*cy,y2=y*cx-z1*sx,z2=y*sx+z1*cx,x3=x1*cz-y2*sz,y3=x1*sz+y2*cz;
-var depth=2.8/(2.8-z2*0.42);
-return{x:center.x+x3*earthRadius*depth,y:center.y+y3*earthRadius*depth,z:z2};
+var q=rotatePoint(p,orientation);
+var depth=2.8/(2.8-q.z*0.42);
+return{x:center.x+q.x*earthRadius*depth,y:center.y+q.y*earthRadius*depth,z:q.z};
 }
 
 function onPointerMove(e){
 if(!dragging||!lastPointer)return;
 e.preventDefault();
 var dx=e.clientX-lastPointer.x,dy=e.clientY-lastPointer.y,dt=Math.max(16,e.timeStamp-lastPointer.t);
-rotation.y=wrapAngle(rotation.y+dx*0.0048);rotation.x=wrapAngle(rotation.x-dy*0.0032);
+applyScreenRotation(dx*0.0048,-dy*0.0032);
 velocity.x=dx/dt*4.2;velocity.y=-dy/dt*2.8;
 lastPointer={x:e.clientX,y:e.clientY,t:e.timeStamp};
 render();
@@ -292,6 +290,32 @@ function endDrag(){if(!dragging)return;dragging=false;lastPointer=null;if(contai
 function canStartDrag(target){return !(target&&target.closest&&(target.closest(interactiveSelector)||target.closest('.main-container,.settings-panel,.modal,.side-panel,#ad-sidebar')));}
 function getParticleCount(){var mobile=window.innerWidth<700,cores=navigator.hardwareConcurrency||4;return mobile?(cores>=6?2600:2000):(cores>=8?7200:5600);}
 function shouldAnimate(){return active&&!document.hidden&&(dynamic||dragging||Math.abs(velocity.x)>0.0008||Math.abs(velocity.y)>0.0008);}
+function applyScreenRotation(yaw,pitch){
+if(!yaw&&!pitch)return;
+var q=orientation;
+if(yaw)q=quatMul(axisQuat(0,1,0,yaw),q);
+if(pitch)q=quatMul(axisQuat(1,0,0,pitch),q);
+orientation=quatNormalize(q);
+}
+function quatFromEuler(x,y,z){
+var qy=axisQuat(0,1,0,y),qx=axisQuat(1,0,0,x),qz=axisQuat(0,0,1,z);
+return quatNormalize(quatMul(qz,quatMul(qx,qy)));
+}
+function axisQuat(x,y,z,a){var h=a*0.5,s=Math.sin(h);return{x:x*s,y:y*s,z:z*s,w:Math.cos(h)};}
+function quatMul(a,b){
+return{
+  x:a.w*b.x+a.x*b.w+a.y*b.z-a.z*b.y,
+  y:a.w*b.y-a.x*b.z+a.y*b.w+a.z*b.x,
+  z:a.w*b.z+a.x*b.y-a.y*b.x+a.z*b.w,
+  w:a.w*b.w-a.x*b.x-a.y*b.y-a.z*b.z
+};
+}
+function quatNormalize(q){var l=Math.hypot(q.x,q.y,q.z,q.w)||1;return{x:q.x/l,y:q.y/l,z:q.z/l,w:q.w/l};}
+function rotatePoint(p,q){
+var x=p.x,y=p.y,z=p.z,qx=q.x,qy=q.y,qz=q.z,qw=q.w;
+var tx=2*(qy*z-qz*y),ty=2*(qz*x-qx*z),tz=2*(qx*y-qy*x);
+return{x:x+qw*tx+(qy*tz-qz*ty),y:y+qw*ty+(qz*tx-qx*tz),z:z+qw*tz+(qx*ty-qy*tx)};
+}
 function fract(n){return n-Math.floor(n);}
 function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
 function wrapAngle(v){var t=Math.PI*2;return ((v+Math.PI)%t+t)%t-Math.PI;}
