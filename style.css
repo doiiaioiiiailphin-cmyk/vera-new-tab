@@ -305,7 +305,7 @@ background:color-mix(in srgb,var(--bg-overlay) 88%,transparent);color:var(--text
 
 
 .widget{position:relative;overflow:hidden;transform:translateZ(0);
-background:var(--widget-bg);backdrop-filter:blur(var(--glass-blur)) saturate(180%);
+background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur)) saturate(180%);
 -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(180%);
 border:1px solid var(--glass-border);border-radius:var(--radius-sm);
 box-shadow:var(--shadow);padding:20px;transition:border-color var(--transition-fast),box-shadow var(--transition-fast),background var(--transition-fast);}
