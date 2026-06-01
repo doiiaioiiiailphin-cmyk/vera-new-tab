@@ -5,7 +5,7 @@ var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','b
 var quickLinkSuppressClickUntil=0;
 
 var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgTheme:'horizon',showBgImage:false,checkUpdate:true,
-showWeather:true,showTodo:true,showQuote:true,showLinks:true,showPomodoro:false,dynamicBg:true,showGame:false,
+showWeather:true,showTodo:true,showQuote:true,showLinks:true,showPomodoro:false,dynamicBg:true,earthPerformance:false,showGame:false,
 searchEngine:'google',theme:'auto',language:'zh',vip:false,
 links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false},
 {icon:'code',name:'GitHub',url:'https://github.com'},
@@ -1198,6 +1198,7 @@ updateToggle('toggleFreeLayout',settings.freeLayout&&settings.freeLayout.enabled
 updateToggle('togglePomodoro',settings.showPomodoro);
 updateToggle('toggleGame',settings.showGame);
 updateToggle('toggleDynamicBg',settings.dynamicBg);
+updateToggle('toggleEarthPerformance',settings.earthPerformance);
 updateToggle('toggleCheckUpdate',settings.checkUpdate);
 renderThemePicker();
 var isDynamicTheme = settings.bgTheme === 'landscape';
@@ -1234,7 +1235,7 @@ function saveThemeAccentPreset(themeId){
 function earthThemeActive(){return settings.bgTheme==='earth'&&settings.showBgImage&&!settings.bgImage;}
 function updateEarthScene(active){
 var api=window.VeraEarthScene;
-if(api&&typeof api.setActive==='function')api.setActive({active:!!active,dynamic:settings.dynamicBg});
+if(api&&typeof api.setActive==='function')api.setActive({active:!!active,dynamic:settings.dynamicBg,performance:settings.earthPerformance});
 }
 document.addEventListener('vera:earth-ready',function(){updateEarthScene(earthThemeActive());});
 
@@ -1460,6 +1461,7 @@ var tfl=document.getElementById('toggleFreeLayout');if(tfl)tfl.addEventListener(
 var tpom=document.getElementById('togglePomodoro');if(tpom)tpom.addEventListener('click',function(){settings.showPomodoro=!settings.showPomodoro;saveSettings();applyAll();});
 var tg=document.getElementById('toggleGame');if(tg)tg.addEventListener('click',function(){settings.showGame=!settings.showGame;saveSettings();applyAll();});
 var tdb=document.getElementById('toggleDynamicBg');if(tdb)tdb.addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
+var tep=document.getElementById('toggleEarthPerformance');if(tep)tep.addEventListener('click',function(){settings.earthPerformance=!settings.earthPerformance;saveSettings();applyAll();});
 var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;settings._showBgAuto=undefined;if(settings.showBgImage&&(!settings.bgTheme||settings.bgTheme===''))settings.bgTheme='horizon';saveSettings();applyAll();});
 var tcu=document.getElementById('toggleCheckUpdate');if(tcu)tcu.addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){

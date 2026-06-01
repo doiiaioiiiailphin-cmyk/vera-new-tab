@@ -1,11 +1,11 @@
 (function(){
 'use strict';
 
-var container=null,canvas=null,ctx=null,active=false,dynamic=true,raf=0,lastTime=0;
+var container=null,canvas=null,ctx=null,active=false,dynamic=true,performanceMode=false,raf=0,lastTime=0;
 var points=[],stars=[],latLines=[],lonLines=[],moonParticles=[],moonAngle=-0.42,initialRotation={x:-0.12,y:-0.18,z:-0.18};
 var orientation=quatFromEuler(initialRotation.x,initialRotation.y,initialRotation.z);
 var velocity={x:0,y:0},dragging=false,lastPointer=null;
-var palette={},pixelRatio=1,width=1,height=1,earthRadius=1,center={x:0,y:0},moonTextureReady=false;
+var palette={},pixelRatio=1,width=1,height=1,earthRadius=1,center={x:0,y:0},moonTextureReady=false,moonImage=null;
 var interactiveSelector='a,button,input,textarea,select,canvas,.top-bar,.settings-overlay,.settings-panel,.modal-overlay,#freeContextMenu,.free-context-menu,.free-layout-item,.free-folder-panel,.link-card,.add-link-card,.widget,.search-box,.engine-dropdown,.suggest-dropdown,.theme-card,.radio-option,.btn,.toggle-switch,.pomodoro-time,.pomodoro-chip,.pomodoro-btn,.todo-item,.todo-input,.game-carousel,.game-stage,.clock-wrap,.clock-time,.clock-date';
 
 window.VeraEarthScene={setActive:setActive,refreshTheme:refreshTheme};
@@ -15,8 +15,11 @@ function setActive(opts){
 opts=opts||{};
 active=!!opts.active;
 dynamic=opts.dynamic!==false;
+var perf=!!opts.performance,perfChanged=perf!==performanceMode;
+performanceMode=perf;
 ensure();
 if(!container)return;
+if(perfChanged)rebuildGeometry();
 container.style.display=active?'':'none';
 container.classList.toggle('on',active);
 document.body.classList.toggle('earth-bg',active);
@@ -32,8 +35,7 @@ canvas.className='earth-canvas';
 canvas.setAttribute('aria-hidden','true');
 container.appendChild(canvas);
 ctx=canvas.getContext('2d',{alpha:true});
-createGeometry();
-createFallbackMoonParticles();
+rebuildGeometry();
 loadMoonTexture();
 window.addEventListener('resize',resize,{passive:true});
 document.addEventListener('pointermove',onPointerMove,{passive:false});
@@ -67,9 +69,10 @@ while(points.length<target&&idx<target*8){
   }
   idx++;
 }
-latLines=[-60,-35,-15,15,35,60].map(function(deg){var arr=[];for(var j=0;j<=150;j++)arr.push(spherePoint(deg,j/150*360-180));return arr;});
-lonLines=[];for(var l=0;l<8;l++){var line=[];var lon=l*45-180;for(var k=0;k<=150;k++)line.push(spherePoint(k/150*180-90,lon));lonLines.push(line);}
-stars=[];var sc=window.innerWidth<700?95:170;for(var s=0;s<sc;s++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.1+0.2,a:Math.random()*0.26+0.08});
+var steps=performanceMode?84:150;
+latLines=(performanceMode?[-55,-25,25,55]:[-60,-35,-15,15,35,60]).map(function(deg){var arr=[];for(var j=0;j<=steps;j++)arr.push(spherePoint(deg,j/steps*360-180));return arr;});
+lonLines=[];var lonCount=performanceMode?6:8;for(var l=0;l<lonCount;l++){var line=[];var lon=l*(360/lonCount)-180;for(var k=0;k<=steps;k++)line.push(spherePoint(k/steps*180-90,lon));lonLines.push(line);}
+stars=[];var sc=performanceMode?(window.innerWidth<700?36:68):(window.innerWidth<700?95:170);for(var s=0;s<sc;s++)stars.push({x:Math.random(),y:Math.random(),r:Math.random()*1.1+0.2,a:Math.random()*0.26+0.08});
 }
 
 function spherePoint(lat,lon){
@@ -93,7 +96,7 @@ return (xr*xr)/(rlon*rlon)+(yr*yr)/(rlat*rlat)<1;
 
 function loadMoonTexture(){
 var img=new Image();
-img.onload=function(){sampleMoonTexture(img);moonTextureReady=true;render();};
+img.onload=function(){moonImage=img;sampleMoonTexture(img);moonTextureReady=true;render();};
 img.onerror=function(){moonTextureReady=false;};
 img.src='assets/moon-nasa-2k.jpg';
 }
@@ -105,7 +108,7 @@ var cx=c.getContext('2d');
 cx.drawImage(img,0,0,w,h);
 var data=cx.getImageData(0,0,w,h).data;
 moonParticles=[];
-var count=520;
+var count=getMoonParticleCount();
 for(var i=0;i<count;i++){
   var u=(i+0.5)/count,v=fract(Math.sin(i*41.223)*13457.9);
   var theta=Math.acos(1-2*u),phi=2*Math.PI*v;
@@ -120,8 +123,9 @@ for(var i=0;i<count;i++){
 
 function createFallbackMoonParticles(){
 moonParticles=[];
-for(var i=0;i<430;i++){
-  var u=(i+0.5)/430,v=fract(Math.sin(i*41.223)*13457.9),theta=Math.acos(1-2*u),phi=2*Math.PI*v;
+var count=performanceMode?180:430;
+for(var i=0;i<count;i++){
+  var u=(i+0.5)/count,v=fract(Math.sin(i*41.223)*13457.9),theta=Math.acos(1-2*u),phi=2*Math.PI*v;
   var p={x:Math.sin(theta)*Math.cos(phi),y:Math.cos(theta),z:Math.sin(theta)*Math.sin(phi)};
   var br=0.56+0.28*Math.sin(phi*5+Math.cos(theta*7));
   moonParticles.push({x:p.x,y:p.y,z:p.z,r:205+br*35,g:210+br*32,b:218+br*28,size:0.6+br,alpha:0.45+br*0.42});
@@ -167,7 +171,7 @@ if(shouldAnimate())raf=requestAnimationFrame(tick);
 function resize(){
 if(!ctx||!container)return;
 width=window.innerWidth||1;height=window.innerHeight||1;
-pixelRatio=Math.min(window.devicePixelRatio||1,width<700?1.5:2);
+pixelRatio=performanceMode?Math.min(window.devicePixelRatio||1,width<700?1:1.25):Math.min(window.devicePixelRatio||1,width<700?1.5:2);
 canvas.width=Math.max(1,Math.floor(width*pixelRatio));
 canvas.height=Math.max(1,Math.floor(height*pixelRatio));
 canvas.style.width=width+'px';canvas.style.height=height+'px';
@@ -296,7 +300,9 @@ start();
 function onPointerUp(){endDrag();}
 function endDrag(){if(!dragging)return;dragging=false;lastPointer=null;if(container)container.classList.remove('dragging');document.body.classList.remove('earth-dragging');start();}
 function canStartDrag(target){return !(target&&target.closest&&(target.closest(interactiveSelector)||target.closest('.main-container,.settings-panel,.modal,.side-panel,#ad-sidebar')));}
-function getParticleCount(){var mobile=window.innerWidth<700,cores=navigator.hardwareConcurrency||4;return mobile?(cores>=6?2600:2000):(cores>=8?7200:5600);}
+function getParticleCount(){var mobile=window.innerWidth<700,cores=navigator.hardwareConcurrency||4;if(performanceMode)return mobile?(cores>=6?1200:900):(cores>=8?2600:2000);return mobile?(cores>=6?2600:2000):(cores>=8?7200:5600);}
+function getMoonParticleCount(){return performanceMode?220:520;}
+function rebuildGeometry(){createGeometry();if(moonImage)sampleMoonTexture(moonImage);else createFallbackMoonParticles();}
 function shouldAnimate(){return active&&!document.hidden&&(dynamic||dragging||Math.abs(velocity.x)>0.0008||Math.abs(velocity.y)>0.0008);}
 function applyScreenRotation(yaw,pitch){
 if(!yaw&&!pitch)return;
