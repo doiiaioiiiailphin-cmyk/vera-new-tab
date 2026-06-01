@@ -490,33 +490,8 @@ if(behindEarth){
   ctx.arc(center.x,center.y,earthRadius*1.02,0,Math.PI*2,true);
   ctx.clip('evenodd');
 }
-    drawOrbitMoon(mx,my,r,moonAngle*0.25);
+    drawMoonParticles(mx,my,r,moonAngle*0.25);
 ctx.restore();
-}
-
-function drawOrbitMoon(mx,my,r,spin){
-var c=Math.cos(spin),s=Math.sin(spin),colors=bodyPalette('moon');
-ctx.save();
-ctx.strokeStyle=colors.rim;
-ctx.globalAlpha=0.8;
-ctx.lineWidth=0.9;
-ctx.beginPath();ctx.arc(mx,my,r*1.02,0,Math.PI*2);ctx.stroke();
-ctx.globalAlpha=0.28;
-ctx.strokeStyle=colors.line;
-ctx.beginPath();ctx.ellipse(mx,my,r*0.78,r*0.2,spin,0,Math.PI*2);ctx.stroke();
-ctx.beginPath();ctx.ellipse(mx,my,r*0.32,r*0.96,spin+0.18,0,Math.PI*2);ctx.stroke();
-for(var i=0;i<22;i++){
-  var u=(i+0.5)/22,v=fract(Math.sin(i*41.223)*13457.9),theta=Math.acos(1-2*u),phi=2*Math.PI*v;
-  var x=Math.sin(theta)*Math.cos(phi),y=Math.cos(theta),z=Math.sin(theta)*Math.sin(phi);
-  var rx=x*c+z*s,rz=-x*s+z*c;
-  if(rz<-.08)continue;
-  var front=clamp((rz+0.08)/1.08,0,1);
-  ctx.globalAlpha=0.34+front*0.46;
-  ctx.fillStyle=colors.dot;
-  ctx.beginPath();ctx.arc(mx+rx*r,my+y*r,(0.55+front*0.55),0,Math.PI*2);ctx.fill();
-}
-ctx.restore();
-ctx.globalAlpha=1;
 }
 
 function drawMoonParticles(mx,my,r,spin){
