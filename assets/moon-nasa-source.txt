@@ -2,11 +2,18 @@ Moon color map source:
 NASA Scientific Visualization Studio CGI Moon Kit
 https://svs.gsfc.nasa.gov/4720
 
-Local file:
+Moon model source:
+NASA Scientific Visualization Studio - Moon 3D Model
+https://svs.gsfc.nasa.gov/14959/
+
+Local files:
 moon-nasa-2k.jpg
+moon-nasa-model-1024.jpg - downscaled diffuse texture extracted from moon_small.glb
+moon-nasa-model-samples.json - deterministic surface samples from moon_small.glb mesh positions and UVs
 
 Original NASA download:
 lroc_color_2k.jpg (2048x1024)
+moon_small.glb
 
 Credit:
 NASA's Scientific Visualization Studio

@@ -1,26 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 144 88">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#eef8ff"/>
-      <stop offset=".58" stop-color="#d8edf8"/>
-      <stop offset="1" stop-color="#eef2f7"/>
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset=".58" stop-color="#e7edf2"/>
+      <stop offset="1" stop-color="#f4f6f8"/>
     </linearGradient>
     <clipPath id="moonClip"><circle cx="72" cy="47" r="25"/></clipPath>
   </defs>
   <rect width="144" height="88" fill="url(#sky)"/>
-  <g fill="#3f83a8" opacity=".18">
+  <g fill="#8b949e" opacity=".2">
     <circle cx="19" cy="15" r=".55"/><circle cx="31" cy="63" r=".45"/><circle cx="119" cy="22" r=".55"/><circle cx="111" cy="70" r=".5"/>
   </g>
-  <circle cx="72" cy="47" r="31" fill="none" stroke="#70b9d7" stroke-opacity=".1" stroke-width="5"/>
-  <circle cx="72" cy="47" r="25" fill="none" stroke="#236f96" stroke-opacity=".42" stroke-width="1.2"/>
+  <circle cx="72" cy="47" r="31" fill="none" stroke="#b8c0ca" stroke-opacity=".15" stroke-width="5"/>
+  <circle cx="72" cy="47" r="25" fill="none" stroke="#747d88" stroke-opacity=".42" stroke-width="1.2"/>
   <g clip-path="url(#moonClip)">
-    <circle cx="72" cy="47" r="25" fill="#cfe5ef" opacity=".24"/>
-    <g fill="#236f96">
+    <circle cx="72" cy="47" r="25" fill="#d9dde2" opacity=".55"/>
+    <g fill="#757e89" opacity=".78">
       <circle cx="60" cy="33" r=".8"/><circle cx="69" cy="29" r=".7"/><circle cx="83" cy="34" r=".8"/>
       <circle cx="53" cy="46" r=".7"/><circle cx="67" cy="45" r="1"/><circle cx="88" cy="49" r=".75"/>
       <circle cx="62" cy="59" r=".7"/><circle cx="76" cy="63" r=".8"/><circle cx="92" cy="57" r=".7"/>
     </g>
-    <g fill="none" stroke="#236f96" stroke-opacity=".18" stroke-width=".85">
+    <g fill="none" stroke="#69737f" stroke-opacity=".2" stroke-width=".85">
       <ellipse cx="61" cy="40" rx="4.8" ry="2.4" transform="rotate(-20 61 40)"/>
       <ellipse cx="80" cy="50" rx="6.2" ry="3" transform="rotate(16 80 50)"/>
       <ellipse cx="71" cy="61" rx="4.2" ry="2.2" transform="rotate(24 71 61)"/>

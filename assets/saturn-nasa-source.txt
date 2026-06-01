@@ -1,0 +1,14 @@
+Saturn model and texture source:
+NASA Science - Saturn 3D Model
+https://science.nasa.gov/resource/saturn-3d-model/
+
+Original NASA download:
+Saturn_1_120536.glb
+
+Local files derived from the GLB:
+saturn-nasa-diffuse-1024.jpg - downscaled diffuse texture extracted from the GLB
+saturn-nasa-rings.png - ring texture extracted from the GLB
+saturn-nasa-model-samples.json - deterministic surface samples from the GLB mesh positions and UVs
+
+Credit:
+NASA Visualization Technology Applications and Development
