@@ -182,11 +182,12 @@ function render(){
 if(!ctx||!active||document.hidden)return;
 ctx.clearRect(0,0,width,height);
 drawStars();
+if(moonDepth()<0)drawMoon(true);
 drawAtmosphere();
 drawGrid(latLines,0.24);
 drawGrid(lonLines,0.18);
 drawPoints();
-drawMoon();
+if(moonDepth()>=0)drawMoon(false);
 }
 
 function drawStars(){
@@ -233,9 +234,10 @@ projected.forEach(function(p){
 ctx.globalAlpha=1;
 }
 
-function drawMoon(){
+function moonDepth(){return Math.sin(moonAngle);}
+function drawMoon(behindEarth){
 var orbitX=Math.cos(moonAngle)*earthRadius*1.62;
-var orbitZ=Math.sin(moonAngle);
+var orbitZ=moonDepth();
 var orbitY=-earthRadius*0.54+Math.sin(moonAngle)*earthRadius*0.22;
 var mx=center.x+orbitX,my=center.y+orbitY;
 var r=earthRadius*(0.075+0.012*(orbitZ+1));
@@ -244,6 +246,12 @@ ctx.globalAlpha=0.08;
 ctx.strokeStyle=palette.line;ctx.lineWidth=0.8;
 ctx.beginPath();ctx.ellipse(center.x,center.y-earthRadius*0.54,earthRadius*1.62,earthRadius*0.22,0,0,Math.PI*2);ctx.stroke();
 ctx.globalAlpha=orbitZ<-.35?0.36:0.88;
+if(behindEarth){
+  ctx.beginPath();
+  ctx.rect(0,0,width,height);
+  ctx.arc(center.x,center.y,earthRadius*1.02,0,Math.PI*2,true);
+  ctx.clip('evenodd');
+}
 drawMoonParticles(mx,my,r,moonAngle*0.25);
 ctx.restore();
 }
