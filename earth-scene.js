@@ -2,10 +2,10 @@
 'use strict';
 
 var container=null,canvas=null,ctx=null,active=false,dynamic=true,performanceMode=false,bodyMode='earth',raf=0,lastTime=0;
-var points=[],stars=[],latLines=[],lonLines=[],moonParticles=[],saturnParticles=[],saturnRingColors=[],moonModelSamples=[],saturnModelSamples=[],moonAngle=-0.42,initialRotation={x:-0.12,y:-0.18,z:-0.18};
+var points=[],stars=[],latLines=[],lonLines=[],moonParticles=[],orbitMoonParticles=[],saturnParticles=[],saturnRingColors=[],moonModelSamples=[],saturnModelSamples=[],moonAngle=-0.42,initialRotation={x:-0.12,y:-0.18,z:-0.18};
 var orientation=quatFromEuler(initialRotation.x,initialRotation.y,initialRotation.z);
 var velocity={x:0,y:0},dragging=false,lastPointer=null;
-var palette={},pixelRatio=1,width=1,height=1,earthRadius=1,center={x:0,y:0},moonTextureReady=false,moonImage=null,saturnTextureReady=false,saturnDiffuseImage=null,saturnRingsImage=null;
+var palette={},pixelRatio=1,width=1,height=1,earthRadius=1,center={x:0,y:0},moonTextureReady=false,moonImage=null,orbitMoonTextureReady=false,orbitMoonImage=null,saturnTextureReady=false,saturnDiffuseImage=null,saturnRingsImage=null;
 var interactiveSelector='a,button,input,textarea,select,canvas,.top-bar,.settings-overlay,.settings-panel,.modal-overlay,#freeContextMenu,.free-context-menu,.free-layout-item,.free-folder-panel,.link-card,.add-link-card,.widget,.search-box,.engine-dropdown,.suggest-dropdown,.theme-card,.radio-option,.btn,.toggle-switch,.pomodoro-time,.pomodoro-chip,.pomodoro-btn,.todo-item,.todo-input,.game-carousel,.game-stage,.clock-wrap,.clock-time,.clock-date';
 
 window.VeraEarthScene={setActive:setActive,refreshTheme:refreshTheme};
@@ -42,6 +42,7 @@ ctx=canvas.getContext('2d',{alpha:true});
 rebuildGeometry();
 loadModelSamples();
 loadMoonTexture();
+loadOrbitMoonTexture();
 loadSaturnTextures();
 window.addEventListener('resize',resize,{passive:true});
 document.addEventListener('pointermove',onPointerMove,{passive:false});
@@ -107,6 +108,13 @@ img.onerror=function(){moonTextureReady=false;};
 img.src='assets/moon-nasa-model-1024.jpg';
 }
 
+function loadOrbitMoonTexture(){
+var img=new Image();
+img.onload=function(){orbitMoonImage=img;sampleOrbitMoonTexture(img);orbitMoonTextureReady=true;render();};
+img.onerror=function(){orbitMoonTextureReady=false;createFallbackOrbitMoonParticles();};
+img.src='assets/moon-nasa-2k.jpg';
+}
+
 function loadModelSamples(){
 if(typeof fetch!=='function')return;
 fetch('assets/moon-nasa-model-samples.json').then(function(r){return r.ok?r.json():[];}).then(function(data){moonModelSamples=Array.isArray(data)?data:[];if(moonImage)sampleMoonTexture(moonImage);render();}).catch(function(){moonModelSamples=[];});
@@ -122,6 +130,26 @@ var rings=new Image();
 rings.onload=function(){saturnRingsImage=rings;sampleSaturnRings(rings);render();};
 rings.onerror=function(){saturnRingColors=createFallbackSaturnRingColors();};
 rings.src='assets/saturn-nasa-rings.png';
+}
+
+function sampleOrbitMoonTexture(img){
+var c=document.createElement('canvas'),w=256,h=128;
+c.width=w;c.height=h;
+var cx=c.getContext('2d');
+cx.drawImage(img,0,0,w,h);
+var data=cx.getImageData(0,0,w,h).data;
+orbitMoonParticles=[];
+var count=getOrbitMoonParticleCount();
+for(var i=0;i<count;i++){
+  var u=(i+0.5)/count,v=fract(Math.sin(i*41.223)*13457.9);
+  var theta=Math.acos(1-2*u),phi=2*Math.PI*v;
+  var lat=90-theta*180/Math.PI,lon=phi*180/Math.PI-180;
+  var px=Math.max(0,Math.min(w-1,Math.floor((lon+180)/360*w)));
+  var py=Math.max(0,Math.min(h-1,Math.floor((90-lat)/180*h)));
+  var off=(py*w+px)*4,br=(data[off]+data[off+1]+data[off+2])/765;
+  var p=spherePoint(lat,lon);
+  orbitMoonParticles.push({x:p.x,y:p.y,z:p.z,r:data[off],g:data[off+1],b:data[off+2],size:0.62+br*1.15,alpha:0.46+br*0.48});
+}
 }
 
 function sampleMoonTexture(img){
@@ -203,7 +231,7 @@ for(var i=0;i<w;i++){
 
 function createFallbackMoonParticles(){
 moonParticles=[];
-var count=performanceMode?180:430;
+var count=performanceMode?420:1600;
 for(var i=0;i<count;i++){
   var u=(i+0.5)/count,v=fract(Math.sin(i*41.223)*13457.9),theta=Math.acos(1-2*u),phi=2*Math.PI*v;
   var p={x:Math.sin(theta)*Math.cos(phi),y:Math.cos(theta),z:Math.sin(theta)*Math.sin(phi)};
@@ -337,6 +365,17 @@ for(var i=0;i<count;i++){
 }
 }
 
+function createFallbackOrbitMoonParticles(){
+orbitMoonParticles=[];
+var count=performanceMode?180:430;
+for(var i=0;i<count;i++){
+  var u=(i+0.5)/count,v=fract(Math.sin(i*41.223)*13457.9),theta=Math.acos(1-2*u),phi=2*Math.PI*v;
+  var p={x:Math.sin(theta)*Math.cos(phi),y:Math.cos(theta),z:Math.sin(theta)*Math.sin(phi)};
+  var br=0.56+0.28*Math.sin(phi*5+Math.cos(theta*7));
+  orbitMoonParticles.push({x:p.x,y:p.y,z:p.z,r:205+br*35,g:210+br*32,b:218+br*28,size:0.6+br,alpha:0.45+br*0.42});
+}
+}
+
 function createFallbackSaturnRingColors(){
 var arr=[];
 for(var i=0;i<192;i++){
@@ -404,13 +443,13 @@ var steps=performanceMode?112:190;
 var rings=performanceMode?4:7;
 ctx.save();
 for(var ring=0;ring<rings;ring++){
-  var a=1.42+ring*0.085,b=0.36+ring*0.028,color=getSaturnRingColor(ring/(rings-1||1));
+  var a=1.34+ring*0.09,color=getSaturnRingColor(ring/(rings-1||1));
   ctx.strokeStyle='rgb('+color.r+','+color.g+','+color.b+')';
   ctx.lineWidth=front?1.15:0.85;
   ctx.globalAlpha=(front?0.58:0.22)*(1-ring*0.06)*color.a;
   var started=false;ctx.beginPath();
   for(var i=0;i<=steps;i++){
-    var t=i/steps*Math.PI*2,p=saturnRingPoint(t,a,b),q=projectScaled(p,r);
+    var t=i/steps*Math.PI*2,p=saturnRingPoint(t,a),q=projectScaled(p,r);
     if((q.z>=0)!==front){started=false;continue;}
     if(!started){ctx.moveTo(q.x,q.y);started=true;}else ctx.lineTo(q.x,q.y);
   }
@@ -426,9 +465,9 @@ var i=Math.max(0,Math.min(saturnRingColors.length-1,Math.round(t*(saturnRingColo
 return saturnRingColors[i];
 }
 
-function saturnRingPoint(t,a,b){
-var tilt=0.48,sn=Math.sin(t);
-return{x:Math.cos(t)*a,y:sn*b*Math.sin(tilt),z:sn*b*Math.cos(tilt)};
+function saturnRingPoint(t,a){
+var tilt=0.38,sn=Math.sin(t);
+return{x:Math.cos(t)*a,y:sn*a*Math.sin(tilt),z:sn*a*Math.cos(tilt)};
 }
 
 function drawMainMoon(){
@@ -480,7 +519,7 @@ var orbitY=-earthRadius*0.54+Math.sin(moonAngle)*earthRadius*0.22;
 var mx=center.x+orbitX,my=center.y+orbitY;
 var r=earthRadius*(0.075+0.012*(orbitZ+1));
 ctx.save();
-ctx.globalAlpha=0.08;
+ctx.globalAlpha=0.12;
 ctx.strokeStyle=palette.line;ctx.lineWidth=0.8;
 ctx.beginPath();ctx.ellipse(center.x,center.y-earthRadius*0.54,earthRadius*1.62,earthRadius*0.22,0,0,Math.PI*2);ctx.stroke();
 ctx.globalAlpha=orbitZ<-.35?0.36:0.88;
@@ -490,23 +529,28 @@ if(behindEarth){
   ctx.arc(center.x,center.y,earthRadius*1.02,0,Math.PI*2,true);
   ctx.clip('evenodd');
 }
-    drawMoonParticles(mx,my,r,moonAngle*0.25);
+drawMoonParticles(mx,my,r,moonAngle*0.25);
 ctx.restore();
 }
 
 function drawMoonParticles(mx,my,r,spin){
 var c=Math.cos(spin),s=Math.sin(spin);
-moonParticles.forEach(function(p){
+ctx.save();
+ctx.shadowColor=palette.rim||'rgba(86,244,255,.55)';
+ctx.shadowBlur=performanceMode?0:5;
+orbitMoonParticles.forEach(function(p){
   var x=p.x*c+p.z*s,z=-p.x*s+p.z*c,y=p.y;
   if(z<-.08)return;
   var front=clamp((z+0.08)/1.08,0,1);
-  ctx.globalAlpha=p.alpha*(0.28+front*0.75);
-  ctx.fillStyle='rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';
+  ctx.globalAlpha=p.alpha*(0.22+front*0.58);
+  ctx.fillStyle=palette.moon||'rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';
   ctx.beginPath();ctx.arc(mx+x*r,my+y*r,p.size*(0.45+front*0.55),0,Math.PI*2);ctx.fill();
 });
-ctx.globalAlpha=0.18;
-ctx.strokeStyle=moonTextureReady?'rgba(210,220,230,.85)':'rgba(210,220,230,.55)';
+ctx.shadowBlur=0;
+ctx.globalAlpha=0.44;
+ctx.strokeStyle=palette.rim||'rgba(210,220,230,.85)';
 ctx.beginPath();ctx.arc(mx,my,r*1.02,0,Math.PI*2);ctx.stroke();
+ctx.restore();
 }
 
 function project(p){
@@ -539,8 +583,9 @@ function endDrag(){if(!dragging)return;dragging=false;lastPointer=null;if(contai
 function canStartDrag(target){return !(target&&target.closest&&(target.closest(interactiveSelector)||target.closest('.main-container,.settings-panel,.modal,.side-panel,#ad-sidebar')));}
 function getParticleCount(){var mobile=window.innerWidth<700,cores=navigator.hardwareConcurrency||4;if(performanceMode)return mobile?(cores>=6?1200:900):(cores>=8?2600:2000);return mobile?(cores>=6?2600:2000):(cores>=8?7200:5600);}
 function getMoonParticleCount(){var mobile=window.innerWidth<700,cores=navigator.hardwareConcurrency||4;if(performanceMode)return mobile?(cores>=6?720:560):(cores>=8?1400:1100);return mobile?(cores>=6?2200:1700):(cores>=8?5600:4200);}
+function getOrbitMoonParticleCount(){return performanceMode?220:520;}
 function getSaturnParticleCount(){var mobile=window.innerWidth<700,cores=navigator.hardwareConcurrency||4;if(performanceMode)return mobile?(cores>=6?1200:900):(cores>=8?3000:2300);return mobile?(cores>=6?2600:2100):(cores>=8?7600:5800);}
-function rebuildGeometry(){createGeometry();if(moonImage)sampleMoonTexture(moonImage);else createFallbackMoonParticles();if(saturnDiffuseImage)sampleSaturnTexture(saturnDiffuseImage);else createFallbackSaturnParticles();if(saturnRingsImage)sampleSaturnRings(saturnRingsImage);else saturnRingColors=createFallbackSaturnRingColors();}
+function rebuildGeometry(){createGeometry();if(moonImage)sampleMoonTexture(moonImage);else createFallbackMoonParticles();if(orbitMoonImage)sampleOrbitMoonTexture(orbitMoonImage);else createFallbackOrbitMoonParticles();if(saturnDiffuseImage)sampleSaturnTexture(saturnDiffuseImage);else createFallbackSaturnParticles();if(saturnRingsImage)sampleSaturnRings(saturnRingsImage);else saturnRingColors=createFallbackSaturnRingColors();}
 function shouldAnimate(){return active&&!document.hidden&&(dynamic||dragging||Math.abs(velocity.x)>0.0008||Math.abs(velocity.y)>0.0008);}
 function resetOrientation(){orientation=quatFromEuler(initialRotation.x,initialRotation.y,initialRotation.z);velocity.x=0;velocity.y=0;}
 function applyScreenRotation(yaw,pitch){
