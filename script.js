@@ -1227,11 +1227,11 @@ var items=(series.themeIds||[]).map(function(id){used[id]=true;return byId[id];}
 if(!items.length)return'';
 var activeSeries=items.some(function(th){return th.id===settings.bgTheme&&settings.showBgImage;})?' active':'';
 var open=isThemeSeriesOpen(series.id);
-return'<div class="theme-series'+activeSeries+(open?' open':' collapsed')+'" data-series="'+series.id+'"><button class="theme-series-head" type="button" data-series-toggle="'+series.id+'" aria-expanded="'+(open?'true':'false')+'"><span>'+themeSeriesName(series)+'</span><span class="theme-series-count">'+items.length+'</span></button><div class="theme-series-items">'+items.map(renderThemeCard).join('')+'</div></div>';
+return'<div class="theme-series'+activeSeries+(open?' open':' collapsed')+'" data-series="'+series.id+'"><button class="theme-series-head" type="button" data-series-toggle="'+series.id+'" aria-expanded="'+(open?'true':'false')+'"><span>'+themeSeriesName(series)+'</span><span class="theme-series-count">'+items.length+'</span></button><div class="theme-series-items-wrap"><div class="theme-series-items">'+items.map(renderThemeCard).join('')+'</div></div></div>';
 }).join('');
 var looseThemes=THEMES.filter(function(th){return!used[th.id];});
 if(looseThemes.length){
-  seriesHtml+='<div class="theme-series open"><button class="theme-series-head" type="button" data-series-toggle="other" aria-expanded="true"><span>'+themeSeriesName({name:{zh:'其他',en:'Other',ja:'その他'}})+'</span><span class="theme-series-count">'+looseThemes.length+'</span></button><div class="theme-series-items">'+looseThemes.map(renderThemeCard).join('')+'</div></div>';
+  seriesHtml+='<div class="theme-series open"><button class="theme-series-head" type="button" data-series-toggle="other" aria-expanded="true"><span>'+themeSeriesName({name:{zh:'其他',en:'Other',ja:'その他'}})+'</span><span class="theme-series-count">'+looseThemes.length+'</span></button><div class="theme-series-items-wrap"><div class="theme-series-items">'+looseThemes.map(renderThemeCard).join('')+'</div></div></div>';
 }
 tp.innerHTML=seriesHtml;
 tp.querySelectorAll('.theme-series-head').forEach(function(btn){btn.addEventListener('click',function(){
