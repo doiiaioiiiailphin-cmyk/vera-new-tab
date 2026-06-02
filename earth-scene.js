@@ -211,7 +211,13 @@ for(var i=0;i<limit;i++){
   var py=Math.max(0,Math.min(h-1,Math.floor((1-v)*h)));
   var off=(py*w+px)*4,r=data[off],g=data[off+1],b=data[off+2],br=(r+g+b)/765;
   if(mode==='saturn'&&br<0.04)continue;
-  out.push({x:x,y:y,z:z,r:r,g:g,b:b,size:(mode==='moon'?0.5:0.42)+br*(mode==='moon'?1.25:1.08),alpha:(mode==='moon'?0.36:0.3)+br*(mode==='moon'?0.54:0.5)});
+  if(mode==='moon'){
+    br=Math.pow(br,0.72);
+    r=clamp(r*1.42+36,0,255);
+    g=clamp(g*1.42+38,0,255);
+    b=clamp(b*1.42+42,0,255);
+  }
+  out.push({x:x,y:y,z:z,r:r,g:g,b:b,size:(mode==='moon'?0.68:0.42)+br*(mode==='moon'?1.42:1.08),alpha:Math.min(0.98,(mode==='moon'?0.52:0.3)+br*(mode==='moon'?0.5:0.5))});
 }
 return out;
 }
@@ -471,40 +477,59 @@ return{x:Math.cos(t)*a,y:sn*a*Math.sin(tilt),z:sn*a*Math.cos(tilt)};
 }
 
 function drawMainMoon(){
-var r=earthRadius*0.86;
+var r=earthRadius*0.9;
 drawBodyAtmosphere(r,bodyPalette('moon'));
 drawBodyGrid(r,0.1,bodyPalette('moon'));
+drawMoonSurfaceBase(r);
 drawMainMoonParticles(r);
 drawMoonCraters(r);
 }
 
+function drawMoonSurfaceBase(r){
+var colors=bodyPalette('moon');
+var g=ctx.createRadialGradient(center.x-r*0.24,center.y-r*0.3,r*0.08,center.x,center.y,r*1.04);
+g.addColorStop(0,colors.surfaceHi);
+g.addColorStop(0.58,colors.surface);
+g.addColorStop(1,'rgba(255,255,255,0)');
+ctx.fillStyle=g;
+ctx.beginPath();ctx.arc(center.x,center.y,r*0.98,0,Math.PI*2);ctx.fill();
+}
+
 function drawMainMoonParticles(r){
 ctx.save();
+var colors=bodyPalette('moon');
+ctx.shadowColor=colors.rim;
+ctx.shadowBlur=performanceMode?0:6;
 moonParticles.forEach(function(p,i){
   if(performanceMode&&i%2)return;
   var q=projectScaled(p,r);
   if(q.z<-.08)return;
   var front=clamp((q.z+0.08)/1.08,0,1);
-  ctx.globalAlpha=p.alpha*(0.28+front*0.75);
+  ctx.globalAlpha=p.alpha*(0.4+front*0.82);
   ctx.fillStyle='rgb('+Math.round(p.r)+','+Math.round(p.g)+','+Math.round(p.b)+')';
-  ctx.beginPath();ctx.arc(q.x,q.y,p.size*(0.45+front*0.55),0,Math.PI*2);ctx.fill();
+  ctx.beginPath();ctx.arc(q.x,q.y,p.size*(0.52+front*0.62),0,Math.PI*2);ctx.fill();
 });
-ctx.globalAlpha=0.22;
-ctx.strokeStyle=moonTextureReady?'rgba(210,220,230,.85)':'rgba(210,220,230,.55)';
+ctx.shadowBlur=0;
+ctx.globalAlpha=0.52;
+ctx.strokeStyle=colors.rim;
+ctx.lineWidth=1.2;
 ctx.beginPath();ctx.arc(center.x,center.y,r*1.02,0,Math.PI*2);ctx.stroke();
+ctx.globalAlpha=0.16;
+ctx.lineWidth=0.8;
+ctx.beginPath();ctx.arc(center.x,center.y,r*0.82,0,Math.PI*2);ctx.stroke();
 ctx.restore();
 ctx.globalAlpha=1;
 }
 
 function drawMoonCraters(r){
-var craters=[{lat:18,lon:-42,r:.1},{lat:-8,lon:18,r:.13},{lat:32,lon:42,r:.07},{lat:-28,lon:-10,r:.085},{lat:4,lon:70,r:.055}];
+var craters=[{lat:18,lon:-42,r:.1},{lat:-8,lon:18,r:.13},{lat:32,lon:42,r:.07},{lat:-28,lon:-10,r:.085},{lat:4,lon:70,r:.055},{lat:42,lon:-8,r:.06},{lat:-18,lon:54,r:.075},{lat:12,lon:-78,r:.052}];
 ctx.save();
-ctx.strokeStyle=bodyPalette('moon').line;ctx.lineWidth=0.8;
+ctx.strokeStyle=bodyPalette('moon').crater;ctx.lineWidth=1.05;
 craters.forEach(function(c){
   var q=projectScaled(spherePoint(c.lat,c.lon),r);
   if(q.z<-.05)return;
   var front=clamp((q.z+0.05)/1.05,0,1),rr=r*c.r*(0.65+front*0.35);
-  ctx.globalAlpha=0.16+front*0.26;
+  ctx.globalAlpha=0.24+front*0.38;
   ctx.beginPath();ctx.ellipse(q.x,q.y,rr,rr*0.48,0.25,0,Math.PI*2);ctx.stroke();
 });
 ctx.restore();
@@ -628,10 +653,10 @@ if(mode==='saturn')return dark?{
   line:'rgba(145,102,53,.22)',rim:'rgba(182,128,66,.42)',shadow:'rgba(208,151,72,.08)'
 };
 if(mode==='moon')return dark?{
-  line:'rgba(224,229,235,.24)',rim:'rgba(240,244,248,.58)',shadow:'rgba(215,222,232,.09)',dot:'rgb(235,238,242)'
+  line:'rgba(234,238,244,.34)',rim:'rgba(250,253,255,.76)',shadow:'rgba(225,232,242,.14)',dot:'rgb(235,238,242)',surface:'rgba(226,230,236,.16)',surfaceHi:'rgba(255,255,255,.28)',crater:'rgba(246,249,252,.5)'
 }:{
-  line:'rgba(112,122,136,.18)',rim:'rgba(148,156,168,.38)',shadow:'rgba(150,160,172,.07)',dot:'rgb(126,135,146)'
+  line:'rgba(112,122,136,.24)',rim:'rgba(126,136,148,.48)',shadow:'rgba(150,160,172,.1)',dot:'rgb(126,135,146)',surface:'rgba(168,176,186,.16)',surfaceHi:'rgba(255,255,255,.34)',crater:'rgba(92,102,114,.34)'
 };
-return{line:palette.line,rim:palette.line,shadow:palette.shadow||'rgba(70,230,255,.08)',dot:palette.moon||'rgb(232,238,245)'};
+return{line:palette.line,rim:palette.line,shadow:palette.shadow||'rgba(70,230,255,.08)',dot:palette.moon||'rgb(232,238,245)',surface:'rgba(255,255,255,.1)',surfaceHi:'rgba(255,255,255,.2)',crater:palette.line};
 }
 })();
