@@ -15,6 +15,7 @@ links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false
 todos:[],freeLayout:{enabled:false,editMode:false,items:{},folders:{},initialized:false,layoutVersion:6},pomodoro:{mode:'focus',remaining:1500,running:false,endsAt:null,rounds:0,focus:25,short:5,long:15}};
 
 var THEMES=[{id:'horizon',nameKey:'themeHorizon',bgDark:'assets/bg-dark.webp',bgLight:'assets/bg-light.webp',preset:'ice',accent:'#5eead4'},{id:'landscape',nameKey:'themeLandscape',bgDark:'assets/theme-landscape.svg',bgLight:'assets/theme-landscape.svg',preset:'ocean',accent:'#547a7b'},{id:'earth',nameKey:'themeEarth',bgDark:'assets/theme-earth-dark.svg',bgLight:'assets/theme-earth-light.svg',preset:'ice',accent:'#38dff2'},{id:'saturn',nameKey:'themeSaturn',bgDark:'assets/theme-saturn-dark.svg',bgLight:'assets/theme-saturn-light.svg',preset:'ice',accent:'#d8a15c'},{id:'moon',nameKey:'themeMoon',bgDark:'assets/theme-moon-dark.svg',bgLight:'assets/theme-moon-light.svg',preset:'ice',accent:'#c7cdd5'}];
+var THEME_SERIES=[{id:'base',name:{zh:'基础',en:'Base',ja:'ベース'},themeIds:['horizon','landscape']},{id:'hologram',name:{zh:'全息天体',en:'Holographic Bodies',ja:'ホログラム天体'},themeIds:['earth','saturn','moon']}];
 
 var SEARCH_ENGINES=[{id:'google',name:'Google',domain:'google.com',url:'https://www.google.com/search?q='},
 {id:'bing',name:'Bing',domain:'bing.com',url:'https://www.bing.com/search?q='},
@@ -1211,8 +1212,19 @@ moveRadioSlider(document.getElementById('langRadio'));
 function updateToggle(id,val){var btn=document.getElementById(id);if(btn)btn.classList.toggle('on',val);}
 function renderThemePicker(){var tp=document.getElementById('themePicker');if(!tp)return;
 if(!THEMES||!THEMES.length)return;
-tp.innerHTML=THEMES.map(function(th){var active=(th.id===settings.bgTheme&&settings.showBgImage)?' active':'';
-return'<div class="theme-card'+active+'" data-theme="'+th.id+'"><img src="'+th.bgDark+'" alt="" class="theme-thumb-dark"><img src="'+th.bgLight+'" alt="" class="theme-thumb-light"><span>'+t(th.nameKey)+'</span></div>';}).join('');
+var byId={};THEMES.forEach(function(th){byId[th.id]=th;});
+var used={};
+var seriesHtml=(THEME_SERIES||[]).map(function(series){
+var items=(series.themeIds||[]).map(function(id){used[id]=true;return byId[id];}).filter(Boolean);
+if(!items.length)return'';
+var activeSeries=items.some(function(th){return th.id===settings.bgTheme&&settings.showBgImage;})?' active':'';
+return'<div class="theme-series'+activeSeries+'" data-series="'+series.id+'"><div class="theme-series-head"><span>'+themeSeriesName(series)+'</span><span>'+items.length+'</span></div><div class="theme-series-items">'+items.map(renderThemeCard).join('')+'</div></div>';
+}).join('');
+var looseThemes=THEMES.filter(function(th){return!used[th.id];});
+if(looseThemes.length){
+  seriesHtml+='<div class="theme-series"><div class="theme-series-head"><span>'+themeSeriesName({name:{zh:'其他',en:'Other',ja:'その他'}})+'</span><span>'+looseThemes.length+'</span></div><div class="theme-series-items">'+looseThemes.map(renderThemeCard).join('')+'</div></div>';
+}
+tp.innerHTML=seriesHtml;
 tp.querySelectorAll('.theme-card').forEach(function(card){card.addEventListener('click',function(){
 var themeId=this.dataset.theme;
 if(themeId===settings.bgTheme&&settings.showBgImage){
@@ -1227,6 +1239,9 @@ settings.bgTheme=themeId;settings.showBgImage=true;
 settings.accent=settings['_accent_'+themeId]||THEMES.find(function(t){return t.id===themeId;}).accent||DEFAULTS.accent;
 settings.bgPreset=settings['_preset_'+themeId]||THEMES.find(function(t){return t.id===themeId;}).preset||DEFAULTS.bgPreset;
 saveSettings();applyAll();renderThemePicker();});});}
+function renderThemeCard(th){var active=(th.id===settings.bgTheme&&settings.showBgImage)?' active':'';
+return'<div class="theme-card'+active+'" data-theme="'+th.id+'"><img src="'+th.bgDark+'" alt="" class="theme-thumb-dark"><img src="'+th.bgLight+'" alt="" class="theme-thumb-light"><span>'+t(th.nameKey)+'</span></div>';}
+function themeSeriesName(series){var lang=settings.language||'zh';return(series.name&&(series.name[lang]||series.name.zh||series.name.en))||'';}
 function saveThemeAccentPreset(themeId){
   var ak=themeId?'_accent_'+themeId:'_accentNone';
   var pk=themeId?'_preset_'+themeId:'_presetNone';
