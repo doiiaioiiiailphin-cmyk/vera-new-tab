@@ -1,0 +1,11 @@
+Earth land mask source
+
+Generated from topojson/world-atlas@2 land-110m.json.
+world-atlas provides pre-built TopoJSON derived from Natural Earth land boundaries at 1:110m scale.
+Natural Earth data is public domain.
+
+Source: https://github.com/topojson/world-atlas
+Data URL used for generation: https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json
+Natural Earth: https://www.naturalearthdata.com/
+
+Generated mask: 720x360, land pixels: 77403

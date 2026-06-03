@@ -861,11 +861,12 @@ ctx.save();
 roundedPanel(ctx,cv);ctx.clip();
 drawCubeFloor(ctx,cv);
 var cx=cv.width/2,cy=cv.height/2+2;
-var faces=[];
+var faces=[],faceKeys=Object.keys(CUBE_FACES);
 for(var i=0;i<cubeCubies.length;i++){
 var c=cubeCubies[i];
 var active=cubeTurn&&c[cubeTurn.axis]===cubeTurn.val;
-for(var f in c.c){
+for(var fi=0;fi<faceKeys.length;fi++){
+var f=faceKeys[fi];
 var fc=CUBE_FACES[f].c;
 var pts=[],depth=0;
 for(var k=0;k<4;k++){
@@ -876,11 +877,17 @@ pts.push(sp);depth+=sp.z;
 }
 var area=(pts[1].x-pts[0].x)*(pts[2].y-pts[0].y)-(pts[1].y-pts[0].y)*(pts[2].x-pts[0].x);
 if(area>=0)continue;
-faces.push({pts:pts,depth:depth/4,color:c.c[f],cubie:c,face:f,active:active});
+var item={pts:pts,depth:depth/4,cubie:c,face:f,active:active};
+faces.push({type:'body',item:item,depth:item.depth,order:0});
+if(c.c[f])faces.push({type:'sticker',item:{pts:pts,depth:item.depth,color:c.c[f],cubie:c,face:f,active:active},depth:item.depth,order:1});
 }
 }
-faces.sort(function(a,b){return a.depth-b.depth;});
-for(i=0;i<faces.length;i++)drawSticker(ctx,faces[i],cubeHover&&cubeHover.cubie===faces[i].cubie&&cubeHover.face===faces[i].face);
+faces.sort(function(a,b){return a.depth-b.depth||a.order-b.order;});
+for(i=0;i<faces.length;i++){
+var faceItem=faces[i].item;
+if(faces[i].type==='body')drawCubieBodyFace(ctx,faceItem);
+else drawSticker(ctx,faceItem,cubeHover&&cubeHover.cubie===faceItem.cubie&&cubeHover.face===faceItem.face);
+}
 ctx.restore();
 }
 
@@ -893,6 +900,33 @@ ctx.fillStyle=floor;
 ctx.beginPath();
 ctx.ellipse(cv.width/2,cv.height*0.69,150,34,0,0,Math.PI*2);
 ctx.fill();
+}
+
+function drawCubieBodyFace(ctx,item){
+var pts=item.pts.map(function(p){return{x:p.x,y:p.y};});
+var top=item.face==='+y',side=item.face==='+x'||item.face==='-x';
+ctx.save();
+ctx.shadowBlur=item.active?12:5;
+ctx.shadowColor=item.active?'rgba(94,234,212,0.14)':'rgba(0,0,0,0.34)';
+var grad=ctx.createLinearGradient(pts[0].x,pts[0].y,pts[2].x,pts[2].y);
+if(top){
+grad.addColorStop(0,'rgba(22,34,50,0.99)');
+grad.addColorStop(1,'rgba(7,13,24,0.99)');
+}else if(side){
+grad.addColorStop(0,'rgba(13,23,38,0.99)');
+grad.addColorStop(1,'rgba(4,9,18,0.99)');
+}else{
+grad.addColorStop(0,'rgba(10,18,31,0.99)');
+grad.addColorStop(1,'rgba(3,8,16,0.99)');
+}
+ctx.fillStyle=grad;
+roundedPoly(ctx,pts,6);
+ctx.fill();
+ctx.shadowBlur=0;
+ctx.strokeStyle='rgba(96,142,181,0.16)';
+ctx.lineWidth=0.8;
+ctx.stroke();
+ctx.restore();
 }
 
 function drawSticker(ctx,item,isHover){
