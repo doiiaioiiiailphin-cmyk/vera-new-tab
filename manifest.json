@@ -13,7 +13,9 @@
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
   },
-  "permissions": [],
+  "permissions": [
+    "geolocation"
+  ],
   "host_permissions": [
     "https://api.open-meteo.com/*",
     "https://wttr.in/*",

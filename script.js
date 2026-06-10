@@ -1116,6 +1116,8 @@ renderPomodoro();schedulePomodoroTick();
 }
 
 var weatherPending=false,weatherLoaded=false,lastWeather=null;
+function getCachedWeatherCoords(){try{var c=JSON.parse(localStorage.getItem('weatherCoords'));if(c&&isFinite(c.lat)&&isFinite(c.lon))return c;}catch(e){}return null;}
+function saveWeatherCoords(lat,lon){try{localStorage.setItem('weatherCoords',JSON.stringify({lat:lat,lon:lon}));}catch(e){}}
 function renderWeatherFromCache(){if(!lastWeather||!settings.showWeather||!weatherLoaded)return;
 var wc=document.getElementById('weatherContent');if(!wc)return;var d=lastWeather;
 var desc=d.src==='wttr'?((settings.language==='zh')?wwDesc(d.code,'zh'):(settings.language==='ja')?wwDesc(d.code,'ja'):d.descEn):(({zh:WMO_DESC_ZH,en:WMO_DESC_EN,ja:WMO_DESC_JA})[settings.language]||WMO_DESC_EN)[d.code]||d.descEn;
@@ -1127,20 +1129,24 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 function fetchWeather(){if(!settings.showWeather||weatherPending)return;
 weatherPending=true;
 var wc=document.getElementById('weatherContent');if(!wc){weatherPending=false;return;}
+wc.style.cursor='';
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg('w-cloudy')+'</div><div>'+
 '<div class="weather-temp">--&deg;</div><div class="weather-details">'+t('loadingWeather')+'</div></div></div>';
-if(!navigator.geolocation){wc.innerHTML='<div class="weather-details">'+t('locationUnavailable')+'</div>';weatherPending=false;return;}
+if(!navigator.geolocation){var cachedCoords=getCachedWeatherCoords();if(cachedCoords){tryOM(cachedCoords.lat,cachedCoords.lon,wc);return;}wc.innerHTML='<div class="weather-details">'+t('locationUnavailable')+'</div>';weatherPending=false;return;}
 navigator.geolocation.getCurrentPosition(function(pos){
 var lat=pos.coords.latitude.toFixed(2);var lon=pos.coords.longitude.toFixed(2);
-tryWW(lat,lon,wc);
+saveWeatherCoords(lat,lon);
+tryOM(lat,lon,wc);
 },function(err){
+console.warn('[Vera weather] Geolocation failed:',err.message||err.code);
+var cachedCoords=getCachedWeatherCoords();if(cachedCoords){tryOM(cachedCoords.lat,cachedCoords.lon,wc);return;}
 if(err.code===1){wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'</div><div class="weather-details" style="font-size:11px;margin-top:6px">'+t('tapRetry')+'</div>';wc.style.cursor='pointer';wc.addEventListener('click',function(){navigator.permissions.query({name:'geolocation'}).then(function(s){if(s.state==='prompt'){weatherPending=false;fetchWeather();}else{wc.innerHTML='<div class="weather-details">'+t('locationDenied')+'<br><span style="font-size:11px;opacity:0.7">'+t('locationPermHint')+'</span></div>';}}).catch(function(){weatherPending=false;fetchWeather();});});}
 else{wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+' ('+escapeHtml(err.message)+')</div>';}
-weatherPending=false;},{maximumAge:300000,enableHighAccuracy:false});}
+weatherPending=false;},{maximumAge:300000,timeout:10000,enableHighAccuracy:false});}
 
 function tryWW(lat,lon,wc){
 if(!wc)return;
-var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();tryOM(lat,lon,wc);},8000);
+var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();showWFail(wc);},8000);
 fetch('https://wttr.in/'+lat+','+lon+'?format=j1',{signal:ctrl.signal})
 .then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
 .then(function(d){
@@ -1157,28 +1163,30 @@ wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg
 weatherLoaded=true;weatherPending=false;
 try{localStorage.setItem('weatherCache',JSON.stringify(lastWeather));}catch(e){}
 updateLandscapeFilter();applyLandscapeScene();
-}).catch(function(e){clearTimeout(to);if(e.name!=='AbortError')tryOM(lat,lon,wc);});
+}).catch(function(e){clearTimeout(to);if(e.name!=='AbortError'){console.warn('[Vera weather] wttr.in failed:',e);showWFail(wc);}});
 }
 
 function tryOM(lat,lon,wc){
 if(!wc)return;
-var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();showWFail(wc);},10000);
-fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current_weather=true',{signal:ctrl.signal})
+var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();tryWW(lat,lon,wc);},10000);
+fetch('https://api.open-meteo.com/v1/forecast?latitude='+lat+'&longitude='+lon+'&current=temperature_2m,weather_code,wind_speed_10m',{signal:ctrl.signal})
 .then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
 .then(function(data){
-var w=data.current_weather;var temp=Math.round(w.temperature);var code=w.weathercode;
+var w=data.current||data.current_weather;if(!w)throw new Error('Missing current weather');
+var temp=Math.round(w.temperature_2m!==undefined?w.temperature_2m:w.temperature);var code=w.weather_code!==undefined?w.weather_code:w.weathercode;
+var wind=w.wind_speed_10m!==undefined?w.wind_speed_10m:w.windspeed;
 var wi=WMO_ICONS[code]||'w-cloudy';
-lastWeather={src:'om',code:code,icon:wi,temp:temp,descEn:WMO_DESC_EN[code]||'',wind:w.windspeed};
+lastWeather={src:'om',code:code,icon:wi,temp:temp,descEn:WMO_DESC_EN[code]||'',wind:wind};
 var descMaps={zh:WMO_DESC_ZH,en:WMO_DESC_EN,ja:WMO_DESC_JA};
 var desc=descMaps[settings.language]?descMaps[settings.language][code]:WMO_DESC_EN[code]||'';
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
 '<div class="weather-temp">'+temp+'&deg;</div>'+
 '<div class="weather-details">'+desc+'</div>'+
-'<div class="weather-loc">'+t('windSpeed')+': '+escapeHtml(''+w.windspeed)+' km/h</div></div></div>';
+'<div class="weather-loc">'+t('windSpeed')+': '+escapeHtml(''+wind)+' km/h</div></div></div>';
 weatherLoaded=true;weatherPending=false;
 try{localStorage.setItem('weatherCache',JSON.stringify(lastWeather));}catch(e){}
 updateLandscapeFilter();applyLandscapeScene();
-}).catch(function(e){clearTimeout(to);showWFail(wc);});
+}).catch(function(e){clearTimeout(to);if(e.name!=='AbortError'){console.warn('[Vera weather] Open-Meteo failed:',e);tryWW(lat,lon,wc);}});
 }
 
 function showWFail(wc){weatherPending=false;if(!wc)return;try{var cached=JSON.parse(localStorage.getItem('weatherCache'));if(cached&&cached.temp!==undefined){lastWeather=cached;weatherLoaded=true;renderWeatherFromCache();return;}}catch(e){}wc.innerHTML='<div class="weather-details">'+t('weatherFailed')+'</div>';}
