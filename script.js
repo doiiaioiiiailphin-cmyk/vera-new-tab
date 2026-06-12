@@ -5,7 +5,7 @@ var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','b
 var quickLinkSuppressClickUntil=0;
 var entranceUsedDelays={};
 
-var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgTheme:'horizon',showBgImage:false,checkUpdate:true,clockSecondsPinned:false,
+var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgTheme:'horizon',showBgImage:false,checkUpdate:true,clockSecondsPinned:false,quoteBounce:false,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,showPomodoro:false,dynamicBg:true,earthPerformance:false,showGame:false,
 searchEngine:'google',theme:'auto',language:'zh',vip:false,themeSeriesOpen:{base:true,hologram:false},
 links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false},
@@ -1414,7 +1414,7 @@ return'<svg viewBox="0 0 24 24"><use href="#i-'+name+'"/></svg>';}
 
 function initDailyQuotes(){var today=new Date().toISOString().slice(0,10);var dq;try{dq=JSON.parse(localStorage.getItem('dailyQuotes'));}catch(e){dq=null;}if(!dq||dq.date!==today){dq={date:today};['zh','en','ja'].forEach(function(l){var q=QUOTES[l]||QUOTES.zh;dq[l]=q[Math.floor(Math.random()*q.length)];});localStorage.setItem('dailyQuotes',JSON.stringify(dq));}return dq;}
 function showQuote(){var dq=initDailyQuotes();var q=dq[settings.language]||dq.zh||QUOTES.zh[0];var qc=document.getElementById('quoteContent');if(!qc)return;qc.innerHTML='<div class="quote-text">'+escapeHtml(q.text)+'</div><div class="quote-author">— '+escapeHtml(q.author)+'</div>';initTextEntranceAnimations(qc);}
-function refreshQuote(){var dq=initDailyQuotes();var arr=QUOTES[settings.language]||QUOTES.zh;dq[settings.language]=arr[Math.floor(Math.random()*arr.length)];localStorage.setItem('dailyQuotes',JSON.stringify(dq));var qc=document.getElementById('quoteContent');if(!qc)return;var q=dq[settings.language];qc.innerHTML='<div class="quote-text">'+escapeHtml(q.text)+'</div><div class="quote-author">— '+escapeHtml(q.author)+'</div>';initTextEntranceAnimations(qc);qc.classList.remove('bounce');void qc.offsetWidth;qc.classList.add('bounce');}
+function refreshQuote(){var dq=initDailyQuotes();var arr=QUOTES[settings.language]||QUOTES.zh;dq[settings.language]=arr[Math.floor(Math.random()*arr.length)];localStorage.setItem('dailyQuotes',JSON.stringify(dq));var qc=document.getElementById('quoteContent');if(!qc)return;var q=dq[settings.language];qc.innerHTML='<div class="quote-text">'+escapeHtml(q.text)+'</div><div class="quote-author">— '+escapeHtml(q.author)+'</div>';initTextEntranceAnimations(qc);qc.classList.remove('bounce');if(settings.quoteBounce){void qc.offsetWidth;qc.classList.add('bounce');}}
 
 function updateSettingsUI(){
 var el=document.getElementById('setGlassOpacity');if(el)el.value=settings.glassOpacity;
