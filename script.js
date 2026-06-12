@@ -244,15 +244,19 @@ return'rgba('+r+','+g+','+b+','+a+')';}
 
 var clockInterval=null,clockTimeout=null,lastClockMain='',lastClockDate='',lastClockSeconds='',clockSecondsPinned=false,clockSecondsSuppressed=false,clockPointerInside=false,clockFocusInside=false;
 function pad2(n){return(n<10?'0':'')+n;}
+function clockPrimaryHtml(){
+return'<span class="clock-primary-digit clock-hour-tens"><span class="clock-digit-current">0</span></span><span class="clock-primary-digit clock-hour-ones"><span class="clock-digit-current">0</span></span><span class="clock-colon">:</span><span class="clock-primary-digit clock-minute-tens"><span class="clock-digit-current">0</span></span><span class="clock-primary-digit clock-minute-ones"><span class="clock-digit-current">0</span></span>';
+}
 function ensureClockDom(){
 var ct=document.getElementById('clockTime');if(!ct)return null;
 var wrap=ct.closest('.clock-wrap');if(wrap&&!wrap.hasAttribute('tabindex'))wrap.setAttribute('tabindex','0');
-var main=document.getElementById('clockMain'),primary=document.getElementById('clockPrimary'),seconds=document.getElementById('clockSeconds'),tens=document.querySelector('.clock-second-tens'),ones=document.querySelector('.clock-second-ones');
-if(!main||!primary||!seconds||!tens||!ones){
-ct.innerHTML='<span class="clock-main" id="clockMain"><span class="clock-primary" id="clockPrimary">00:00</span><span class="clock-seconds" id="clockSeconds" aria-hidden="true"><span class="clock-second-digit clock-second-tens"><span class="clock-digit-current">0</span></span><span class="clock-second-digit clock-second-ones"><span class="clock-digit-current">0</span></span></span></span>';
+var main=document.getElementById('clockMain'),primary=document.getElementById('clockPrimary'),seconds=document.getElementById('clockSeconds'),tens=document.querySelector('.clock-second-tens'),ones=document.querySelector('.clock-second-ones'),hourTens=document.querySelector('.clock-hour-tens'),hourOnes=document.querySelector('.clock-hour-ones'),minuteTens=document.querySelector('.clock-minute-tens'),minuteOnes=document.querySelector('.clock-minute-ones');
+if(!main||!primary||!seconds||!tens||!ones||!hourTens||!hourOnes||!minuteTens||!minuteOnes){
+ct.innerHTML='<span class="clock-main" id="clockMain"><span class="clock-primary" id="clockPrimary">'+clockPrimaryHtml()+'</span><span class="clock-seconds" id="clockSeconds" aria-hidden="true"><span class="clock-second-digit clock-second-tens"><span class="clock-digit-current">0</span></span><span class="clock-second-digit clock-second-ones"><span class="clock-digit-current">0</span></span></span></span>';
 main=document.getElementById('clockMain');primary=document.getElementById('clockPrimary');seconds=document.getElementById('clockSeconds');tens=document.querySelector('.clock-second-tens');ones=document.querySelector('.clock-second-ones');
+hourTens=document.querySelector('.clock-hour-tens');hourOnes=document.querySelector('.clock-hour-ones');minuteTens=document.querySelector('.clock-minute-tens');minuteOnes=document.querySelector('.clock-minute-ones');
 }
-return{wrap:wrap,main:main,primary:primary,seconds:seconds,tens:tens,ones:ones};
+return{wrap:wrap,main:main,primary:primary,seconds:seconds,tens:tens,ones:ones,hourTens:hourTens,hourOnes:hourOnes,minuteTens:minuteTens,minuteOnes:minuteOnes};
 }
 function setClockDigit(col,value,animate){
 if(!col)return;
@@ -283,8 +287,19 @@ if(tensChanged)setClockDigit(dom.tens,value.charAt(0),true);
 if(onesChanged||tensChanged)setClockDigit(dom.ones,value.charAt(1),true);
 lastClockSeconds=value;
 }
+function renderClockPrimary(h,m){
+var dom=ensureClockDom();if(!dom||!dom.primary)return;
+var value=pad2(h)+pad2(m);
+if(lastClockMain===''){setClockDigit(dom.hourTens,value.charAt(0),false);setClockDigit(dom.hourOnes,value.charAt(1),false);setClockDigit(dom.minuteTens,value.charAt(2),false);setClockDigit(dom.minuteOnes,value.charAt(3),false);lastClockMain=value;return;}
+if(lastClockMain===value)return;
+if(lastClockMain.charAt(0)!==value.charAt(0))setClockDigit(dom.hourTens,value.charAt(0),true);
+if(lastClockMain.charAt(1)!==value.charAt(1))setClockDigit(dom.hourOnes,value.charAt(1),true);
+if(lastClockMain.charAt(2)!==value.charAt(2))setClockDigit(dom.minuteTens,value.charAt(2),true);
+if(lastClockMain.charAt(3)!==value.charAt(3))setClockDigit(dom.minuteOnes,value.charAt(3),true);
+lastClockMain=value;
+}
 function updateClock(){var n=new Date();var h=n.getHours(),m=n.getMinutes(),s=n.getSeconds();
-var dom=ensureClockDom();if(!dom)return;var mainText=pad2(h)+':'+pad2(m);if(dom.primary&&lastClockMain!==mainText){dom.primary.textContent=mainText;lastClockMain=mainText;}
+var dom=ensureClockDom();if(!dom)return;var mainText=pad2(h)+':'+pad2(m);renderClockPrimary(h,m);
 var days=settings.language==='en'?['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday']:
 settings.language==='ja'?['日曜日','月曜日','火曜日','水曜日','木曜日','金曜日','土曜日']:
 ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
@@ -342,7 +357,7 @@ dom.wrap.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' ')
 }
 function stopClockForDebug(){if(clockTimeout)clearTimeout(clockTimeout);if(clockInterval)clearInterval(clockInterval);clockTimeout=null;clockInterval=null;}
 function resetClockSecondsForDebug(second){lastClockSeconds='';renderClockSeconds(second);}
-window.VeraDebug=Object.assign(window.VeraDebug||{},{renderClockSeconds:renderClockSeconds,resetClockSeconds:resetClockSecondsForDebug,stopClockForDebug:stopClockForDebug,updateClock:updateClock});
+window.VeraDebug=Object.assign(window.VeraDebug||{},{renderClockSeconds:renderClockSeconds,renderClockPrimary:renderClockPrimary,resetClockSeconds:resetClockSecondsForDebug,stopClockForDebug:stopClockForDebug,updateClock:updateClock});
 
 function updateEngineDisplay(){
 var eng=SEARCH_ENGINES.find(function(e){return e.id===settings.searchEngine})||SEARCH_ENGINES[0];
@@ -1310,13 +1325,19 @@ renderPomodoro();schedulePomodoroTick();
 var weatherPending=false,weatherLoaded=false,lastWeather=null;
 function getCachedWeatherCoords(){try{var c=JSON.parse(localStorage.getItem('weatherCoords'));if(c&&isFinite(c.lat)&&isFinite(c.lon))return c;}catch(e){}return null;}
 function saveWeatherCoords(lat,lon){try{localStorage.setItem('weatherCoords',JSON.stringify({lat:lat,lon:lon}));}catch(e){}}
+function hasWeatherWind(wind){return wind!==undefined&&wind!==null&&wind!=='';}
+function weatherWindLine(wind,placeholder){
+var cls='weather-loc'+(placeholder?' weather-loc-placeholder':'');
+var text=placeholder?'0 km/h':t('windSpeed')+': '+escapeHtml(''+wind)+' km/h';
+return'<div class="'+cls+'">'+text+'</div>';
+}
 function renderWeatherFromCache(){if(!lastWeather||!settings.showWeather||!weatherLoaded)return;
 var wc=document.getElementById('weatherContent');if(!wc)return;var d=lastWeather;
 var desc=d.src==='wttr'?((settings.language==='zh')?wwDesc(d.code,'zh'):(settings.language==='ja')?wwDesc(d.code,'ja'):d.descEn):(({zh:WMO_DESC_ZH,en:WMO_DESC_EN,ja:WMO_DESC_JA})[settings.language]||WMO_DESC_EN)[d.code]||d.descEn;
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(d.icon)+'</div><div>'+
 '<div class="weather-temp">'+d.temp+'&deg;</div>'+
 '<div class="weather-details">'+escapeHtml(desc||'')+'</div>'+
-(d.wind?'<div class="weather-loc">'+t('windSpeed')+': '+escapeHtml(''+d.wind)+' km/h</div>':'')+
+(hasWeatherWind(d.wind)?weatherWindLine(d.wind,false):weatherWindLine(0,true))+
 '</div></div>';
 initTextEntranceAnimations(wc);}
 function fetchWeather(){if(!settings.showWeather||weatherPending)return;
@@ -1324,7 +1345,7 @@ weatherPending=true;
 var wc=document.getElementById('weatherContent');if(!wc){weatherPending=false;return;}
 wc.style.cursor='';
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg('w-cloudy')+'</div><div>'+
-'<div class="weather-temp">--&deg;</div><div class="weather-details">'+t('loadingWeather')+'</div></div></div>';
+'<div class="weather-temp">--&deg;</div><div class="weather-details">'+t('loadingWeather')+'</div>'+weatherWindLine(0,true)+'</div></div>';
 initTextEntranceAnimations(wc);
 if(!navigator.geolocation){var cachedCoords=getCachedWeatherCoords();if(cachedCoords){tryOM(cachedCoords.lat,cachedCoords.lon,wc);return;}wc.innerHTML='<div class="weather-details">'+t('locationUnavailable')+'</div>';weatherPending=false;return;}
 navigator.geolocation.getCurrentPosition(function(pos){
@@ -1352,7 +1373,7 @@ var desc=(settings.language==='zh')?wwDesc(code,'zh'):(settings.language==='ja')
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
 '<div class="weather-temp">'+temp+'&deg;</div>'+
 '<div class="weather-details">'+escapeHtml(desc)+'</div>'+
-'<div class="weather-loc">'+t('windSpeed')+': '+escapeHtml(''+wind)+' km/h</div>'+
+weatherWindLine(wind,false)+
 '</div></div>';
 initTextEntranceAnimations(wc);
 weatherLoaded=true;weatherPending=false;
@@ -1377,7 +1398,7 @@ var desc=descMaps[settings.language]?descMaps[settings.language][code]:WMO_DESC_
 wc.innerHTML='<div class="weather-main"><div class="weather-icon-svg">'+wIconSvg(wi)+'</div><div>'+
 '<div class="weather-temp">'+temp+'&deg;</div>'+
 '<div class="weather-details">'+desc+'</div>'+
-'<div class="weather-loc">'+t('windSpeed')+': '+escapeHtml(''+wind)+' km/h</div></div></div>';
+weatherWindLine(wind,false)+'</div></div>';
 initTextEntranceAnimations(wc);
 weatherLoaded=true;weatherPending=false;
 try{localStorage.setItem('weatherCache',JSON.stringify(lastWeather));}catch(e){}

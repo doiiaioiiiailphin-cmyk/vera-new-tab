@@ -111,11 +111,14 @@ opacity:0;transition:all var(--transition-fast);color:var(--text-dim);}
 .clock-time{font-family:var(--font-display);font-size:clamp(64px,10vw,120px);font-weight:200;letter-spacing:-0.03em;line-height:1;
 color:var(--text);filter:drop-shadow(0 0 30px var(--accent-glow));display:inline-grid;place-items:center;position:relative;}
 .clock-main{display:inline-grid;place-items:center;position:relative;}
-.clock-primary{display:inline-block;background:linear-gradient(180deg,var(--text) 0%,var(--text-dim) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transition:translate var(--transition),filter var(--transition);}
+.clock-primary{display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--text) 0%,var(--text-dim) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-variant-numeric:tabular-nums;transition:translate var(--transition),filter var(--transition);}
+.clock-primary-digit,.clock-colon{background:inherit;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.clock-primary .clock-digit-current,.clock-primary .clock-digit-in,.clock-primary .clock-digit-out{background:inherit;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
 .clock-seconds{position:absolute;left:calc(100% - .02em);top:.2em;display:inline-flex;align-items:center;gap:.02em;width:2.2ch;height:.92em;font-size:.28em;font-weight:400;letter-spacing:0;color:var(--text-dim);-webkit-text-fill-color:currentColor;background:none;font-variant-numeric:tabular-nums;opacity:0;translate:-.3em .18em;transition:opacity var(--transition),translate var(--transition);filter:drop-shadow(0 0 14px var(--accent-glow));pointer-events:none;}
 .clock-wrap.seconds-visible .clock-primary{translate:-.18em 0;}
 .clock-wrap.seconds-visible .clock-seconds{opacity:1;translate:0 0;}
-.clock-second-digit{position:relative;display:inline-block;width:1ch;height:1em;overflow:hidden;}
+.clock-primary-digit,.clock-second-digit{position:relative;display:inline-block;width:1ch;height:1em;overflow:hidden;}
+.clock-colon{display:inline-flex;align-items:center;justify-content:center;width:.48ch;height:1em;line-height:1;}
 .clock-digit-current,.clock-digit-in,.clock-digit-out{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
 .clock-digit-in{animation:clockDigitIn .42s cubic-bezier(.22,1,.36,1) both;}
 .clock-digit-out{animation:clockDigitOut .42s cubic-bezier(.22,1,.36,1) both;}
@@ -358,6 +361,7 @@ body.earth-bg.builtin-bg:not(.free-layout-enabled) .widget::before{background:li
 .weather-temp{font-family:var(--font-display);font-size:40px;font-weight:300;line-height:1;}
 .weather-details{font-size:13px;color:var(--text-dim);line-height:1.6;}
 .weather-loc{font-size:11px;color:var(--text-subtle);opacity:0.7;}
+.weather-loc-placeholder{visibility:hidden;}
 
 .todo-input{width:100%;background:var(--input-bg);border:1px solid var(--glass-border);border-radius:var(--radius-xs);
 padding:10px 15px;color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;
@@ -683,6 +687,8 @@ linear-gradient(180deg,var(--bg-base) 0%,var(--bg-overlay) 40%,var(--bg-base) 10
 
 .builtin-bg-light .clock-time{color:#fff;filter:drop-shadow(0 0 20px rgba(255,255,255,0.4)) drop-shadow(0 2px 8px rgba(0,0,0,0.3));}
 .builtin-bg-light .clock-primary{background:none;-webkit-text-fill-color:#fff;}
+.builtin-bg-light .clock-primary-digit,.builtin-bg-light .clock-colon{background:none;-webkit-text-fill-color:#fff;}
+.builtin-bg-light .clock-primary .clock-digit-current,.builtin-bg-light .clock-primary .clock-digit-in,.builtin-bg-light .clock-primary .clock-digit-out{background:none;-webkit-text-fill-color:#fff;}
 .builtin-bg-light .clock-primary .text-entrance-char{background:none;-webkit-text-fill-color:#fff;}
 .builtin-bg-light .clock-date{color:rgba(255,255,255,0.9);text-shadow:0 1px 4px rgba(0,0,0,0.3);}
 .builtin-bg-light .search-input{color:#fff;text-shadow:0 1px 3px rgba(0,0,0,0.3);}
