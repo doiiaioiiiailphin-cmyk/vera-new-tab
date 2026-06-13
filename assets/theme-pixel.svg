@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#020403"/>
+      <stop offset="0.52" stop-color="#06110b"/>
+      <stop offset="1" stop-color="#020302"/>
+    </linearGradient>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0v24" fill="none" stroke="#77d7a0" stroke-opacity=".08" stroke-width="2"/>
+    </pattern>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 .08"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect width="1200" height="800" fill="url(#grid)"/>
+  <g fill="#77d7a0" opacity=".15">
+    <rect x="84" y="112" width="96" height="24"/>
+    <rect x="204" y="112" width="48" height="24"/>
+    <rect x="84" y="160" width="168" height="24"/>
+    <rect x="924" y="144" width="144" height="24"/>
+    <rect x="996" y="192" width="72" height="24"/>
+    <rect x="132" y="616" width="120" height="24"/>
+    <rect x="276" y="616" width="72" height="24"/>
+  </g>
+  <g stroke="#77d7a0" stroke-opacity=".34" stroke-width="4" fill="none">
+    <path d="M420 266h360v224H420z"/>
+    <path d="M444 314h160M444 362h240M444 410h112M632 410h64"/>
+  </g>
+  <rect width="1200" height="800" filter="url(#grain)" opacity=".75"/>
+</svg>

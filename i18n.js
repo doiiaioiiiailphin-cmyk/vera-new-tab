@@ -91,6 +91,9 @@ pomodoroStart:'开始',pomodoroPause:'暂停',pomodoroReset:'重置',pomodoroRou
 Object.assign(I18N.zh,{experimentalFeatures:'实验性功能',freeLayout:'自由摆放布局',newTile:'新建磁贴',organizeDesktop:'整理桌面',exitOrganize:'退出整理',folder:'文件夹'});
 Object.assign(I18N.en,{experimentalFeatures:'Experimental Features',freeLayout:'Free Layout',newTile:'New Tile',organizeDesktop:'Organize Desktop',exitOrganize:'Exit Organize',folder:'Folder'});
 Object.assign(I18N.ja,{experimentalFeatures:'実験的機能',freeLayout:'自由配置レイアウト',newTile:'新規タイル',organizeDesktop:'デスクトップ整理',exitOrganize:'整理を終了',folder:'フォルダ'});
+Object.assign(I18N.zh,{themePixel:'终端像素',pixelCursor:'像素鼠标'});
+Object.assign(I18N.en,{themePixel:'Terminal Pixel',pixelCursor:'Pixel Cursor'});
+Object.assign(I18N.ja,{themePixel:'端末ピクセル',pixelCursor:'ピクセルカーソル'});
 Object.assign(I18N.en,{
 pomodoro:'Pomodoro',showPomodoro:'Pomodoro Timer',pomodoroFocus:'Focus',pomodoroShort:'Short Break',pomodoroLong:'Long Break',
 pomodoroStart:'Start',pomodoroPause:'Pause',pomodoroReset:'Reset',pomodoroRoundLabel:'Rounds',pomodoroRounds:'focus rounds'

@@ -5,9 +5,9 @@ var PICKER_ICONS=['web','mail','code','play','chat','x','star','heart','home','b
 var quickLinkSuppressClickUntil=0;
 var entranceUsedDelays={};
 
-var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgTheme:'horizon',showBgImage:false,checkUpdate:true,clockSecondsPinned:false,quoteBounce:false,
+var DEFAULTS={glassOpacity:6,blur:32,radius:24,accent:'#5eead4',bgPreset:'ice',bgImage:'',bgTheme:'horizon',showBgImage:false,checkUpdate:true,clockSecondsPinned:false,quoteBounce:false,pixelCursorEnabled:true,
 showWeather:true,showTodo:true,showQuote:true,showLinks:true,showPomodoro:false,dynamicBg:true,earthPerformance:false,showGame:false,
-searchEngine:'google',theme:'auto',language:'zh',vip:false,themeSeriesOpen:{base:true,hologram:false},
+searchEngine:'google',theme:'auto',language:'zh',vip:false,themeSeriesOpen:{base:true,featured:true,hologram:false},
 links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false},
 {icon:'code',name:'GitHub',url:'https://github.com'},
 {icon:'play',name:'YouTube',url:'https://youtube.com'},
@@ -15,8 +15,8 @@ links:[{icon:'gmail',name:'Gmail',url:'https://mail.google.com',useFavicon:false
 {icon:'chat',name:'ChatGPT',url:'https://chat.openai.com'}],
 todos:[],freeLayout:{enabled:false,editMode:false,items:{},folders:{},initialized:false,layoutVersion:6},pomodoro:{mode:'focus',remaining:1500,running:false,endsAt:null,rounds:0,focus:25,short:5,long:15}};
 
-var THEMES=[{id:'horizon',nameKey:'themeHorizon',bgDark:'assets/bg-dark.webp',bgLight:'assets/bg-light.webp',preset:'ice',accent:'#5eead4'},{id:'landscape',nameKey:'themeLandscape',bgDark:'assets/theme-landscape.svg',bgLight:'assets/theme-landscape.svg',preset:'ocean',accent:'#547a7b'},{id:'earth',nameKey:'themeEarth',bgDark:'assets/theme-earth-dark.svg',bgLight:'assets/theme-earth-light.svg',preset:'ice',accent:'#38dff2'},{id:'saturn',nameKey:'themeSaturn',bgDark:'assets/theme-saturn-dark.svg',bgLight:'assets/theme-saturn-light.svg',preset:'ice',accent:'#d8a15c'},{id:'moon',nameKey:'themeMoon',bgDark:'assets/theme-moon-dark.svg',bgLight:'assets/theme-moon-light.svg',preset:'ice',accent:'#c7cdd5'}];
-var THEME_SERIES=[{id:'base',name:{zh:'基础',en:'Base',ja:'ベース'},themeIds:['horizon','landscape']},{id:'hologram',name:{zh:'全息天体',en:'Holographic Bodies',ja:'ホログラム天体'},themeIds:['earth','saturn','moon']}];
+var THEMES=[{id:'horizon',nameKey:'themeHorizon',bgDark:'assets/bg-dark.webp',bgLight:'assets/bg-light.webp',preset:'ice',accent:'#5eead4'},{id:'landscape',nameKey:'themeLandscape',bgDark:'assets/theme-landscape.svg',bgLight:'assets/theme-landscape.svg',preset:'ocean',accent:'#547a7b'},{id:'pixel',nameKey:'themePixel',bgDark:'assets/theme-pixel.svg',bgLight:'assets/theme-pixel.svg',preset:'pixel',accent:'#77d7a0'},{id:'earth',nameKey:'themeEarth',bgDark:'assets/theme-earth-dark.svg',bgLight:'assets/theme-earth-light.svg',preset:'ice',accent:'#38dff2'},{id:'saturn',nameKey:'themeSaturn',bgDark:'assets/theme-saturn-dark.svg',bgLight:'assets/theme-saturn-light.svg',preset:'ice',accent:'#d8a15c'},{id:'moon',nameKey:'themeMoon',bgDark:'assets/theme-moon-dark.svg',bgLight:'assets/theme-moon-light.svg',preset:'ice',accent:'#c7cdd5'}];
+var THEME_SERIES=[{id:'base',name:{zh:'基础',en:'Base',ja:'ベース'},themeIds:['horizon','landscape']},{id:'featured',name:{zh:'特色主题',en:'Featured Themes',ja:'注目テーマ'},themeIds:['pixel']},{id:'hologram',name:{zh:'全息天体',en:'Holographic Bodies',ja:'ホログラム天体'},themeIds:['earth','saturn','moon']}];
 
 var SEARCH_ENGINES=[{id:'google',name:'Google',domain:'google.com',url:'https://www.google.com/search?q='},
 {id:'bing',name:'Bing',domain:'bing.com',url:'https://www.bing.com/search?q='},
@@ -28,7 +28,8 @@ var BG_PRESETS={ice:{blob1:'#7dd3fc',blob2:'#5eead4',blob3:'#a5b4fc',blob4:'#67e
 aurora:{blob1:'#c084fc',blob2:'#f472b6',blob3:'#818cf8',blob4:'#a78bfa'},
 ocean:{blob1:'#38bdf8',blob2:'#2dd4bf',blob3:'#60a5fa',blob4:'#06b6d4'},
 forest:{blob1:'#34d399',blob2:'#a3e635',blob3:'#4ade80',blob4:'#6ee7b7'},
-sunset:{blob1:'#fb923c',blob2:'#fbbf24',blob3:'#f97316',blob4:'#f59e0b'}};
+sunset:{blob1:'#fb923c',blob2:'#fbbf24',blob3:'#f97316',blob4:'#f59e0b'},
+pixel:{blob1:'#77d7a0',blob2:'#3d8f68',blob3:'#9ddbb6',blob4:'#1f4f3a'}};
 
 var WMO_ICONS={0:'w-clear',1:'w-clear',2:'cloud-sun',3:'w-cloudy',45:'w-fog',48:'w-fog',51:'w-rain',53:'w-rain',55:'w-rain',56:'w-rain',57:'w-rain',61:'w-rain',63:'w-rain',65:'w-rain',66:'w-rain',67:'w-rain',71:'w-snow',73:'w-snow',75:'w-snow',77:'w-snow',80:'w-rain',81:'w-rain',82:'w-rain',85:'w-snow',86:'w-snow',95:'w-storm',96:'w-storm',99:'w-storm'};
 var WMO_DESC_ZH={0:'晴',1:'晴',2:'多云间晴',3:'阴',45:'雾',48:'霜雾',51:'毛毛雨',53:'毛毛雨',55:'毛毛雨',56:'冻毛毛雨',57:'冻毛毛雨',61:'小雨',63:'中雨',65:'大雨',66:'冻雨',67:'冻雨',71:'小雪',73:'中雪',75:'大雪',77:'雪粒',80:'阵雨',81:'阵雨',82:'大阵雨',85:'阵雪',86:'阵雪',95:'雷暴',96:'冰雹雷暴',99:'强雷暴'};
@@ -44,6 +45,7 @@ var WW_DESC_JA={113:'晴れ',116:'晴れ時々曇り',119:'曇り',122:'曇り',
 function wwDesc(code,lang){var m={zh:WW_DESC_ZH,en:{},ja:WW_DESC_JA};return (m[lang]||{})[code]||'Unknown';}
 
 var settings={},linkEditIdx=null,suggestTimer=null,suggestDropdown=null;
+var pixelCursorState={active:false,outer:null,inner:null,x:0,y:0,ox:0,oy:0,raf:0,bound:false,inside:false};
 var freeLayoutNodes={},freeLayoutDrag=null,freeLayoutContextPoint=null,freeLayoutFolderPanel=null,freeLayoutLongPress=null,freeLayoutMergeTarget=null;
 
 function iconSvg(name,size){size=size||18;
@@ -162,6 +164,58 @@ clockSecondsPinned=!!settings.clockSecondsPinned;
 if(!raw||!raw.language){var bl=(navigator.language||'').split('-')[0];settings.language={'zh':'zh','ja':'ja'}[bl]||'en';saveSettings();}
 }
 function saveSettings(){try{localStorage.setItem('newtab_settings_v3',JSON.stringify(settings));}catch(e){}}
+function pixelCursorSupported(){
+return !!(window.matchMedia&&window.matchMedia('(pointer:fine)').matches&&!window.matchMedia('(hover:none)').matches&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+function ensurePixelCursorNodes(){
+if(pixelCursorState.outer&&pixelCursorState.inner)return;
+var outer=document.createElement('div'),inner=document.createElement('div');
+outer.className='pixel-cursor pixel-cursor-outer';
+inner.className='pixel-cursor pixel-cursor-inner';
+document.body.appendChild(outer);
+document.body.appendChild(inner);
+pixelCursorState.outer=outer;pixelCursorState.inner=inner;
+}
+function removePixelCursorNodes(){
+if(pixelCursorState.outer)pixelCursorState.outer.remove();
+if(pixelCursorState.inner)pixelCursorState.inner.remove();
+pixelCursorState.outer=null;pixelCursorState.inner=null;
+}
+function drawPixelCursor(){
+if(!pixelCursorState.active)return;
+pixelCursorState.ox+=(pixelCursorState.x-pixelCursorState.ox)*0.18;
+pixelCursorState.oy+=(pixelCursorState.y-pixelCursorState.oy)*0.18;
+if(pixelCursorState.inner)pixelCursorState.inner.style.transform='translate3d('+pixelCursorState.x+'px,'+pixelCursorState.y+'px,0) translate(-50%,-50%)';
+if(pixelCursorState.outer)pixelCursorState.outer.style.transform='translate3d('+pixelCursorState.ox+'px,'+pixelCursorState.oy+'px,0) translate(-50%,-50%)';
+pixelCursorState.raf=requestAnimationFrame(drawPixelCursor);
+}
+function bindPixelCursorEvents(){
+if(pixelCursorState.bound)return;
+pixelCursorState.bound=true;
+document.addEventListener('pointermove',function(e){
+if(!pixelCursorState.active||e.pointerType==='touch')return;
+pixelCursorState.x=e.clientX;pixelCursorState.y=e.clientY;
+if(!pixelCursorState.inside){pixelCursorState.ox=e.clientX;pixelCursorState.oy=e.clientY;pixelCursorState.inside=true;}
+document.body.classList.add('pixel-cursor-inside');
+});
+document.addEventListener('pointerleave',function(){pixelCursorState.inside=false;document.body.classList.remove('pixel-cursor-inside');});
+document.addEventListener('pointerenter',function(){pixelCursorState.inside=false;});
+}
+function updatePixelCursor(){
+var active=!!(pixelThemeActive()&&settings.pixelCursorEnabled&&pixelCursorSupported());
+document.body.classList.toggle('pixel-cursor-active',active);
+if(!active){
+pixelCursorState.active=false;pixelCursorState.inside=false;
+document.body.classList.remove('pixel-cursor-inside');
+if(pixelCursorState.raf){cancelAnimationFrame(pixelCursorState.raf);pixelCursorState.raf=0;}
+removePixelCursorNodes();
+return;
+}
+ensurePixelCursorNodes();
+bindPixelCursorEvents();
+pixelCursorState.active=true;
+if(!pixelCursorState.raf)pixelCursorState.raf=requestAnimationFrame(drawPixelCursor);
+}
 // Fallback stubs — vip.js/game.js provide real implementations when bundled
 var _bindVipEvents = typeof bindVipEvents !== 'undefined' ? bindVipEvents : function(){};
 var _initAds = typeof initAds !== 'undefined' ? initAds : function(){};
@@ -210,6 +264,7 @@ var bgBase=document.querySelector('.bg-base');
 var activeTheme=THEMES.find(function(t){return t.id===settings.bgTheme})||THEMES[0];
 var isLandscape=activeTheme.id==='landscape';
 var isHologram=hologramThemeActive();
+var isPixel=pixelThemeActive();
 var scene=document.getElementById('landscapeScene');
 lDebugMode=false;lDebugHour=undefined;lDebugWeather=undefined;
 if(scene){var showScene=isLandscape&&settings.showBgImage&&!settings.bgImage;if(showScene){scene.style.display='';if(scene._teHide){scene.removeEventListener('transitionend',scene._teHide);scene._teHide=null;}requestAnimationFrame(function(){scene.classList.add('on');applyLandscapeScene();});}else{scene.classList.remove('on');if(scene._teHide)scene.removeEventListener('transitionend',scene._teHide);scene._teHide=function(){scene.style.display='none';scene.removeEventListener('transitionend',scene._teHide);scene._teHide=null;};scene.addEventListener('transitionend',scene._teHide);}}
@@ -226,6 +281,8 @@ applyLandscapeScene();
 var builtinLight=!settings.bgImage&&settings.showBgImage&&document.documentElement.getAttribute('data-theme')==='light';
 document.body.classList.toggle('builtin-bg',builtinBg);
 document.body.classList.toggle('builtin-bg-light',builtinLight);
+document.body.classList.toggle('pixel-theme',isPixel);
+updatePixelCursor();
 _toggleAds();
 updateEngineDisplay();
 renderTodoList();
@@ -457,6 +514,7 @@ return slots;
 
 function initEntranceAnimations(){
 var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var pixel=pixelThemeActive();
 var selectors='.clock-time,.clock-date,.search-wrap,.link-card,.add-link-card,#weatherWidget,#quoteWidget,#todoWidget,#pomodoroWidget,#gameWidget';
 var targets=Array.prototype.slice.call(document.querySelectorAll(selectors)).filter(function(el){
 if(el.dataset.entranceReady==='1')return;
@@ -471,10 +529,10 @@ var delay=delays[idx];
 var duration=900+Math.round(Math.random()*300);
 el.style.setProperty('--entrance-delay',delay+'ms');
 el.style.setProperty('--entrance-duration',duration+'ms');
-el.classList.add('entrance-card');
+el.classList.add(pixel?'pixel-entrance-card':'entrance-card');
 el.addEventListener('animationend',function done(e){
-if(e.animationName!=='veraEntrance')return;
-el.classList.remove('entrance-card');
+if(e.animationName!=='veraEntrance'&&e.animationName!=='pixelDissolveEntrance')return;
+el.classList.remove('entrance-card','pixel-entrance-card');
 el.removeEventListener('animationend',done);
 },{once:false});
 });
@@ -500,6 +558,7 @@ units.forEach(function(ch){
 if(/\s/.test(ch)){frag.appendChild(document.createTextNode(ch));return;}
 var span=document.createElement('span');
 span.className='text-entrance-char';
+if(pixelThemeActive())span.classList.add('pixel-text-entrance-char');
 span.dataset.textEntranceReady='1';
 span.style.setProperty('--text-entrance-delay',Math.round(Math.random()*1000)+'ms');
 span.textContent=ch;
@@ -1433,6 +1492,7 @@ updateToggle('toggleGame',settings.showGame);
 updateToggle('toggleDynamicBg',settings.dynamicBg);
 updateToggle('toggleEarthPerformance',settings.earthPerformance);
 updateToggle('toggleCheckUpdate',settings.checkUpdate);
+updateToggle('togglePixelCursor',settings.pixelCursorEnabled);
 renderThemePicker();
 var isDynamicTheme = settings.bgTheme === 'landscape';
 var themeOpts = document.querySelectorAll('#themeRadio .radio-option');
@@ -1449,7 +1509,6 @@ var byId={};THEMES.forEach(function(th){byId[th.id]=th;});
 var used={};
 var seriesHtml=(THEME_SERIES||[]).map(function(series){
 var items=(series.themeIds||[]).map(function(id){used[id]=true;return byId[id];}).filter(Boolean);
-if(!items.length)return'';
 var activeSeries=items.some(function(th){return th.id===settings.bgTheme&&settings.showBgImage;})?' active':'';
 var open=isThemeSeriesOpen(series.id);
 return'<div class="theme-series'+activeSeries+(open?' open':' collapsed')+'" data-series="'+series.id+'"><button class="theme-series-head" type="button" data-series-toggle="'+series.id+'" aria-expanded="'+(open?'true':'false')+'"><span>'+themeSeriesName(series)+'</span><span class="theme-series-count">'+items.length+'</span></button><div class="theme-series-items-wrap"><div class="theme-series-items">'+items.map(renderThemeCard).join('')+'</div></div></div>';
@@ -1488,6 +1547,7 @@ function saveThemeAccentPreset(themeId){
 }
 function hologramThemeActive(){return ['earth','saturn','moon'].indexOf(settings.bgTheme)>=0&&settings.showBgImage&&!settings.bgImage;}
 function earthThemeActive(){return hologramThemeActive();}
+function pixelThemeActive(){return settings.bgTheme==='pixel'&&settings.showBgImage&&!settings.bgImage;}
 function updateEarthScene(active){
 var api=window.VeraEarthScene;
 if(api&&typeof api.setActive==='function')api.setActive({active:!!active,dynamic:settings.dynamicBg,performance:settings.earthPerformance,body:settings.bgTheme});
@@ -1729,6 +1789,7 @@ var tpom=document.getElementById('togglePomodoro');if(tpom)tpom.addEventListener
 var tg=document.getElementById('toggleGame');if(tg)tg.addEventListener('click',function(){settings.showGame=!settings.showGame;saveSettings();applyAll();});
 var tdb=document.getElementById('toggleDynamicBg');if(tdb)tdb.addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
 var tep=document.getElementById('toggleEarthPerformance');if(tep)tep.addEventListener('click',function(){settings.earthPerformance=!settings.earthPerformance;saveSettings();applyAll();});
+var tpc=document.getElementById('togglePixelCursor');if(tpc)tpc.addEventListener('click',function(){settings.pixelCursorEnabled=!settings.pixelCursorEnabled;saveSettings();applyAll();});
 var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;settings._showBgAuto=undefined;if(settings.showBgImage&&(!settings.bgTheme||settings.bgTheme===''))settings.bgTheme='horizon';saveSettings();applyAll();});
 var tcu=document.getElementById('toggleCheckUpdate');if(tcu)tcu.addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){

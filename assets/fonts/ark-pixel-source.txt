@@ -1,0 +1,10 @@
+Ark Pixel Font / Fang Zhou Pixel Font
+
+Source: https://github.com/TakWolf/ark-pixel-font
+Release: 2026.05.07
+Files used:
+- ark-pixel-12px-proportional-zh_cn.otf.woff2
+- ark-pixel-12px-proportional-latin.otf.woff2
+
+Font license: SIL Open Font License 1.1
+Bundled license copy: ark-pixel-OFL.txt
