@@ -46,6 +46,7 @@ function wwDesc(code,lang){var m={zh:WW_DESC_ZH,en:{},ja:WW_DESC_JA};return (m[l
 
 var settings={},linkEditIdx=null,suggestTimer=null,suggestDropdown=null;
 var pixelCursorState={active:false,outer:null,inner:null,x:0,y:0,ox:0,oy:0,raf:0,bound:false,inside:false};
+var pixelBinaryTimer=null;
 var freeLayoutNodes={},freeLayoutDrag=null,freeLayoutContextPoint=null,freeLayoutFolderPanel=null,freeLayoutLongPress=null,freeLayoutMergeTarget=null;
 
 function iconSvg(name,size){size=size||18;
@@ -202,7 +203,7 @@ document.addEventListener('pointerleave',function(){pixelCursorState.inside=fals
 document.addEventListener('pointerenter',function(){pixelCursorState.inside=false;});
 }
 function updatePixelCursor(){
-var active=!!(pixelThemeActive()&&settings.pixelCursorEnabled&&pixelCursorSupported());
+var active=!!(pixelThemeActive()&&pixelCursorSupported());
 document.body.classList.toggle('pixel-cursor-active',active);
 if(!active){
 pixelCursorState.active=false;pixelCursorState.inside=false;
@@ -216,6 +217,53 @@ bindPixelCursorEvents();
 pixelCursorState.active=true;
 if(!pixelCursorState.raf)pixelCursorState.raf=requestAnimationFrame(drawPixelCursor);
 }
+function buildPixelBinaryBackground(layer){
+if(!layer)return;
+var frag=document.createDocumentFragment();
+var count=Math.min(260,Math.max(120,Math.round((window.innerWidth*window.innerHeight)/7200)));
+for(var i=0;i<count;i++){
+var bit=document.createElement('span');
+bit.className='pixel-bit';
+bit.textContent=Math.random()>.5?'1':'0';
+bit.style.left=(Math.random()*100).toFixed(2)+'%';
+bit.style.top=(Math.random()*100).toFixed(2)+'%';
+bit.style.opacity=(0.12+Math.random()*0.34).toFixed(2);
+bit.style.setProperty('--bit-delay',Math.round(Math.random()*1200)+'ms');
+bit.style.setProperty('--bit-step',Math.round(5+Math.random()*9)+'px');
+frag.appendChild(bit);
+}
+layer.replaceChildren(frag);
+layer.dataset.pixelBits='1';
+}
+function randomizePixelBinaryBackground(layer,soft){
+if(!layer)return;
+var bits=Array.prototype.slice.call(layer.querySelectorAll('.pixel-bit'));
+if(!bits.length){buildPixelBinaryBackground(layer);bits=Array.prototype.slice.call(layer.querySelectorAll('.pixel-bit'));}
+var changes=soft?Math.max(8,Math.round(bits.length*0.12)):bits.length;
+for(var i=0;i<changes;i++){
+var bit=bits[Math.floor(Math.random()*bits.length)];
+if(!bit)continue;
+bit.textContent=Math.random()>.5?'1':'0';
+bit.style.opacity=(0.1+Math.random()*0.42).toFixed(2);
+if(!soft){
+bit.style.left=(Math.random()*100).toFixed(2)+'%';
+bit.style.top=(Math.random()*100).toFixed(2)+'%';
+}
+}
+}
+function updatePixelBinaryBackground(active){
+var layer=document.getElementById('pixelBinaryBg');if(!layer)return;
+clearInterval(pixelBinaryTimer);pixelBinaryTimer=null;
+layer.classList.toggle('on',!!active);
+layer.classList.toggle('dynamic',!!(active&&settings.dynamicBg));
+if(!active){layer.replaceChildren();delete layer.dataset.pixelBits;return;}
+if(layer.dataset.pixelBits!=='1')buildPixelBinaryBackground(layer);
+if(settings.dynamicBg){
+pixelBinaryTimer=setInterval(function(){randomizePixelBinaryBackground(layer,true);},620);
+}else{
+randomizePixelBinaryBackground(layer,false);
+}
+}
 // Fallback stubs — vip.js/game.js provide real implementations when bundled
 var _bindVipEvents = typeof bindVipEvents !== 'undefined' ? bindVipEvents : function(){};
 var _initAds = typeof initAds !== 'undefined' ? initAds : function(){};
@@ -224,7 +272,9 @@ var _initGame = typeof initGame !== 'undefined' ? initGame : function(){};
 
 function applyTheme(){
 var theme=settings.theme;
-if(theme==='auto'){
+if(pixelThemeActive()){
+document.documentElement.setAttribute('data-theme','dark');
+}else if(theme==='auto'){
 var prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
 document.documentElement.setAttribute('data-theme',prefersDark?'dark':'light');
 }else{document.documentElement.setAttribute('data-theme',theme);}
@@ -233,10 +283,12 @@ if(h){
 var isDark=document.documentElement.getAttribute('data-theme')==='dark';
 h.setAttribute('href',isDark?'#i-moon':'#i-sun');
 }
+var tb=document.getElementById('themeBtn');if(tb){var pixel=pixelThemeActive();tb.disabled=pixel;tb.classList.toggle('disabled',pixel);tb.setAttribute('aria-disabled',pixel?'true':'false');}
 updateThemeRadio();
 }
 function updateThemeRadio(){
-document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.classList.toggle('active',btn.dataset.themeVal===settings.theme);});
+var activeThemeVal=pixelThemeActive()?'dark':settings.theme;
+document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.classList.toggle('active',btn.dataset.themeVal===activeThemeVal);});
 document.querySelectorAll('#langRadio .radio-option').forEach(function(btn){btn.classList.toggle('active',btn.dataset.langVal===settings.language);});
 }
 function moveRadioSlider(groupEl){if(!groupEl)return;var slider=groupEl.querySelector('.radio-slider');var active=groupEl.querySelector('.radio-option.active');if(!slider||!active)return;var r0=groupEl.getBoundingClientRect();var r1=active.getBoundingClientRect();slider.style.left=(r1.left-r0.left)+'px';slider.style.width=r1.width+'px';}
@@ -270,7 +322,10 @@ lDebugMode=false;lDebugHour=undefined;lDebugWeather=undefined;
 if(scene){var showScene=isLandscape&&settings.showBgImage&&!settings.bgImage;if(showScene){scene.style.display='';if(scene._teHide){scene.removeEventListener('transitionend',scene._teHide);scene._teHide=null;}requestAnimationFrame(function(){scene.classList.add('on');applyLandscapeScene();});}else{scene.classList.remove('on');if(scene._teHide)scene.removeEventListener('transitionend',scene._teHide);scene._teHide=function(){scene.style.display='none';scene.removeEventListener('transitionend',scene._teHide);scene._teHide=null;};scene.addEventListener('transitionend',scene._teHide);}}
 updateEarthScene(isHologram);
 var builtinBg=settings.showBgImage&&!settings.bgImage;
-if(builtinBg&&!isLandscape&&!isHologram){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
+if(builtinBg&&isPixel){bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';
+var pixelDark=document.querySelector('.bg-img-dark');if(pixelDark){pixelDark.removeAttribute('src');pixelDark.className='bg-img bg-img-dark';}
+var pixelLight=document.querySelector('.bg-img-light');if(pixelLight){pixelLight.removeAttribute('src');pixelLight.className='bg-img bg-img-light';}
+}else if(builtinBg&&!isLandscape&&!isHologram){bgBase.classList.add('has-image');bgBase.classList.remove('custom-bg');bgBase.style.backgroundImage='';
 var bgDark=document.querySelector('.bg-img-dark');if(bgDark){bgDark.src=activeTheme.bgDark;bgDark.className='bg-img bg-img-dark'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
 var bgLight=document.querySelector('.bg-img-light');if(bgLight){bgLight.src=activeTheme.bgLight;bgLight.className='bg-img bg-img-light'+(activeTheme.id==='landscape'?' bg-img-landscape':'');}
 }else if(builtinBg&&(isLandscape||isHologram)){bgBase.classList.remove('has-image','custom-bg');bgBase.style.backgroundImage='';
@@ -282,6 +337,7 @@ var builtinLight=!settings.bgImage&&settings.showBgImage&&document.documentEleme
 document.body.classList.toggle('builtin-bg',builtinBg);
 document.body.classList.toggle('builtin-bg-light',builtinLight);
 document.body.classList.toggle('pixel-theme',isPixel);
+updatePixelBinaryBackground(isPixel);
 updatePixelCursor();
 _toggleAds();
 updateEngineDisplay();
@@ -1492,9 +1548,8 @@ updateToggle('toggleGame',settings.showGame);
 updateToggle('toggleDynamicBg',settings.dynamicBg);
 updateToggle('toggleEarthPerformance',settings.earthPerformance);
 updateToggle('toggleCheckUpdate',settings.checkUpdate);
-updateToggle('togglePixelCursor',settings.pixelCursorEnabled);
 renderThemePicker();
-var isDynamicTheme = settings.bgTheme === 'landscape';
+var isDynamicTheme = settings.bgTheme === 'landscape'||pixelThemeActive();
 var themeOpts = document.querySelectorAll('#themeRadio .radio-option');
 themeOpts.forEach(function(btn){ btn.disabled = isDynamicTheme; btn.style.opacity = isDynamicTheme ? '0.4' : ''; btn.style.pointerEvents = isDynamicTheme ? 'none' : ''; });
 updateThemeRadio();
@@ -1646,6 +1701,7 @@ function escapeHtml(s){var d=document.createElement('div');d.textContent=s;retur
 function escapeAttr(s){return s.replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function cycleTheme(){
+if(pixelThemeActive())return;
 var themes=['auto','dark','light'];var idx=themes.indexOf(settings.theme);
 settings.theme=themes[(idx+1)%themes.length];saveSettings();applyAll();
 updateThemeRadio();moveRadioSlider(document.getElementById('themeRadio'));
@@ -1734,6 +1790,7 @@ if(engDropdown)engDropdown.addEventListener('click',function(e){e.stopPropagatio
 function handleViewportResize(){
 if(engDropdown&&engDropdown.classList.contains('open'))repositionDropdown();
 scheduleWidgetLayoutUpdate();
+if(pixelThemeActive()){var pbg=document.getElementById('pixelBinaryBg');if(pbg){delete pbg.dataset.pixelBits;updatePixelBinaryBackground(true);}}
 }
 window.addEventListener('resize',handleViewportResize);
 if(window.visualViewport)window.visualViewport.addEventListener('resize',handleViewportResize);
@@ -1789,7 +1846,6 @@ var tpom=document.getElementById('togglePomodoro');if(tpom)tpom.addEventListener
 var tg=document.getElementById('toggleGame');if(tg)tg.addEventListener('click',function(){settings.showGame=!settings.showGame;saveSettings();applyAll();});
 var tdb=document.getElementById('toggleDynamicBg');if(tdb)tdb.addEventListener('click',function(){settings.dynamicBg=!settings.dynamicBg;saveSettings();applyAll();});
 var tep=document.getElementById('toggleEarthPerformance');if(tep)tep.addEventListener('click',function(){settings.earthPerformance=!settings.earthPerformance;saveSettings();applyAll();});
-var tpc=document.getElementById('togglePixelCursor');if(tpc)tpc.addEventListener('click',function(){settings.pixelCursorEnabled=!settings.pixelCursorEnabled;saveSettings();applyAll();});
 var tsb=document.getElementById('toggleShowBgImage');if(tsb)tsb.addEventListener('click',function(){settings.showBgImage=!settings.showBgImage;settings._showBgAuto=undefined;if(settings.showBgImage&&(!settings.bgTheme||settings.bgTheme===''))settings.bgTheme='horizon';saveSettings();applyAll();});
 var tcu=document.getElementById('toggleCheckUpdate');if(tcu)tcu.addEventListener('click',function(){settings.checkUpdate=!settings.checkUpdate;saveSettings();applyAll();});
 document.querySelectorAll('#themeRadio .radio-option').forEach(function(btn){btn.addEventListener('click',function(){

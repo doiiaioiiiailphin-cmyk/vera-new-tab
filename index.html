@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.open-meteo.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&family=Lexend:wght@200..700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&family=Lexend:wght@200..700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
 <script src="preload.js"></script>
 <link rel="stylesheet" href="style.css">
 
@@ -56,6 +56,7 @@
 
 <div class="bg-layer">
 <div class="bg-base"><img class="bg-img bg-img-dark" src="assets/bg-dark.webp"><img class="bg-img bg-img-light" src="assets/bg-light.webp"></div>
+<div class="pixel-binary-bg" id="pixelBinaryBg" aria-hidden="true"></div>
 <div class="bg-blob"></div><div class="bg-blob"></div><div class="bg-blob"></div><div class="bg-blob"></div>
 <div class="bg-noise"></div>
 </div>
@@ -216,7 +217,6 @@
 <div class="settings-group"><span class="settings-label" data-i18n="customBg">自定义背景图URL</span><input class="todo-input" id="setBgImage" type="text" data-i18n-placeholder="bgPlaceholder" placeholder="输入图片URL (留空使用默认)"><input type="file" id="bgFileInput" accept="image/*" style="display:none"><button class="btn sm" id="bgUploadBtn" style="margin-top:6px" data-i18n="bgUpload">上传图片</button></div>
 <div class="settings-subtitle" data-i18n="experimentalFeatures">实验性功能</div>
 <div class="settings-row"><label data-i18n="freeLayout">自由摆放布局</label><button class="toggle-switch" id="toggleFreeLayout"></button></div>
-<div class="settings-row"><label data-i18n="pixelCursor">像素鼠标</label><button class="toggle-switch on" id="togglePixelCursor"></button></div>
 </div>
 
 <div class="settings-section" id="sec-widgets">

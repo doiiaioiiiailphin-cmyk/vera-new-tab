@@ -1,0 +1,8 @@
+Monocraft
+
+Source: https://github.com/IdreesInc/Monocraft
+File used: dist/Monocraft-ttf/Monocraft.ttf
+Website import path documented by upstream README.
+
+Font license: SIL Open Font License 1.1
+Bundled license copy: Monocraft-OFL.txt
