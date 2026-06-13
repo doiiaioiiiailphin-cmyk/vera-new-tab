@@ -324,10 +324,9 @@ background:color-mix(in srgb,var(--bg-overlay) 88%,transparent);color:var(--text
 .widgets-grid.compact-layout{max-width:720px;grid-template-columns:1fr 1.8fr;align-items:stretch;}
 .widgets-grid.compact-layout .todo-widget,.widgets-grid.compact-layout .pomodoro-widget,.widgets-grid.compact-layout .game-widget,.widgets-grid.single-col .todo-widget,.widgets-grid.single-col .pomodoro-widget,.widgets-grid.single-col .game-widget{grid-column:1/-1;}
 .widgets-grid.short-card-fill #weatherWidget,.widgets-grid.short-card-fill #quoteWidget{grid-column:1/-1;}
-.widgets-grid.dashboard-layout{max-width:min(1180px,100%);grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+.widgets-grid.dashboard-layout{max-width:min(1180px,100%);grid-template-columns:repeat(auto-fit,minmax(260px,1fr));align-items:stretch;}
 .widgets-grid.dashboard-layout .todo-widget,.widgets-grid.dashboard-layout .pomodoro-widget,.widgets-grid.dashboard-layout .game-widget{grid-column:span 2;min-width:0;}
-.widgets-grid.dashboard-layout #weatherWidget,.widgets-grid.dashboard-layout #quoteWidget,.widgets-grid.dashboard-layout #todoWidget{min-height:132px;}
-.widgets-grid.dashboard-layout #weatherWidget{min-height:150px;}
+.widgets-grid.dashboard-layout #weatherWidget,.widgets-grid.dashboard-layout #quoteWidget,.widgets-grid.dashboard-layout #todoWidget{min-height:150px;}
 .widgets-grid.dashboard-layout #quoteWidget .quote-content{min-height:42px;gap:4px;justify-content:flex-start;overflow:hidden;}
 .widgets-grid.dashboard-layout #quoteWidget .quote-text{font-size:14px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .widgets-grid.dashboard-layout #quoteWidget .quote-author{font-size:11px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
