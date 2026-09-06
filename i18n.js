@@ -85,6 +85,7 @@ vipTitle:'Vera Pro',vipDesc:'すべてのプレミアム機能を解除：クラ
 game:'ミニゲーム',gameStart:'クリックで開始',gameScore:'スコア: ',gameOver:'ゲームオーバー — クリックで再開',gameNew:'新',gameSnake:'スネーク'}
 };
 Object.assign(I18N.zh,{
+deleteLink:'删除快捷链接',
 pomodoro:'番茄钟',showPomodoro:'番茄钟',pomodoroFocus:'专注',pomodoroShort:'短休息',pomodoroLong:'长休息',
 pomodoroStart:'开始',pomodoroPause:'暂停',pomodoroReset:'重置',pomodoroRoundLabel:'轮数',pomodoroRounds:'轮专注'
 });
@@ -95,10 +96,44 @@ Object.assign(I18N.zh,{themePixel:'终端像素',pixelCursor:'像素鼠标'});
 Object.assign(I18N.en,{themePixel:'Terminal Pixel',pixelCursor:'Pixel Cursor'});
 Object.assign(I18N.ja,{themePixel:'端末ピクセル',pixelCursor:'ピクセルカーソル'});
 Object.assign(I18N.en,{
+deleteLink:'Delete shortcut',
 pomodoro:'Pomodoro',showPomodoro:'Pomodoro Timer',pomodoroFocus:'Focus',pomodoroShort:'Short Break',pomodoroLong:'Long Break',
 pomodoroStart:'Start',pomodoroPause:'Pause',pomodoroReset:'Reset',pomodoroRoundLabel:'Rounds',pomodoroRounds:'focus rounds'
 });
 Object.assign(I18N.ja,{
+deleteLink:'ショートカットを削除',
 pomodoro:'ポモドーロ',showPomodoro:'ポモドーロタイマー',pomodoroFocus:'集中',pomodoroShort:'短い休憩',pomodoroLong:'長い休憩',
 pomodoroStart:'開始',pomodoroPause:'一時停止',pomodoroReset:'リセット',pomodoroRoundLabel:'ラウンド',pomodoroRounds:'集中ラウンド'
+});
+
+// Vera Daylight: all shared desktop copy is localized together.
+Object.assign(I18N.zh,{
+brandCaption:'留一点空间，给今天。',deskNote:'从这里，开始今天。',desktopControls:'桌面控制',
+settingsTitle:'你的桌面',tabWidgets:'桌面',desktopLayout:'桌面布局',desktopHelp:'选择需要的内容，给重要的事留出空间。',
+advancedAppearance:'精细调整',close:'关闭',search:'搜索网页',searchEngine:'选择搜索引擎',searchSuggestions:'搜索建议',
+searchPlaceholder:'搜索，或开启新的探索…',timeMorning:'早安，新的一天',timeDay:'此刻，恰到好处',timeEvening:'慢下来，享受傍晚',timeNight:'夜深了，留一份安静',
+emptyTodos:'暂时没有待办。把心里的事，轻轻放在这里。',completeTodo:'标记完成',reopenTodo:'标记未完成',deleteTodo:'删除待办',
+storageFailed:'未能保存到浏览器。请检查可用空间或缩小背景图片，当前更改在关闭页面后可能丢失。',
+retry:'重试',layoutCanvas:'可滚动的自由桌面',onboardingHint:'用 Ctrl / ⌘ + K 开始搜索，或布置你的桌面。',customizeDesktop:'布置桌面',dismissHint:'知道了',
+themeHorizon:'光影',aboutText:'Vera · 留一点空间，给今天。<br>搜索、常用网站与属于你的桌面。<br>支持多种主题与中英日界面。<br>设置与内容保存在本地浏览器。'
+});
+Object.assign(I18N.en,{
+brandCaption:'A little room for today.',deskNote:'A good place to begin.',desktopControls:'Desktop controls',
+settingsTitle:'Your desktop',tabWidgets:'Desktop',desktopLayout:'Layout',desktopHelp:'Choose what you need. Make room for what matters.',
+advancedAppearance:'Fine tuning',close:'Close',search:'Search the web',searchEngine:'Choose search engine',searchSuggestions:'Search suggestions',
+searchPlaceholder:'Search, or start exploring…',timeMorning:'A fresh start',timeDay:'Right here, right now',timeEvening:'Let the day slow down',timeNight:'A quieter moment',
+emptyTodos:'Nothing waiting. Leave a thought here when you need to.',completeTodo:'Complete task',reopenTodo:'Reopen task',deleteTodo:'Delete task',
+storageFailed:'Could not save in this browser. Check available space or use a smaller background image. Changes may be lost when this page closes.',
+retry:'Retry',layoutCanvas:'Scrollable free desktop',onboardingHint:'Search with Ctrl / ⌘ + K, or make this space yours.',customizeDesktop:'Make it yours',dismissHint:'Got it',
+themeHorizon:'Daylight',aboutText:'Vera · A little room for today.<br>Search, favorite places, and a desktop of your own.<br>Multiple themes. English, Chinese, and Japanese.<br>Your settings and content stay in this browser.'
+});
+Object.assign(I18N.ja,{
+brandCaption:'今日に、少しの余白を。',deskNote:'ここから、今日を始めよう。',desktopControls:'デスクトップ操作',
+settingsTitle:'あなたのデスクトップ',tabWidgets:'デスクトップ',desktopLayout:'レイアウト',desktopHelp:'必要なものを選んで、大切なことに余白を。',
+advancedAppearance:'細かな調整',close:'閉じる',search:'ウェブを検索',searchEngine:'検索エンジンを選択',searchSuggestions:'検索候補',
+searchPlaceholder:'検索、または新しい発見へ…',timeMorning:'新しい一日の始まり',timeDay:'いま、このひととき',timeEvening:'ゆっくり、夕暮れを',timeNight:'静かな夜のひととき',
+emptyTodos:'まだタスクはありません。気になることをここに。',completeTodo:'完了にする',reopenTodo:'未完了にする',deleteTodo:'タスクを削除',
+storageFailed:'ブラウザに保存できませんでした。空き容量を確認するか背景画像を小さくしてください。閉じると変更が失われる可能性があります。',
+retry:'再試行',layoutCanvas:'スクロールできる自由デスクトップ',onboardingHint:'Ctrl / ⌘ + K で検索。または、自分だけのデスクトップに。',customizeDesktop:'デスクトップを整える',dismissHint:'閉じる',
+themeHorizon:'光と影',aboutText:'Vera · 今日に、少しの余白を。<br>検索、お気に入り、自分だけのデスクトップ。<br>多彩なテーマと日本語・英語・中国語。<br>設定とコンテンツはブラウザ内に保存されます。'
 });

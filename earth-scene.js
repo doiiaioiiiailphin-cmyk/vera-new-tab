@@ -2,6 +2,7 @@
 'use strict';
 
 var container=null,canvas=null,ctx=null,active=false,dynamic=true,performanceMode=false,bodyMode='earth',raf=0,lastTime=0;
+var loadedBodies={};
 var points=[],stars=[],latLines=[],lonLines=[],moonParticles=[],orbitMoonParticles=[],saturnParticles=[],saturnRingColors=[],moonModelSamples=[],saturnModelSamples=[],moonAngle=-0.42,initialRotation={x:-0.12,y:-0.18,z:-0.18};
 var orientation=quatFromEuler(initialRotation.x,initialRotation.y,initialRotation.z);
 var velocity={x:0,y:0},dragging=false,lastPointer=null;
@@ -16,17 +17,19 @@ document.dispatchEvent(new CustomEvent('vera:earth-ready'));
 function setActive(opts){
 opts=opts||{};
 var wasActive=active,nextActive=!!opts.active;
-dynamic=opts.dynamic!==false;
+dynamic=opts.dynamic!==false&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 var perf=!!opts.performance,perfChanged=perf!==performanceMode;
 var nextBody=['earth','saturn','moon'].indexOf(opts.body)>=0?opts.body:'earth';
 var bodyChanged=nextBody!==bodyMode;
-ensure();
+if(!nextActive){active=false;bodyTransition=null;stop();endDrag();if(container){container.style.display='none';container.classList.remove('on');}document.body.classList.remove('earth-bg');return;}
 if(bodyChanged&&wasActive&&nextActive)beginBodyTransition();
 active=nextActive;
 performanceMode=perf;
 bodyMode=nextBody;
+ensure();
+loadBodyResources();
 if(!container)return;
-if(perfChanged)rebuildGeometry();
+if(perfChanged||bodyChanged)rebuildGeometry();
 if(bodyChanged)resetOrientation();
 container.style.display=active?'':'none';
 container.classList.toggle('on',active);
@@ -44,11 +47,7 @@ canvas.setAttribute('aria-hidden','true');
 container.appendChild(canvas);
 ctx=canvas.getContext('2d',{alpha:true});
 rebuildGeometry();
-loadModelSamples();
-loadLandMask();
-loadMoonTexture();
-loadOrbitMoonTexture();
-loadSaturnTextures();
+loadBodyResources();
 window.addEventListener('resize',resize,{passive:true});
 document.addEventListener('pointermove',onPointerMove,{passive:false});
 document.addEventListener('pointerdown',onPointerDown,{passive:false});
@@ -149,8 +148,15 @@ img.src='assets/moon-nasa-2k.jpg';
 
 function loadModelSamples(){
 if(typeof fetch!=='function')return;
-fetch('assets/moon-nasa-model-samples.json').then(function(r){return r.ok?r.json():[];}).then(function(data){moonModelSamples=Array.isArray(data)?data:[];if(moonImage)sampleMoonTexture(moonImage);render();}).catch(function(){moonModelSamples=[];});
-fetch('assets/saturn-nasa-model-samples.json').then(function(r){return r.ok?r.json():[];}).then(function(data){saturnModelSamples=Array.isArray(data)?data:[];if(saturnDiffuseImage)sampleSaturnTexture(saturnDiffuseImage);render();}).catch(function(){saturnModelSamples=[];});
+if(bodyMode==='moon')fetch('assets/moon-nasa-model-samples.json').then(function(r){return r.ok?r.json():[];}).then(function(data){moonModelSamples=Array.isArray(data)?data:[];if(moonImage)sampleMoonTexture(moonImage);render();}).catch(function(){moonModelSamples=[];});
+if(bodyMode==='saturn')fetch('assets/saturn-nasa-model-samples.json').then(function(r){return r.ok?r.json():[];}).then(function(data){saturnModelSamples=Array.isArray(data)?data:[];if(saturnDiffuseImage)sampleSaturnTexture(saturnDiffuseImage);render();}).catch(function(){saturnModelSamples=[];});
+}
+function loadBodyResources(){
+if(loadedBodies[bodyMode])return;
+loadedBodies[bodyMode]=true;
+if(bodyMode==='earth'){loadLandMask();loadOrbitMoonTexture();}
+else if(bodyMode==='moon'){loadMoonTexture();loadModelSamples();}
+else{loadSaturnTextures();loadModelSamples();}
 }
 
 function loadSaturnTextures(){

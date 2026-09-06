@@ -1,0 +1,1 @@
+Logo preview fonts, distributed under the accompanying SIL Open Font License files. The extension does not package this directory. Rebuild logo assets with Python packages cairosvg and Pillow: `python scripts/build-brand.py`.

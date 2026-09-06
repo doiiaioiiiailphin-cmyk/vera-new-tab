@@ -6,3 +6,5 @@ vera-edge.zip
 tools/
 vip.js
 node_modules/
+.cache/
+dist/

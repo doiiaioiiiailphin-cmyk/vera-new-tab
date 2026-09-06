@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vera — New Tab</title>
-<link rel="icon" href="icons/icon48.png?v=2">
+<link rel="icon" href="icons/icon48.png?v=1.1.11">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://api.open-meteo.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@100..800&family=Lexend:wght@200..700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Noto+Sans+SC:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
 <script src="preload.js"></script>
 <link rel="stylesheet" href="style.css">
 
@@ -55,7 +55,7 @@
 </svg>
 
 <div class="bg-layer">
-<div class="bg-base"><img class="bg-img bg-img-dark" src="assets/bg-dark.webp"><img class="bg-img bg-img-light" src="assets/bg-light.webp"></div>
+<div class="bg-base"><img class="bg-img bg-img-dark" ><img class="bg-img bg-img-light" ></div>
 <div class="pixel-binary-bg" id="pixelBinaryBg" aria-hidden="true"></div>
 <div class="bg-blob"></div><div class="bg-blob"></div><div class="bg-blob"></div><div class="bg-blob"></div>
 <div class="bg-noise"></div>
@@ -90,23 +90,27 @@
 </svg></div>
 <div class="bg-earth" id="earthScene" style="display:none"></div>
 
-<nav class="top-bar">
-<button class="top-bar-btn" id="themeBtn" aria-label="Theme"><span class="icon-svg"><svg viewBox="0 0 24 24"><use id="themeIconUse" href="#i-sun"/></svg></span><span class="tooltip" data-i18n-tip="theme">主题</span></button>
-<button class="top-bar-btn" id="langBtn" aria-label="Language"><span class="icon-svg"><svg viewBox="0 0 24 24"><use href="#i-globe"/></svg></span><span class="tooltip" data-i18n-tip="language">语言</span></button>
-<button class="top-bar-btn" id="settingsBtn" aria-label="Settings"><span class="icon-svg"><svg viewBox="0 0 24 24"><use href="#i-settings"/></svg></span><span class="tooltip" data-i18n-tip="settings">设置</span></button>
+
+<div class="brand-lockup"><img src="icons/icon48.png" width="26" height="26" alt=""><span class="brand-name">vera<span class="brand-dot">.</span></span><span class="brand-caption" data-i18n="brandCaption">留一点空间，给今天。</span></div>
+<nav class="top-bar" aria-label="Vera" data-i18n-aria="desktopControls">
+<button class="top-bar-btn" id="themeBtn" data-i18n-aria="theme" aria-label="Theme"><span class="icon-svg"><svg viewBox="0 0 24 24"><use id="themeIconUse" href="#i-sun"/></svg></span><span class="tooltip" data-i18n-tip="theme">主题</span></button>
+<button class="top-bar-btn" id="langBtn" data-i18n-aria="language" aria-label="Language"><span class="icon-svg"><svg viewBox="0 0 24 24"><use href="#i-globe"/></svg></span><span class="tooltip" data-i18n-tip="language">语言</span></button>
+<button class="top-bar-btn" id="settingsBtn" data-i18n-aria="settings" aria-label="Settings"><span class="icon-svg"><svg viewBox="0 0 24 24"><use href="#i-settings"/></svg></span><span class="tooltip" data-i18n-tip="settings">设置</span></button>
 </nav>
 
-<div class="main-container">
-<div class="clock-wrap fade-in fade-in-1" tabindex="0">
+<main class="main-container" id="desktopMain">
+<div class="clock-wrap fade-in fade-in-1" tabindex="0" role="button" aria-pressed="false">
+<div class="daylight-caption" id="daylightCaption"></div>
 <div class="clock-time" id="clockTime"><span class="clock-main" id="clockMain"><span class="clock-primary" id="clockPrimary"><span class="clock-primary-digit clock-hour-tens"><span class="clock-digit-current">0</span></span><span class="clock-primary-digit clock-hour-ones"><span class="clock-digit-current">0</span></span><span class="clock-colon">:</span><span class="clock-primary-digit clock-minute-tens"><span class="clock-digit-current">0</span></span><span class="clock-primary-digit clock-minute-ones"><span class="clock-digit-current">0</span></span></span><span class="clock-seconds" id="clockSeconds" aria-hidden="true"><span class="clock-second-digit clock-second-tens"><span class="clock-digit-current">0</span></span><span class="clock-second-digit clock-second-ones"><span class="clock-digit-current">0</span></span></span></span></div>
 <div class="clock-date" id="clockDate"></div>
+
 </div>
 
 <div class="search-wrap fade-in fade-in-2">
 <div class="search-box" id="searchBox">
 <span class="icon-svg"><svg viewBox="0 0 24 24"><use href="#i-search"/></svg></span>
-<input class="search-input" id="searchInput" type="text" data-i18n-placeholder="searchPlaceholder" placeholder="搜索网页... (Ctrl+K)" autocomplete="off">
-<div class="search-engine" id="searchEngineBtn">
+<input class="search-input" id="searchInput" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestDropdown" data-i18n-aria="search" type="text" data-i18n-placeholder="searchPlaceholder" placeholder="搜索网页... (Ctrl+K)" autocomplete="off">
+<div class="search-engine" id="searchEngineBtn" aria-haspopup="true" aria-expanded="false" data-i18n-aria="searchEngine">
 <span class="icon-svg" id="engineIconSvg"><svg viewBox="0 0 24 24"><use href="#i-web"/></svg></span>
 <span id="engineName">Google</span>
 <span class="arrow"><svg viewBox="0 0 24 24"><use href="#i-chevron-down"/></svg></span>
@@ -127,7 +131,7 @@
 </div>
 <div class="widget todo-widget" id="todoWidget">
 <div class="widget-title" data-i18n="todo">待办事项</div>
-<input class="todo-input" id="todoInput" type="text" data-i18n-placeholder="todoPlaceholder" placeholder="添加新任务...">
+<input class="todo-input" id="todoInput" data-i18n-aria="todoPlaceholder" type="text" data-i18n-placeholder="todoPlaceholder" placeholder="添加新任务...">
 <ul class="todo-list" id="todoList"></ul>
 </div>
 <div class="widget pomodoro-widget" id="pomodoroWidget">
@@ -135,7 +139,7 @@
 <div class="pomodoro-main">
 <div class="pomodoro-ring" id="pomodoroRing" style="--pomodoro-progress:0deg">
 <div class="pomodoro-ring-inner">
-<input class="pomodoro-time" id="pomodoroTime" type="text" inputmode="numeric" value="25:00" aria-label="Pomodoro time">
+<input class="pomodoro-time" id="pomodoroTime" data-i18n-aria="pomodoro" type="text" inputmode="numeric" value="25:00">
 <div class="pomodoro-mode" id="pomodoroMode">专注</div>
 </div>
 </div>
@@ -156,30 +160,22 @@
 </div>
 </div>
 </div>
-<div class="widget game-widget" id="gameWidget" style="display:none">
-<div class="widget-title" data-i18n="game">小游戏</div>
-<span class="game-badge" data-i18n="gameNew">新</span>
-<canvas id="gameCanvas" style="width:100%;max-width:600px;display:block;border-radius:var(--radius-xs)"></canvas>
-<div class="game-carousel">
-<button class="game-carousel-btn" id="gamePrev">◂</button>
-<span class="game-carousel-label" id="gameName"></span>
-<button class="game-carousel-btn" id="gameNext">▸</button>
-</div>
-<div id="gameScore" style="text-align:center;font-size:13px;color:var(--text-dim);margin-top:4px"></div>
-</div>
-</div>
-</div>
 
+</div>
+</main>
+
+<div class="desk-note" data-i18n="deskNote">从这里，开始今天。</div>
+<div class="storage-notice" id="storageNotice" role="status" aria-live="polite" hidden></div>
 <div class="ad-container" id="ad-sidebar" style="display:none"></div>
 <div class="ad-container" id="ad-bottom" style="display:none"></div>
 
 <div class="engine-dropdown" id="engineDropdown"></div>
-<div class="suggest-dropdown" id="suggestDropdown"></div>
+<div class="suggest-dropdown" id="suggestDropdown" role="listbox" data-i18n-aria="searchSuggestions"></div>
 
 <div class="settings-overlay" id="settingsOverlay"></div>
-<div class="settings-panel" id="settingsPanel">
-<div class="settings-header"><h2 data-i18n="settingsTitle">自定义设置</h2><button class="settings-close" id="settingsClose">&times;</button></div>
-<div class="settings-tabs">
+<div class="settings-panel" id="settingsPanel" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" tabindex="-1" inert>
+<div class="settings-header"><h2 id="settingsTitle" data-i18n="settingsTitle">你的桌面</h2><button class="settings-close" id="settingsClose" data-i18n-aria="close">&times;</button></div>
+<div class="settings-tabs" role="tablist" data-i18n-aria="settingsTitle">
 <div class="tab-slider"></div>
 <button class="settings-tab active" data-tab="appearance" data-i18n="tabAppearance">外观</button>
 <button class="settings-tab" data-tab="widgets" data-i18n="tabWidgets">组件</button>
@@ -202,6 +198,9 @@
 <button class="radio-option" data-lang-val="en">English</button>
 <button class="radio-option" data-lang-val="ja">日本語</button>
 </div></div>
+<div class="settings-subtitle" data-i18n="theme">主题</div>
+<div class="theme-picker" id="themePicker"></div>
+<details class="advanced-settings"><summary data-i18n="advancedAppearance">精细调整</summary>
 <div class="settings-group"><span class="settings-label" data-i18n="glassOpacity">玻璃透明度</span><input type="range" id="setGlassOpacity" min="2" max="20" value="6"></div>
 <div class="settings-group"><span class="settings-label" data-i18n="blurStrength">模糊强度</span><input type="range" id="setBlur" min="8" max="60" value="32"></div>
 <div class="settings-group"><span class="settings-label" data-i18n="borderRadius">圆角大小</span><input type="range" id="setRadius" min="8" max="40" value="24"></div>
@@ -212,20 +211,21 @@
 </div></div>
 <div class="settings-row"><label data-i18n="dynamicBg">动态背景</label><button class="toggle-switch on" id="toggleDynamicBg"></button></div>
 <div class="settings-row"><label data-i18n="earthPerformance">性能模式</label><button class="toggle-switch" id="toggleEarthPerformance"></button></div>
-<div class="settings-subtitle" data-i18n="theme">主题</div>
-<div class="theme-picker" id="themePicker"></div>
-<div class="settings-group"><span class="settings-label" data-i18n="customBg">自定义背景图URL</span><input class="todo-input" id="setBgImage" type="text" data-i18n-placeholder="bgPlaceholder" placeholder="输入图片URL (留空使用默认)"><input type="file" id="bgFileInput" accept="image/*" style="display:none"><button class="btn sm" id="bgUploadBtn" style="margin-top:6px" data-i18n="bgUpload">上传图片</button></div>
-<div class="settings-subtitle" data-i18n="experimentalFeatures">实验性功能</div>
-<div class="settings-row"><label data-i18n="freeLayout">自由摆放布局</label><button class="toggle-switch" id="toggleFreeLayout"></button></div>
+</details>
+<div class="settings-group"><span class="settings-label" data-i18n="customBg">自定义背景图URL</span><input class="todo-input" id="setBgImage" data-i18n-aria="customBg" type="text" data-i18n-placeholder="bgPlaceholder" placeholder="输入图片URL (留空使用默认)"><input type="file" id="bgFileInput" accept="image/*" style="display:none"><button class="btn sm" id="bgUploadBtn" style="margin-top:6px" data-i18n="bgUpload">上传图片</button></div>
+
 </div>
 
 <div class="settings-section" id="sec-widgets">
+<p class="settings-help" data-i18n="desktopHelp">选择需要的内容，给重要的事留出空间。</p>
+<div class="settings-subtitle" data-i18n="desktopLayout">布局</div>
+<div class="settings-row"><label data-i18n="freeLayout">自由摆放布局</label><button class="toggle-switch" id="toggleFreeLayout"></button></div>
 <div class="settings-row"><label data-i18n="showWeather">天气组件</label><button class="toggle-switch on" id="toggleWeather"></button></div>
 <div class="settings-row"><label data-i18n="showTodo">待办组件</label><button class="toggle-switch on" id="toggleTodo"></button></div>
 <div class="settings-row"><label data-i18n="showQuote">名言组件</label><button class="toggle-switch on" id="toggleQuote"></button></div>
 <div class="settings-row"><label data-i18n="showLinks">快捷链接</label><button class="toggle-switch on" id="toggleLinks"></button></div>
 <div class="settings-row"><label data-i18n="showPomodoro">番茄钟</label><button class="toggle-switch" id="togglePomodoro"></button></div>
-<div class="settings-row"><label data-i18n="showGame">小游戏</label><button class="toggle-switch" id="toggleGame"></button></div>
+
 <div class="settings-row"><label data-i18n="checkUpdate">检查更新</label><button class="toggle-switch on" id="toggleCheckUpdate"></button></div>
 </div>
 
@@ -244,10 +244,10 @@
 </div>
 
 <div class="modal-overlay" id="linkModalOverlay">
-<div class="modal" id="linkModal">
+<div class="modal" id="linkModal" role="dialog" aria-modal="true" aria-labelledby="linkModalTitle" tabindex="-1">
 <h3 id="linkModalTitle">添加链接</h3>
-<input id="linkNameInput" type="text" data-i18n-placeholder="linkName" placeholder="名称">
-<input id="linkUrlInput" type="text" data-i18n-placeholder="linkUrl" placeholder="网址 (https://...)">
+<input id="linkNameInput" data-i18n-aria="linkName" type="text" data-i18n-placeholder="linkName" placeholder="名称">
+<input id="linkUrlInput" data-i18n-aria="linkUrl" type="text" data-i18n-placeholder="linkUrl" placeholder="网址 (https://...)">
 <div class="icon-picker" id="linkIconPicker"></div>
 <div class="modal-actions">
 <button class="btn" id="linkModalCancel" data-i18n="cancel">取消</button>
@@ -257,8 +257,8 @@
 </div>
 
 <div class="modal-overlay" id="donateModalOverlay">
-<div class="modal donate-modal" id="donateModal">
-<button class="settings-close" id="donateModalClose" style="position:absolute;top:12px;right:12px;z-index:1">&times;</button>
+<div class="modal donate-modal" id="donateModal" role="dialog" aria-modal="true" data-i18n-aria="donateTitle" tabindex="-1">
+<button class="settings-close" id="donateModalClose" data-i18n-aria="close" style="position:absolute;top:12px;right:12px;z-index:1">&times;</button>
 <h3 data-i18n="donateTitle">赞赏支持</h3>
 <img id="donateQr" data-src="https://v50-images-1386875830.cos.ap-beijing.myqcloud.com/%E8%B5%9E%E8%B5%8F%E7%A0%812.png" alt="赞赏码">
 </div>
@@ -270,7 +270,7 @@
 
 <div class="modal-overlay" id="vipModalOverlay" style="display:none">
 <div class="modal" style="text-align:center;gap:16px;width:440px;max-width:92vw;">
-<button class="settings-close" id="vipModalClose" style="position:absolute;top:12px;right:12px;z-index:1">&times;</button>
+<button class="settings-close" id="vipModalClose" data-i18n-aria="close" style="position:absolute;top:12px;right:12px;z-index:1">&times;</button>
 <h3 data-i18n="vipTitle">Vera Pro</h3>
 <p style="font-size:14px;color:var(--text-dim);line-height:1.7;" data-i18n="vipDesc">解锁全部高级功能：云端主题同步、番茄钟、书签导入、无广告体验。</p>
 <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:4px">
@@ -291,8 +291,9 @@
 
 <script src="i18n.js"></script>
 <script src="quotes.js"></script>
-<script src="game.js"></script>
+<!-- Mini-games archived in modules/minigames; intentionally not loaded. -->
 <script src="earth-scene.js"></script>
+<script src="ui.js"></script>
 <script src="script.js"></script>
 
 </body>

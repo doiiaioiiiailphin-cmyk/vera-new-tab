@@ -1,0 +1,9 @@
+{
+  "enabled": false,
+  "includedInRelease": false,
+  "originalSha256": {
+    "game.js": "2e50665e8d57d5f23bb30ca79bae45e8bc529444fbadf4897330b90cd9561779",
+    "assets/game-cover-snake.webp": "4b5405bbc128d76f218fa2b4916aedeff42fdc9b62b365bdc33d590c4aad582a",
+    "assets/game-cover-cube.webp": "874389789fbd6d2b04110ba4463d69c7efe1892ce8ab376c999979b5ec725ff6"
+  }
+}

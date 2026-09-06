@@ -1,0 +1,13 @@
+test('games initialize once, pause when hidden, and do not intercept editing keys',async t=>{
+  const app=await createApp();t.after(()=>app.close());
+  app.settings().showGame=true;app.api.applyAll();
+  assert.equal(app.w.gameInitialized,true);assert.equal(app.w.gameEnabled,true);
+  const canvas=app.document.getElementById('gameCanvas');
+  app.settings().accent='#889966';app.api.applyAll();assert.equal(app.document.getElementById('gameCanvas'),canvas);
+  app.w.gameRunning=true;
+  const before=app.w.nextDir;app.document.getElementById('searchInput').focus();app.key('searchInput','ArrowDown');assert.equal(app.w.nextDir,before);
+  await app.visibility(true);assert.equal(app.w.rafId,null);assert.equal(app.w.idleCarouselTimer,null);
+  await app.visibility(false);assert.equal(app.w.gameRunning,true);
+  app.settings().showGame=false;app.api.applyAll();assert.equal(app.w.rafId,null);assert.equal(app.w.idleCarouselTimer,null);
+});
+

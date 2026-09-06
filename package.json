@@ -1,10 +1,13 @@
 {
-  "name": "bfq",
-  "version": "1.0.0",
-  "description": "<p align=\"center\">\r   <img src=\"icons/icon128.png\" width=\"96\" alt=\"Vera\">\r </p>",
-  "main": "game.js",
+  "name": "vera-new-tab",
+  "version": "1.1.13",
+  "description": "Vera: a calm daylight desktop with search, shortcuts, widgets and customizable scenes.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test --experimental-test-isolation=none tests/*.test.cjs",
+    "check": "node scripts/check.cjs",
+    "sync:version": "node scripts/sync-version.cjs",
+    "package": "python scripts/package.py",
+    "verify:package": "python scripts/package.py --verify"
   },
   "repository": {
     "type": "git",
@@ -18,6 +21,12 @@
   },
   "homepage": "https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab#readme",
   "devDependencies": {
-    "acorn": "^8.16.0"
+    "acorn": "^8.16.0",
+    "jsdom": "^26.1.0",
+    "rrweb-cssom": "^0.8.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">=22.17.0"
   }
 }

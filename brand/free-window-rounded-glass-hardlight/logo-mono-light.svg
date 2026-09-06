@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Vera — free window"><title>Vera — free window</title><defs>
+<linearGradient id="body" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#69B5A5"/><stop offset=".42" stop-color="#347F71"/><stop offset="1" stop-color="#174C45"/></linearGradient>
+<linearGradient id="window" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#F4FCF6"/><stop offset=".45" stop-color="#C7F0E5"/><stop offset="1" stop-color="#A7E7DE"/></linearGradient>
+<linearGradient id="side" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#A7E7DE"/><stop offset="1" stop-color="#58B8A7"/></linearGradient>
+<linearGradient id="lower" x1="0" y1="0" x2="1" y2=".4"><stop stop-color="#71C9B6"/><stop offset="1" stop-color="#B6E9DC"/></linearGradient>
+<radialGradient id="light" cx=".16" cy=".04" r=".9"><stop stop-color="#F8FFF3" stop-opacity=".20"/><stop offset="1" stop-color="#F8FFF3" stop-opacity="0"/></radialGradient>
+<clipPath id="tile"><rect x="8" y="8" width="496" height="496" rx="112"/></clipPath>
+<linearGradient id="bevel" x1="0" y1="0" x2=".8" y2="1"><stop stop-color="#E6FFF2" stop-opacity=".75"/><stop offset=".45" stop-color="#A7E7DE" stop-opacity=".08"/><stop offset="1" stop-color="#062E28" stop-opacity=".65"/></linearGradient>
+<linearGradient id="glass" x1="0" y1="0" x2=".7" y2="1"><stop stop-color="#F1FFF6" stop-opacity=".92"/><stop offset=".3" stop-color="#C8F6E9" stop-opacity=".68"/><stop offset=".7" stop-color="#73CEBB" stop-opacity=".5"/><stop offset="1" stop-color="#B8F5E5" stop-opacity=".82"/></linearGradient>
+<linearGradient id="reflection" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFFFFF" stop-opacity=".5"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
+<radialGradient id="softReflection" cx=".23" cy=".04" r=".94"><stop stop-color="#F6FFF9" stop-opacity=".6"/><stop offset=".55" stop-color="#E8FFF5" stop-opacity=".1"/><stop offset="1" stop-color="#D0FFF0" stop-opacity="0"/></radialGradient>
+</defs><path fill="#F5F2EA" fill-rule="evenodd" d="M120 8 H392 Q504 8 504 120 V392 Q504 504 392 504 H120 Q8 504 8 392 V120 Q8 8 120 8 Z M118 76 H272 Q314 76 314 118 V272 Q314 314 272 314 H118 Q76 314 76 272 V118 Q76 76 118 76 Z M370 100 H404 Q436 100 436 132 V282 Q436 314 404 314 H370 Q338 314 338 282 V132 Q338 100 370 100 Z M132 338 H404 Q436 338 436 370 V404 Q436 436 404 436 H132 Q100 436 100 404 V370 Q100 338 132 338 Z "/></svg>

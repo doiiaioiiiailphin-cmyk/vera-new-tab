@@ -1,6 +1,21 @@
 // Mini-game widget. settings.showGame enables it from script.js.
 
 var gameRunning=false,gameScore=0;
+var gameInitialized=false,gameEnabled=false,gameAwake=false;
+window.VeraGame={setActive:setGameActive};
+function setGameActive(enabled){
+gameEnabled=!!enabled;
+var awake=gameEnabled&&!document.hidden;
+if(awake&&!gameInitialized)initGame();
+if(awake===gameAwake)return;
+gameAwake=awake;
+if(!awake){if(rafId){cancelAnimationFrame(rafId);rafId=null;}stopIdleCarousel();return;}
+lastTick=performance.now();tickAccumulator=0;cubeLastFrame=0;
+if(gameRunning){rafId=requestAnimationFrame(renderLoop);}
+else if(fadingOut){foStart=performance.now();rafId=requestAnimationFrame(renderFadeOut);}
+else{drawStartScreen();startIdleCarousel();}
+}
+document.addEventListener('visibilitychange',function(){setGameActive(gameEnabled);});
 var gameSnake=[],gameDir={x:1,y:0},nextDir=null,gameFood={x:0,y:0};
 var GW=20,GH=13,CS=15,SCALE=2;
 var gameIdx=0,GAME_LIST=[
@@ -74,7 +89,9 @@ updateGameLocale();
 });
 
 function initGame(){
+if(gameInitialized)return;
 var cv=document.getElementById('gameCanvas');if(!cv)return;
+gameInitialized=true;
 injectGameStyles();
 polishGameUi();
 preloadGameCovers();
@@ -209,7 +226,7 @@ gameCoverImages[g.id]=img;
 }
 
 function startIdleCarousel(){
-if(gameEverStarted||idleCarouselTimer)return;
+if(!gameEnabled||document.hidden||gameEverStarted||idleCarouselTimer||window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
 idleCarouselTimer=setInterval(function(){
 var gm=document.getElementById('gameWidget');
 if(gameEverStarted||gameRunning||fadingOut||screenState!=='start'||(gm&&gm.style.display==='none'))return;
@@ -238,6 +255,7 @@ setTimeout(function(){stage.classList.remove('game-switch-left','game-switch-fro
 }
 
 function drawStartScreen(){
+if(!gameInitialized||!gameEnabled||document.hidden)return;
 screenState='start';
 gameRunning=false;
 updateGameHint();
@@ -282,7 +300,7 @@ ctx.restore();
 }
 
 function handleKey(e){
-if(!gameRunning)return;
+if(!gameRunning||!gameEnabled||document.hidden||e.target.closest('input,textarea,select,button,[contenteditable="true"],[role="dialog"]')||document.querySelector('.settings-panel.open,.modal-overlay.open'))return;
 if(gameType()==='cube'){handleCubeKey(e);return;}
 var nd;
 if(e.key==='ArrowUp')nd={x:0,y:-1};
@@ -331,7 +349,7 @@ gameScore++;foodEaten=true;foodScaleTarget=0;
 }
 
 function renderLoop(now){
-if(!gameRunning){rafId=null;return;}
+if(!gameRunning||!gameEnabled||document.hidden){rafId=null;return;}
 rafId=requestAnimationFrame(renderLoop);
 if(gameType()==='cube'){
 draw(0,now);return;

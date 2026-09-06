@@ -1,122 +1,67 @@
-<p align="center">
-  <img src="icons/icon128.png" width="96" alt="Vera">
-</p>
-
+<p align="center"><img src="icons/icon128.png?v=1.1.11" width="72" alt="Vera"></p>
 <h1 align="center">Vera</h1>
+<p align="center">留一点空间，给今天。 · A little room for today.</p>
 
-<p align="center">Liquid Glass New Tab — Ice crystal glassmorphism Chrome/Edge extension</p>
+Vera 是原生 Chrome / Edge 新标签页扩展。1.1.13 用光影、时间与更清晰的内容层级重做默认桌面，将搜索和常用网站放在中心，同时保留全部主题、日常组件与自由布局。
 
-<p align="center">
-  <img src="https://img.shields.io/badge/manifest-v3-blue" alt="Manifest V3">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License">
-</p>
+<p align="center"><img src="assets/theme-daylight-light.svg" width="360" alt="光影浅色主题设计预览"><img src="assets/theme-daylight-dark.svg" width="360" alt="光影深色主题设计预览"></p>
 
-<p align="center">
-  <a href="https://microsoftedge.microsoft.com/addons/detail/knijdpgbnfgibfdjnkidpfapcjadehme"><strong>Install from Microsoft Edge Add-ons</strong></a>
-</p>
+上图为主题 SVG 设计预览，并非浏览器截图。当前版本的自动化结果和待完成的浏览器验收见 [验证记录](docs/daylight-validation.md)。仓库中的历史截图保留在 `screenshots/`，不代表 1.1.13 的界面。
 
-<p align="center">
-  <a href="#english">English</a> &nbsp;|&nbsp;
-  <a href="#chinese">简体中文</a> &nbsp;|&nbsp;
-  <a href="#japanese">日本語</a>
-</p>
+## 功能
 
-<p align="center">
-  <img src="screenshots/dark-thumb.png" alt="Dark Mode" width="420">
-  <img src="screenshots/light-thumb.png" alt="Light Mode" width="420">
-</p>
+- 搜索：Google、Bing、DuckDuckGo、百度、GitHub；支持搜索建议与键盘选择，Ctrl / Cmd + K 聚焦。
+- 常用网站：添加、编辑、删除、拖拽排序、自定义图标及 favicon。
+- 日常组件：天气、待办、每日一言、番茄钟，各自独立开关。
+- 小游戏已分离并禁用：原代码、素材和恢复说明保存在 `modules/minigames/`，已有存档保留。
+- 主题：光影、山水、地球、月球、土星、像素；深色、浅色、跟随系统，像素主题保持专属深色模式。
+- 自由桌面：拖拽、缩放、链接文件夹；通过滚动画布访问窗口外的内容，尺寸变化不改写位置。
+- 中文、English、日本語；已有设置与内容保存在本地浏览器。
 
----
+## 1.1.13 更新
 
-<h2 id="english">English</h2>
+新版玻璃叠层图标、柔和强调色与细线选框；移除时间弧线，恢复文字随机逐字浮出和组件动效，修复拖拽、缩放时重复播放开场动画的问题。
 
-### Features
+## 本地加载
 
-- **Clock & Date** — Large liquid-crystal style clock, date formatted by locale
-- **Multi-engine Search** — Google / Bing / DuckDuckGo / Baidu / GitHub
-- **Quick Links** — Drag-to-sort, auto-fetch website favicons, custom SVG icons
-- **Weather Widget** — wttr.in + Open-Meteo APIs, Permissions API for location
-- **To-Do List** — Local storage, click to complete/delete
-- **Daily Quotes** — Classical Chinese poetry / English classics / Japanese proverbs
-- **Three Languages** — 中文 / English / 日本語, auto-detect system language
-- **Dark / Light / System** — Instant theme apply, no flicker
-- **Customization Panel**
-  - Glass opacity / blur strength / border radius
-  - Accent color + 5 background presets + custom background image
-  - Dynamic blob background toggle
-  - Individual widget visibility toggles
+在 Chrome 或 Edge 的扩展管理页打开开发者模式，选择“加载已解压的扩展程序”，选中项目目录。升级现有解压扩展时，在原扩展条目点击重新加载并打开新标签页，以保留同一扩展存储空间。
 
-### Install
+版本化安装包位于 `dist/vera-edge-1.1.13.zip`。先解压到固定目录，再加载该目录。本次改造不自动发布到商店。
 
-[Install from Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/knijdpgbnfgibfdjnkidpfapcjadehme)
+## 开发与验证
+
+开发工具需要 Node.js 22.17+ 和 Python 3.10+；扩展运行本身无需 Node、Python 或后端。
 
 ```bash
-git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
+npm ci
+npm run check
+npm test
+npm run package
+npm run verify:package
 ```
-Open `chrome://extensions/` → Developer mode → Load unpacked → select folder.
 
-### License
+`manifest.json` 是版本来源。修改版本后运行 `npm run sync:version` 同步 npm 元数据，再验证和打包。测试使用 jsdom 和隔离网络/Canvas 桩，不会请求真实天气、执行搜索或操作用户浏览器。
 
-MIT © Vera
+安装包只包含扩展运行文件、主题/字体资产、图标和语言包；不包含开发依赖、测试、缓存、CodeGraph、历史宣传素材或禁用的 VIP 文件。原有素材与根目录旧 ZIP 不会被覆盖。
 
----
+- [设计与代码边界](docs/daylight-design.md)
+- [自动化结果与浏览器验收状态](docs/daylight-validation.md)
+- [隐私说明](PRIVACY.md)
 
-<h2 id="chinese">简体中文</h2>
+## English
 
-### 功能
+Vera is a native Chrome / Edge new tab extension centered on search and favorite websites. Daylight introduces a quiet visual identity, clearer typography, lighter shortcuts, and consistent controls across all six themes. Existing bookmarks, tasks, focus settings, wallpaper choices and free-layout coordinates are retained.
 
-- **时钟与日期** — 大号液晶感时钟，日期随语言格式化
-- **多引擎搜索** — Google / Bing / DuckDuckGo / 百度 / GitHub
-- **快捷链接** — 拖拽排序，自动拉取网站 favicon，支持自定义 SVG 图标
-- **天气组件** — wttr.in + Open-Meteo 双 API，Permissions API 监听权限变化
-- **待办事项** — 本地存储，点击完成/删除
-- **每日名言** — 中文古诗词 / 英文经典 / 日本谚语，随语言切换
-- **三语言界面** — 中文 / English / 日本語，首次自动跟随系统语言
-- **深色/浅色/跟随系统** — 启动即生效无闪烁
-- **高自定义设置面板**
-  - 玻璃透明度 / 模糊强度 / 圆角大小
-  - 强调色 + 5 套背景预设 + 自定义背景图
-  - 动态背景开关
-  - 所有组件独立显隐
+Mini-games are extracted into `modules/minigames` and disabled in 1.1.1; their implementation, assets and existing saves are preserved, but the extension does not load or package them. Celestial assets initialize when enabled. Search handles stale responses and keyboard navigation. The free desktop scrolls instead of rewriting saved positions. Settings, content and game progress remain local; network-backed features still use their existing providers.
 
-### 安装
+Load this folder as an unpacked extension. Use Node.js 22.17+ for checks/tests and Python 3.10+ for deterministic packaging. See the validation record for the distinction between automated checks and pending browser screenshot verification.
 
-```bash
-git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
-```
-打开 `chrome://extensions/` → 开发者模式 → 加载已解压的扩展程序 → 选择项目文件夹。
+## 日本語
 
-### 许可
+Vera は検索とよく使うサイトを中心にした Chrome / Edge 向け新規タブ拡張です。落ち着いた配色と読みやすい文字でデスクトップを整えました。既存のテーマ、タスク、ポモドーロ、自由配置を引き続き利用できます。
 
-MIT © Vera
+ミニゲームはコードと素材を保存したまま分離・無効化しました。天体の素材は必要になったときに初期化され、バックグラウンドではアニメーションを停止します。自由デスクトップはスクロールに対応し、ウィンドウのサイズを変えても保存した位置を変更しません。
 
----
+## License
 
-<h2 id="japanese">日本語</h2>
-
-### 機能
-
-- **時計と日付** — 大きな液晶風時計、言語に応じた日付フォーマット
-- **マルチ検索エンジン** — Google / Bing / DuckDuckGo / Baidu / GitHub
-- **クイックリンク** — ドラッグで並べ替え、Favicon 自動取得
-- **天気ウィジェット** — wttr.in + Open-Meteo デュアル API
-- **ToDo リスト** — ローカルストレージ、クリックで完了/削除
-- **今日の名言** — 中国古典 / 英語の名言 / 日本のことわざ
-- **3ヶ国語対応** — 中文 / English / 日本語、システム言語を自動検出
-- **ダーク/ライト/システム** — ちらつきなしで即時適用
-- **カスタマイズパネル**
-  - 透明度 / ぼかし強度 / 角丸サイズ
-  - アクセントカラー + 5種の背景プリセット
-  - 動的背景の切り替え
-  - 各ウィジェットの表示/非表示
-
-### インストール
-
-```bash
-git clone https://github.com/doiiaioiiiailphin-cmyk/vera-new-tab.git
-```
-`chrome://extensions/` を開く → デベロッパーモード → パッケージ化されていない拡張機能を読み込む → フォルダ選択。
-
-### ライセンス
-
-MIT © Vera
+MIT © Vera（既存 README の表記を維持）。同梱フォントおよび第三者アセットのライセンスは、それぞれのアセットフォルダを参照してください。
